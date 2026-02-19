@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rubnyemile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #fafaf8;
+            color: #2c2c2c;
+            line-height: 1.8;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 2.5in;
+            background-color: #d4c5b9;
+            padding: 40px 30px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 2px solid #7a9d6f;
+        }
+
+        .sidebar h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #2c2c2c;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #5c5c5c;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            user-select: none;
+        }
+
+        .nav-title:hover {
+            color: #2c2c2c;
+        }
+
+        .dropdown-arrow {
+            font-size: 10px;
+            transition: transform 0.3s;
+        }
+
+        .dropdown-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .nav-items {
+            display: none;
+            padding-left: 12px;
+            border-left: 1px solid #7a9d6f;
+        }
+
+        .nav-items.show {
+            display: block;
+        }
+
+        .nav-items a {
+            display: block;
+            text-decoration: none;
+            color: #2c2c2c;
+            font-size: 14px;
+            padding: 8px 0;
+            margin: 6px 0;
+            transition: color 0.2s;
+        }
+
+        .nav-items a:hover {
+            color: #7a9d6f;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 2.5in;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #fafaf8 0%, #e8dfd6 100%);
+            padding: 100px 60px;
+            text-align: center;
+            border-bottom: 1px solid #d4c5b9;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #2c2c2c;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #5c5c5c;
+            max-width: 600px;
+            margin: 0 auto;
+            font-style: italic;
+        }
+
+        .content {
+            padding: 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .content h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #2c2c2c;
+            font-weight: normal;
+        }
+
+        .item {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: white;
+            border-left: 3px solid #7a9d6f;
+            transition: box-shadow 0.2s;
+        }
+
+        .item:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .item-title {
+            font-size: 20px;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .item-meta {
+            font-size: 12px;
+            color: #7a9d6f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .item-preview {
+            color: #5c5c5c;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .read-more {
+            font-size: 12px;
+            color: #7a9d6f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .read-more:hover {
+            color: #2c2c2c;
+        }
+
+        .footer {
+            background: #d4c5b9;
+            padding: 40px 60px;
+            text-align: center;
+            margin-top: auto;
+            border-top: 2px solid #7a9d6f;
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: #5c5c5c;
+            margin-bottom: 15px;
+        }
+
+        .footer-link {
+            display: inline-block;
+            background: #7a9d6f;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: background 0.2s;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .footer-link:hover {
+            background: #2c2c2c;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 2px solid #7a9d6f;
+                padding: 20px;
+            }
+
+            .sidebar h1 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .hero {
+                padding: 50px 30px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .content {
+                padding: 30px;
+            }
+
+            .footer {
+                padding: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1>rubnyemile</h1>
+            
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    Essays
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#" onclick="showPage('essays')">All Essays</a>
+                    <a href="#" onclick="showPage('essays')">On Being</a>
+                    <a href="#" onclick="showPage('essays')">On Learning</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    Poetry
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#" onclick="showPage('poetry')">All Poems</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    Opinions
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#" onclick="showPage('opinions')">All Opinions</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    Reviews
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#" onclick="showPage('reviews')">Books</a>
+                    <a href="#" onclick="showPage('reviews')">Films</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    About
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#" onclick="showPage('about')">Who I Am</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+            <!-- Hero Section -->
+            <div class="hero" id="heroSection">
+                <h1>welcome</h1>
+                <p>everyday i try</p>
+            </div>
+
+            <!-- Essays Page -->
+            <div class="page-content active" id="essays-page">
+                <div class="content">
+                    <h2>Essays</h2>
+                    <div class="item">
+                        <div class="item-title">On Continuous Effort</div>
+                        <div class="item-meta">January 2026</div>
+                        <div class="item-preview">The weight of sustained effort when you're already depleted. What it means to keep going.</div>
+                        <a class="read-more">Read More →</a>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">The Anchor and The Void</div>
+                        <div class="item-meta">January 2026</div>
+                        <div class="item-preview">On building foundations when you have nothing to hold onto but yourself.</div>
+                        <a class="read-more">Read More →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Poetry Page -->
+            <div class="page-content" id="poetry-page">
+                <div class="content">
+                    <h2>Poetry</h2>
+                    <div class="item">
+                        <div class="item-title">Untitled</div>
+                        <div class="item-meta">Recent</div>
+                        <div class="item-preview">A work in progress. Space reserved for words that haven't found their way yet.</div>
+                        <a class="read-more">Read Full Poem →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opinions Page -->
+            <div class="page-content" id="opinions-page">
+                <div class="content">
+                    <h2>Opinions</h2>
+                    <div class="item">
+                        <div class="item-title">Thoughts On Progress</div>
+                        <div class="item-meta">January 2026</div>
+                        <div class="item-preview">Progress is not linear. It circles. It breaks. And we keep going anyway.</div>
+                        <a class="read-more">Read More →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Page -->
+            <div class="page-content" id="reviews-page">
+                <div class="content">
+                    <h2>Reviews</h2>
+                    <div class="item">
+                        <div class="item-title">Wuthering Heights - Emily Brontë</div>
+                        <div class="item-meta">Book Review • January 2026</div>
+                        <div class="item-preview">On difficult prose, dialect, and what it means to be loved badly.</div>
+                        <a class="read-more">Read Review →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Page -->
+            <div class="page-content" id="about-page">
+                <div class="content">
+                    <h2>About</h2>
+                    <p style="margin-bottom: 20px;">I am trying. Most days I fail. Some days I get close. But I keep going.</p>
+                    <p style="margin-bottom: 20px;">This space exists for those who are also trying. For scouts and thinkers. For anyone brave enough to keep an open mind in a world that resists it.</p>
+                    <p>I don't have all the answers. In fact, I have very few. But I'm willing to sit in the uncertainty with you and figure it out together.</p>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <div class="footer-text">Questions? Thoughts? Want to berate me further?</div>
+                <a href="mailto:hello@rubnyemile.com" class="footer-link">Get In Touch</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleNav(element) {
+            const arrow = element.querySelector('.dropdown-arrow');
+            const items = element.nextElementSibling;
+            
+            arrow.classList.toggle('open');
+            items.classList.toggle('show');
+        }
+
+        function showPage(page) {
+            // Hide hero and all pages
+            document.getElementById('heroSection').style.display = 'none';
+            document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+            
+            // Show selected page
+            const pageId = page + '-page';
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Open first dropdowns by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNav = document.querySelector('.nav-title');
+            if (firstNav) {
+                firstNav.click();
+            }
+        });
+    </script>
+</body>
+</html>
