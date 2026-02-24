@@ -226,6 +226,43 @@
             display: block;
         }
 
+        /* Poem Display */
+        .poem-full {
+            display: none;
+            background: white;
+            padding: 40px;
+            margin-top: 20px;
+            border: 1px solid #d4c5b9;
+            border-radius: 2px;
+        }
+
+        .poem-full.active {
+            display: block;
+        }
+
+        .poem-text {
+            font-family: 'Georgia', serif;
+            font-size: 16px;
+            line-height: 2;
+            color: #2c2c2c;
+            white-space: pre-line;
+            margin: 20px 0;
+        }
+
+        .poem-close {
+            font-size: 12px;
+            color: #7a9d6f;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .poem-close:hover {
+            color: #2c2c2c;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -355,11 +392,117 @@
             <div class="page-content" id="poetry-page">
                 <div class="content">
                     <h2>Poetry</h2>
+                    
+                    <!-- Bicycle -->
                     <div class="item">
-                        <div class="item-title">Untitled</div>
-                        <div class="item-meta">Recent</div>
-                        <div class="item-preview">A work in progress. Space reserved for words that haven't found their way yet.</div>
-                        <a class="read-more">Read Full Poem →</a>
+                        <div class="item-title">Bicycle</div>
+                        <div class="item-meta">July 2025</div>
+                        <div class="item-preview">Two bikes. Two Christmas mornings. One mouth full of dirt.</div>
+                        <a class="read-more" onclick="togglePoem('poem-bicycle')">Read Full Poem →</a>
+                    </div>
+                    <div class="poem-full" id="poem-bicycle">
+                        <div class="poem-text">I've had two bikes in my lifetime.
+One small and black.
+The other tall,
+red and blue.
+Both Christmas presents.
+
+One cycled me to death's door.
+Gave exclusion,
+Gave victory,
+Scraped knees,
+A mouth full of dirt.
+
+Now.
+I have thoughts.</div>
+                        <span class="poem-close" onclick="togglePoem('poem-bicycle')">← Close</span>
+                    </div>
+
+                    <!-- Coffee -->
+                    <div class="item">
+                        <div class="item-title">Coffee</div>
+                        <div class="item-meta">April 2025</div>
+                        <div class="item-preview">Two hands cradle a mug. The eyes wonder in the distance.</div>
+                        <a class="read-more" onclick="togglePoem('poem-coffee')">Read Full Poem →</a>
+                    </div>
+                    <div class="poem-full" id="poem-coffee">
+                        <div class="poem-text">Two hands cradle a mug.
+The eyes wonder in the distance.
+A sip — transfer of warmth.
+A pause — engage with the moment.
+
+Cloth filled with ground beans;
+work steady.
+A smell as familiar as morning dew.
+Rose-colored mumu.
+
+Electricity in a sip.</div>
+                        <span class="poem-close" onclick="togglePoem('poem-coffee')">← Close</span>
+                    </div>
+
+                    <!-- Coffee Two -->
+                    <div class="item">
+                        <div class="item-title">Coffee (II)</div>
+                        <div class="item-meta">April 2025</div>
+                        <div class="item-preview">I take a sip, cradle the mug in my hands.</div>
+                        <a class="read-more" onclick="togglePoem('poem-coffee2')">Read Full Poem →</a>
+                    </div>
+                    <div class="poem-full" id="poem-coffee2">
+                        <div class="poem-text">I take a sip,
+Cradle the mug in my hands.
+The warmth now resides in me
+Until my eyes and mind wander.
+
+It's then I set it aside,
+Bask in the moment.
+I wish this would last.</div>
+                        <span class="poem-close" onclick="togglePoem('poem-coffee2')">← Close</span>
+                    </div>
+
+                    <!-- Dear Boy -->
+                    <div class="item">
+                        <div class="item-title">Dear Boy</div>
+                        <div class="item-meta">May 2025</div>
+                        <div class="item-preview">Oh! my dear boy. If you could see what I see...</div>
+                        <a class="read-more" onclick="togglePoem('poem-dearboy')">Read Full Poem →</a>
+                    </div>
+                    <div class="poem-full" id="poem-dearboy">
+                        <div class="poem-text">Oh! my dear boy.
+If you could see what I see,
+You would know love eternal.
+
+Be brave.
+Often paralyzed by fear.
+Act, and the path will clear.
+
+Sleeping,
+Comfort begets death of dreams.
+Wake!
+
+Follow the river, past the bend,
+The tree, free.
+Chain your own thought.
+Ask, ask for thy wisdom.
+
+Sweet,
+This heart, mine, tenderly.
+
+I love you, always.</div>
+                        <span class="poem-close" onclick="togglePoem('poem-dearboy')">← Close</span>
+                    </div>
+
+                    <!-- Green Patches -->
+                    <div class="item">
+                        <div class="item-title">Green Patches</div>
+                        <div class="item-meta">July 2025</div>
+                        <div class="item-preview">She was a kid. Hair ablaze.</div>
+                        <a class="read-more" onclick="togglePoem('poem-greenpatches')">Read Full Poem →</a>
+                    </div>
+                    <div class="poem-full" id="poem-greenpatches">
+                        <div class="poem-text">She was a kid.
+Hair ablaze by green patches.
+Salt of the earth.</div>
+                        <span class="poem-close" onclick="togglePoem('poem-greenpatches')">← Close</span>
                     </div>
                 </div>
             </div>
@@ -422,9 +565,24 @@
             document.getElementById('heroSection').style.display = 'none';
             document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
             
+            // Hide all open poems
+            document.querySelectorAll('.poem-full').forEach(el => el.classList.remove('active'));
+            
             // Show selected page
             const pageId = page + '-page';
             document.getElementById(pageId).classList.add('active');
+        }
+
+        function togglePoem(poemId) {
+            const poem = document.getElementById(poemId);
+            poem.classList.toggle('active');
+            
+            // Scroll to poem if opening
+            if (poem.classList.contains('active')) {
+                setTimeout(() => {
+                    poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            }
         }
 
         // Open first dropdowns by default
