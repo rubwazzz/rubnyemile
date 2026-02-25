@@ -91,6 +91,7 @@
             padding: 8px 0;
             margin: 6px 0;
             transition: color 0.2s;
+            cursor: pointer;
         }
 
         .nav-items a:hover {
@@ -313,9 +314,9 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a href="#" onclick="showPage('essays')">All Essays</a>
-                    <a href="#" onclick="showPage('essays')">On Being</a>
-                    <a href="#" onclick="showPage('essays')">On Learning</a>
+                    <a onclick="showPage('essays'); return false;">All Essays</a>
+                    <a onclick="showPage('essays'); return false;">On Being</a>
+                    <a onclick="showPage('essays'); return false;">On Learning</a>
                 </div>
             </div>
 
@@ -325,7 +326,7 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a href="#" onclick="showPage('poetry')">All Poems</a>
+                    <a onclick="showPage('poetry'); return false;">All Poems</a>
                 </div>
             </div>
 
@@ -335,7 +336,7 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a href="#" onclick="showPage('opinions')">All Opinions</a>
+                    <a onclick="showPage('opinions'); return false;">All Opinions</a>
                 </div>
             </div>
 
@@ -345,8 +346,8 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a href="#" onclick="showPage('reviews')">Books</a>
-                    <a href="#" onclick="showPage('reviews')">Films</a>
+                    <a onclick="showPage('reviews'); return false;">Books</a>
+                    <a onclick="showPage('reviews'); return false;">Films</a>
                 </div>
             </div>
 
@@ -356,7 +357,7 @@
                     <span class="dropdown-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a href="#" onclick="showPage('about')">Who I Am</a>
+                    <a onclick="showPage('about'); return false;">Who I Am</a>
                 </div>
             </div>
         </div>
@@ -569,12 +570,12 @@ The spread of misinformation is rampant and serves as building blocks for argume
             <!-- Footer -->
             <div class="footer">
                 <div class="footer-text">Questions? Thoughts? Want to berate me further?</div>
-                <a href="mailto:hello@rubnyemile.com" class="footer-link">Get In Touch</a>
+                <a href="/cdn-cgi/l/email-protection#09616c656566497b7c6b67706c6460656c276a6664" class="footer-link">Get In Touch</a>
             </div>
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         function toggleNav(element) {
             const arrow = element.querySelector('.dropdown-arrow');
             const items = element.nextElementSibling;
@@ -606,8 +607,3 @@ The spread of misinformation is rampant and serves as building blocks for argume
                     poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             }
-        }
-
-        // Open first dropdowns by default
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstNav = docu
