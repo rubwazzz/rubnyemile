@@ -604,3 +604,15 @@ The spread of misinformation is rampant and serves as building blocks for argume
                     poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             }
+        }
+
+        // Open first dropdowns by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstNav = document.querySelector('.nav-title');
+            if (firstNav) {
+                firstNav.click();
+            }
+        });
+    </script>
+</body>
+</html>
