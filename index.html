@@ -307,18 +307,6 @@
             
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Essays
-                    <span class="dropdown-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('essays'); return false;">All Essays</a>
-                    <a onclick="showPage('essays'); return false;">On Being</a>
-                    <a onclick="showPage('essays'); return false;">On Learning</a>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
                     Poetry
                     <span class="dropdown-arrow">▼</span>
                 </div>
@@ -350,6 +338,28 @@
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
+                    Recipes
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a onclick="showPage('recipes'); return false;">All Recipes</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
+                    Letters
+                    <span class="dropdown-arrow">▼</span>
+                </div>
+                <div class="nav-items">
+                    <a onclick="showProtectedPage('letters-love'); return false;">Love Letters</a>
+                    <a onclick="showProtectedPage('letters-angry'); return false;">Angry Letters</a>
+                    <a onclick="showProtectedPage('letters-unsent'); return false;">Unsent Letters</a>
+                </div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title" onclick="toggleNav(this)">
                     About
                     <span class="dropdown-arrow">▼</span>
                 </div>
@@ -367,27 +377,8 @@
                 <p>everyday i try</p>
             </div>
 
-            <!-- Essays Page -->
-            <div class="page-content active" id="essays-page">
-                <div class="content">
-                    <h2>Essays</h2>
-                    <div class="item">
-                        <div class="item-title">On Continuous Effort</div>
-                        <div class="item-meta">January 2026</div>
-                        <div class="item-preview">The weight of sustained effort when you're already depleted. What it means to keep going.</div>
-                        <a class="read-more">Read More →</a>
-                    </div>
-                    <div class="item">
-                        <div class="item-title">The Anchor and The Void</div>
-                        <div class="item-meta">January 2026</div>
-                        <div class="item-preview">On building foundations when you have nothing to hold onto but yourself.</div>
-                        <a class="read-more">Read More →</a>
-                    </div>
-                </div>
-            </div>
-
             <!-- Poetry Page -->
-            <div class="page-content" id="poetry-page">
+            <div class="page-content active" id="poetry-page">
                 <div class="content">
                     <h2>Poetry</h2>
                     
@@ -531,6 +522,82 @@ If you are entitled to believe what you want then so are others, do not leave yo
 The spread of misinformation is rampant and serves as building blocks for argumentative opinions. The little territories our ancestors divvied up claiming independence yet unable to survive without human hyper-connectivity is amusing. The interdependence of nations is as contrary to their independent claims as opinions are from fact.</div>
                         <span class="poem-close" onclick="togglePoem('opinion-on-opinions')">← Close</span>
                     </div>
+
+                    <!-- Church and Ice Cream -->
+                    <div class="item">
+                        <div class="item-title">Church and Ice Cream</div>
+                        <div class="item-meta">February 2026</div>
+                        <div class="item-preview">As a child I was very gullible. My mom promised me rum raisin ice cream if I went to church with her.</div>
+                        <a class="read-more" onclick="togglePoem('opinion-church')">Read More →</a>
+                    </div>
+                    <div class="poem-full" id="opinion-church">
+                        <div class="poem-text">As a child I was very gullible. When I was seven my mom promised me rum raisin ice cream (our favorite) if I went to church with her. I did not like church, I thought it was weird. The idea that an all-knowing creature required me to be somewhere specific at any given time seemed strange and a lame excuse to make poor people poorer.
+
+We went to church that Sunday. I watched the pastor wipe the sweat off his brow as he yelled "God is good" and waited for the congregation to reply "All the time." The thought of ice cream kept me from squirming too much.
+
+When it was time to stand for the sermon I could no longer see the pastor clearly. My line of sight was blocked by this lady in front of me, she had a large flowing white hat. She would raise her hand and the hat would ebb every time the pastor stomped his feet. He was adamant that he was a messenger of God and the congregation needed to give back to God to thank him for his blessings. Why did God never want you to keep your money. Money is the root of all evil and God is entirely pure. Only he could sanctify your money, through us of course.
+
+Why did we need to give money to the church? Why did we need to pray together?
+
+I don't have answers to those questions—none that would satisfy anyway.
+
+Much of my time was casually interrupted to provide exaltations to a being that I never received a reply from. I was told to pray when I woke up, I was told to pray before going to bed. We prayed before class started, we prayed after class ended. We went to church on Sundays.
+
+My whole being is bothered by the church. In such an unfathomable way that I look back at that child and almost pity him. I do not pity adult Christians, they have made a choice. My heart could ache for every Christian child but then I would give value to hell. The adults are led to believe that a mystical being that is all-knowing and all-powerful placed the pastor here for his purposes. His purposes most often involving guiding the congregation both spiritually and financially. We cannot forget financially.
+
+I don't hate church as much as I hate the way it turns fair-minded people into dogmatic believers. I knew this doctor and his family when I was little. They were my neighbors and they were Adventist. The women were not allowed to wear pants. I thought as a child that doctors were educated. What do pants have to do with the will of God? The church did not invent dogma but as our records indicate it has made the best use of it.
+
+I'm still waiting for that ice cream.</div>
+                        <span class="poem-close" onclick="togglePoem('opinion-church')">← Close</span>
+                    </div>
+
+                    <!-- On Continuous Effort -->
+                    <div class="item">
+                        <div class="item-title">On Continuous Effort</div>
+                        <div class="item-meta">February 2026</div>
+                        <div class="item-preview">The bane of my current existence. The act of being aware that you are trying and that you will fail.</div>
+                        <a class="read-more" onclick="togglePoem('opinion-effort')">Read More →</a>
+                    </div>
+                    <div class="poem-full" id="opinion-effort">
+                        <div class="poem-text">I did not invent effort. Until recently that concept was not at all familiar to me. Effort here we will take to mean a determined and vigorous attempt. I think effort should not be classified under what people do but what people are. For there to be effort the attempt must be vigorous and determined. Yes, but an attempt can be made to look as such, therefore no effort was made but appropriately simulated.
+
+Conscious effort seems to be the default since we are conscious we can drop that word. I think we should add another.
+
+Continuous Conscious effort. The bane of my current existence. The act of being not only aware that you are trying therefore exerting effort but also that you will fail.
+
+Failure is the greatest teacher no one seems to care about. I was deeply afraid of it. Now I bask in it against my will. I did not choose to fail, I know I must. I know I will, I know it is part of the process. My earlier attachments to the definition of failing have kept me tied up. They have kept me at war with myself over little failures and big ones alike.
+
+I am not an expert in failure, I have failed many times however and each time I was harder on myself than I needed to be. This is a classic mind pitfall where what you know and how you know it does not merge. I know I must fail so why be my own enemy when I fail. Systems do not dissolve overnight. My view of failure was systemic.
+
+I now make an effort to be less hard on myself. If it was easy and I had it figured out, this would be called I figured it out. Alas. I am better at noticing when the failure was within my control (requires more effort), and when it was not within my control (nothing I could have done to change the outcome). One lets me know where to improve, the other lets me know that I have improved.</div>
+                        <span class="poem-close" onclick="togglePoem('opinion-effort')">← Close</span>
+                    </div>
+
+                    <!-- The Mountain Doesn't Care -->
+                    <div class="item">
+                        <div class="item-title">The Mountain Doesn't Care</div>
+                        <div class="item-meta">February 25, 2026</div>
+                        <div class="item-preview">I often wonder how much I can take of this panopticon. The mountain must be climbed however long it must take.</div>
+                        <a class="read-more" onclick="togglePoem('opinion-mountain')">Read More →</a>
+                    </div>
+                    <div class="poem-full" id="opinion-mountain">
+                        <div class="poem-text">I often wonder how much I can take of this panopticon. I wonder too much, even in my mind I slide into cascades of thoughts until they become an avalanche while I am still at the base of the mountain. It is an inexperienced climber that lets the distance between him and the top get to him. The mountain must be climbed however long it must take. Thinking about climbing the mountain does not move our feet, it does not move our heart. It breeds paralysis.
+
+Paralysis of thought. When you undertake the future, overlooking the present and succumb to the past. Now, this moment here is the only true moment. It is the only one that exists and all others are imaginary versions of this moment. Some you lament. Some you hope come to pass. Neither does because you are not looking at what is in front of you. You look at what is ahead with complete disregard for what lies beneath you. You look at the past with utter disgust without recognizing that you are no longer there. The present is much harder to see.
+
+The present is a present most have said. But what is a present one does not know how to make use of? I'm sure there must be a term for it, I do not know it.
+
+Trash?
+
+Perhaps, not quite though. A present one does not know the full utility of can become a burden. You may try to figure out all its uses rather than mastering one at a time. We know this. Knowing and avoiding the pitfalls of our mind is a game of battleships. One where we both know where the ships of the opposition rest. The winner then is decidedly who attacks first and the most. Your past self knows you very well, he knows when you are about to fall but rarely saves you. Why?
+
+The most common line of reasoning seems to be that it must be protecting you from something. Someone? Yourself? All possibilities yet none come forth at this moment. If it is indeed protecting me from myself what do I seek protection from. A heavy heart is all that weighs on me these days. One where it would eclipse me to not speak of the love it holds. To let it bubble and fester within me as if it was shameful. It has been shameful to love at times. I have been shameful about my love of the self at times.
+
+Shame and embarrassment are not unexplored emotions we carry from day to day. They are a living breathing part of our organism. Parts that I should treat with more care. Though they are temporary in reality the mind bends time and space to distort when they become too heavy. Yet it is only with familiarity that we must enable ourselves to recognize that these feelings are not negative they are instructive.
+
+The lesson learned from them will last a lifetime. I have attended the classes but I seem to retain none of the information when it truly matters. The mind would sooner drown itself than detach itself from non self-serving identity.</div>
+                        <span class="poem-close" onclick="togglePoem('opinion-mountain')">← Close</span>
+                    </div>
                     
                     <div class="item">
                         <div class="item-title">Thoughts On Progress</div>
@@ -554,6 +621,79 @@ The spread of misinformation is rampant and serves as building blocks for argume
                 </div>
             </div>
 
+            <!-- Recipes Page -->
+            <div class="page-content" id="recipes-page">
+                <div class="content">
+                    <h2>Recipes</h2>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">2026</div>
+                        <div class="item-preview">Recipes will be added here.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Love Letters Page (Password Protected) -->
+            <div class="page-content" id="letters-love-page">
+                <div class="content">
+                    <h2>Love Letters</h2>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">Protected</div>
+                        <div class="item-preview">Love letters will appear here once you add them.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Angry Letters Page (Password Protected) -->
+            <div class="page-content" id="letters-angry-page">
+                <div class="content">
+                    <h2>Angry Letters</h2>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">Protected</div>
+                        <div class="item-preview">Angry letters will appear here once you add them.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Unsent Letters Page (Password Protected) -->
+            <div class="page-content" id="letters-unsent-page">
+                <div class="content">
+                    <h2>Unsent Letters</h2>
+                    
+                    <!-- Another Unsent Letter II -->
+                    <div class="item">
+                        <div class="item-title">Another Unsent Letter II</div>
+                        <div class="item-meta">February 25, 2026</div>
+                        <div class="item-preview">This might be liquor in me but I'm feeling a tingling sensation that I will be able to write something beautiful...</div>
+                        <a class="read-more" onclick="togglePoem('unsent-letter-2')">Read Letter →</a>
+                    </div>
+                    <div class="poem-full" id="unsent-letter-2">
+                        <div class="poem-text">This might be liquor in me but I'm feeling a tingling sensation that I will be able to write something beautiful over the next couple of days. The feeling not only stems from the multitude of sips I took from this mimosa but also from a deep, deep place in my heart. My days are still overshadowed by thoughts of her, but lately realized that I had an issue finishing anything I liked too much, because I never wanted it to end but I actively sought the end. I pushed everything to the edge and hoped that whatever stared back was something beautiful. Negotiated with death on trivial matters. I walked the path alone yet we were an ensemble. I have many regrets.
+
+The title of this reads I love this woman. But one question remains unanswered amidst all of this turmoil. Why did you think it was okay to hurt her as such. I did not think it was okay. I knew it was wrong but that did not stop me. Why you ask? Because then I did not know what I had. I am not saying that was the reason.
+
+I did not know what I had, I did not feel worthy of it, I was terrified. Those are all excuses that do not engage the behavior or the underlying cause of the problem. Because two things can be true at once even when they seem opposite. I love this person and I hurt this person. This seems like an easy thought to follow because those two feelings are not ever adjacent when one talks about love.
+
+Lest we forget that part of love is our ability to endure. Not only at the cost of our own comfort but for those who cheer for us when no one else is. Part of me will always try to explain what happened as best I can. Not because I need an answer. The answer to me is simple I was selfish, afraid and arrogant.
+
+Those are the things that lead me there, but what lead me to those things. Invariably a multitude of things. For one my inability to communicate any discomfort. This is two fold, whenever I needed space I was afraid to ask, because I had already been categorized as distant and it had been a topic of contention I did not need to prolong any further. This is not to shift blame, it was my responsibility to communicate you do not reside inside my mind. All too often we hope that someone will realize something we have not told them. All too often they do, but it is rarely the thing we wished they had noticed.
+
+Arrogance, I thought I could get away with it. Not in the long run but I thought in this moment I could. Because then I was at my lowest. I needed to feel in control of something (this statement bothers me mostly because it is true in a way I cannot explain yet). I was also jealous of your progress. I did not know how to articulate that. Not jealous in the sense that I did not wish for you to succeed. If anyone deserves to succeed it is you. Jealous because I became afraid that I would no longer be enough for you. Enough to provide the life that you want. Which made me resent myself and in turn you for making me resent myself. A simple conversation could have solved both issues. At the time I did not know how to articulate those issues. It may seem simple now but it was anything but.
+
+Fear is a component of my life that I engage with everyday. It is not one that I discuss with many people however (until recently I discussed it with no one). I have many fears. That I will never be enough. That I will never find love. That I will never get out of poverty to name a few. Yet I was enough for someone, I was loved by someone. I was too busy looking at the fear to realize what was in front of me. I seek neither absolution nor forgiveness. I don't think I deserve them. (One of the simple reasons in the beginning of why I never reached out was I would picture our wedding day, I would picture the toast. Me standing by your side raising a glass to the wonderful woman that you are telling all these people that I love you and I want to spend the rest of my life with you. Yet I did that. I betrayed your trust, I let someone else come in between us. That thought haunted me day and night, in my dreams, in my car, at work, at the coffee shop, on the plane. It was torture, yet I would go through it all again if it could mean I could erase your pain.)
+
+I now realize that thought was absolutely stupid, why did I care what those people thought. They weren't real, the only person whose thoughts I should have been concerned with were yours. I am so sorry for that.
+
+It may seem like I have an inability to move on. I may as well state here that I do. Moving on to me seems contrarian. If it keeps you tied to me in a way you do not wish to be that is worse. I do not want worse for you. I may have to accept that I am not the best for you. (this is not a limiter, you can always improve.)
+
+If I should move on, and I have thought plenty about this. I have no wish or desire for another person. Not because I shall love you for the rest of my days (I will, I have no choice in the matter, it is futile to fight it, admit it and move on.) but rather my love for you seems to endure time not as a dimension but as a condition.</div>
+                        <span class="poem-close" onclick="togglePoem('unsent-letter-2')">← Close</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- About Page -->
             <div class="page-content" id="about-page">
                 <div class="content">
@@ -567,12 +707,12 @@ The spread of misinformation is rampant and serves as building blocks for argume
             <!-- Footer -->
             <div class="footer">
                 <div class="footer-text">Questions? Thoughts? Want to berate me further?</div>
-                <a href="mailto:hello@rubnyemile.com" class="footer-link">Get In Touch</a>
+                <a href="/cdn-cgi/l/email-protection#8de5e8e1e1e2cdfff8efe3f4e8e0e4e1e8a3eee2e0" class="footer-link">Get In Touch</a>
             </div>
         </div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         function toggleNav(element) {
             const arrow = element.querySelector('.dropdown-arrow');
             const items = element.nextElementSibling;
@@ -594,6 +734,37 @@ The spread of misinformation is rampant and serves as building blocks for argume
             document.getElementById(pageId).classList.add('active');
         }
 
+        // Password protection for Letters sections
+        function showProtectedPage(page) {
+            // Define passwords for each letter type
+            const passwords = {
+                'letters-love': 'tenderness',      // Change this password
+                'letters-angry': 'fury',           // Change this password
+                'letters-unsent': 'silence'        // Change this password
+            };
+
+            // Get the correct password for this page
+            const correctPassword = passwords[page];
+            
+            // Ask for password
+            const userPassword = prompt("Enter the password:");
+            
+            // Check if password is correct (case-insensitive)
+            if (userPassword && userPassword.toLowerCase() === correctPassword.toLowerCase()) {
+                // Correct! Show the page
+                document.getElementById('heroSection').style.display = 'none';
+                document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active'));
+                document.querySelectorAll('.poem-full').forEach(el => el.classList.remove('active'));
+                
+                const pageId = page + '-page';
+                document.getElementById(pageId).classList.add('active');
+            } else if (userPassword !== null) {
+                // Wrong password (but they didn't cancel)
+                alert("Incorrect password. Try again.");
+            }
+            // If they clicked cancel (userPassword is null), do nothing
+        }
+
         function togglePoem(poemId) {
             const poem = document.getElementById(poemId);
             poem.classList.toggle('active');
@@ -604,15 +775,3 @@ The spread of misinformation is rampant and serves as building blocks for argume
                     poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
             }
-        }
-
-        // Open first dropdowns by default
-        document.addEventListener('DOMContentLoaded', function() {
-            const firstNav = document.querySelector('.nav-title');
-            if (firstNav) {
-                firstNav.click();
-            }
-        });
-    </script>
-</body>
-</html>
