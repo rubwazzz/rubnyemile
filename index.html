@@ -16,13 +16,16 @@
 
         /* ROOT VARIABLES */
         :root {
-            --bg: #1a1816;         
-            --panel: #23201d;      
-            --text: #e3ddd6;
-            --muted: #a39b92;
-            --accent: #8fffac;      
-            --border: rgba(255,255,255,0.08);
+            --bg: #2b251f;              /* Deep warm brown - peaceful base */
+            --panel: #3a3128;           /* Slightly lighter brown panel */
+            --text: #e8dfd2;            /* Warm off-white text */
+            --muted: #a89984;           /* Muted tan/brown */
+            --accent: #7a9d6f;          /* Sage green - growth, highlights */
+            --attention: #c45d4a;       /* Muted terracotta red - watched, attention */
+            --border: rgba(200,93,74,0.15);  /* Subtle red-tinted borders - being watched */
             --sidebar-w: 260px;
+            --sidebar-bg: #1f1a15;      /* Darkest brown - grounding */
+            --hover-glow: rgba(122,157,111,0.12);  /* Green glow on hover */
         }
 
         /* BODY */
@@ -32,11 +35,10 @@
 
         body {
             font-family: 'EB Garamond', Georgia, serif;
-            background: radial-gradient(circle at 20% 20%, #26221f 0%, #1a1816 60%);
+            background: radial-gradient(circle at 20% 20%, #3a3128 0%, #2b251f 60%);
             color: var(--text);
             line-height: 1.85;
             letter-spacing: 0.2px;
-            cursor: crosshair;
             font-size: 16px;
         }
 
@@ -46,7 +48,7 @@
             position: fixed;
             inset: 0;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-            opacity: 0.025;
+            opacity: 0.04;
             pointer-events: none;
             z-index: 9999;
         }
@@ -54,7 +56,7 @@
         /* SCROLLBAR */
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+        ::-webkit-scrollbar-thumb { background: var(--attention); border-radius: 2px; opacity: 0.6; }
 
         /* ─── LAYOUT ─── */
         .container {
@@ -62,19 +64,68 @@
             min-height: 100vh;
         }
 
+        /* HAMBURGER MENU */
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 10000;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--attention);
+            padding: 10px 12px;
+            cursor: pointer;
+            font-family: 'Courier Prime', monospace;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: var(--attention);
+            color: var(--bg);
+            box-shadow: 0 0 12px rgba(196,93,74,0.3);
+        }
+
+        .menu-toggle.active {
+            background: var(--attention);
+            color: var(--bg);
+        }
+
+        @media (max-width: 968px) {
+            .menu-toggle {
+                display: block;
+            }
+        }
+
         /* ─── SIDEBAR ─── */
         .sidebar {
             width: var(--sidebar-w);
-            background: linear-gradient(180deg, #26221f 0%, #1f1c19 100%);;
+            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #251f1a 100%);
             padding: 44px 28px 40px;
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
             overflow-y: auto;
-            border-right: 1px solid rgba(143,255,172,0.15);
+            border-right: 1px solid var(--border);
+            box-shadow: inset -1px 0 0 rgba(122,157,111,0.05);
             display: flex;
             flex-direction: column;
+            transition: transform 0.3s ease;
+            z-index: 9998;
+        }
+
+        @media (max-width: 968px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
         }
 
         .sidebar-brand {
@@ -82,9 +133,10 @@
             font-size: 13px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--attention);
             margin-bottom: 48px;
             opacity: 0.9;
+            text-shadow: 0 0 8px rgba(196,93,74,0.3);
         }
 
         .sidebar-nav {
@@ -129,7 +181,7 @@
         .nav-items {
             display: none;
             padding: 4px 0 8px 14px;
-            border-left: 1px solid rgba(127,255,155,0.18);
+            border-left: 1px solid var(--accent);
             margin-left: 1px;
         }
 
@@ -145,7 +197,7 @@
             font-family: 'EB Garamond', serif;
             font-style: italic;
             padding: 5px 0;
-            opacity: 0.55;
+            opacity: 0.65;
             transition: opacity 0.2s, transform 0.2s, color 0.2s;
             cursor: pointer;
         }
@@ -154,6 +206,7 @@
             opacity: 1;
             transform: translateX(4px);
             color: var(--accent);
+            text-shadow: 0 0 6px rgba(122,157,111,0.4);
         }
 
         .sidebar-footer {
@@ -174,14 +227,21 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 968px) {
+            .main {
+                margin-left: 0;
+            }
         }
 
         /* ─── HERO ─── */
         .hero {
-            background: radial-gradient(circle at center, #2a2623 0%, #1a1816 100%);
+            background: radial-gradient(circle at center, #3a3128 0%, #2b251f 100%);
             padding: 110px 64px 90px;
             text-align: center;
-            border-bottom: 1px solid var(--panel-border);
+            border-bottom: 1px solid var(--border);
             position: relative;
         }
 
@@ -189,7 +249,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 100%, rgba(127,255,155,0.03) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 100%, rgba(196,93,74,0.04) 0%, transparent 70%);
             pointer-events: none;
         }
 
@@ -198,8 +258,8 @@
             font-size: 10px;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: var(--accent);
-            opacity: 0.6;
+            color: var(--attention);
+            opacity: 0.7;
             margin-bottom: 20px;
         }
 
@@ -209,9 +269,7 @@
             letter-spacing: 4px;
             color: var(--text);
             margin-bottom: 20px;
-            animation: flicker 8s infinite;
             line-height: 1.1;
-            text-shadow: 0 0 12px rgba(143,255,172,0.15)
         }
 
         .hero p {
@@ -219,15 +277,6 @@
             color: var(--muted);
             font-style: italic;
             letter-spacing: 0.5px;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            47% { opacity: 0.94; }
-            49% { opacity: 0.82; }
-            51% { opacity: 0.97; }
-            53% { opacity: 0.88; }
-            55% { opacity: 1; }
         }
 
         /* ─── CONTENT ─── */
@@ -243,7 +292,7 @@
             gap: 16px;
             margin-bottom: 44px;
             padding-bottom: 20px;
-            border-bottom: 1px solid var(--panel-border);
+            border-bottom: 1px solid var(--border);
         }
 
         .content-header h2 {
@@ -264,30 +313,18 @@
         .item {
             margin-bottom: 28px;
             padding: 22px 24px 20px;
-            background: rgba(255,255,255,0.03);
-            border-left: 1px solid var(--accent);
-            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02);
-            transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease;
+            background: rgba(58,49,40,0.3);
+            border-left: 2px solid var(--attention);
+            box-shadow: inset 0 0 0 1px rgba(196,93,74,0.1);
+            transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
             position: relative;
-        }
-
-        .item::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, var(--accent-dim) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.22s ease;
         }
 
         .item:hover {
             transform: translateX(5px);
-            background: rgba(255,255,255,0.03);
-            border-left-color: rgba(127,255,155,0.7);
-        }
-
-        .item:hover::before {
-            opacity: 1;
+            background: rgba(58,49,40,0.5);
+            border-left-color: var(--accent);
+            box-shadow: inset 0 0 0 1px rgba(122,157,111,0.15), 0 0 12px rgba(122,157,111,0.08);
         }
 
         .item-title {
@@ -297,21 +334,22 @@
             color: var(--text);
             margin-bottom: 7px;
             position: relative;
+            font-weight: 500;
         }
 
         .item-meta {
             font-family: 'Courier Prime', monospace;
             font-size: 10px;
-            color: var(--accent);
+            color: var(--attention);
             text-transform: uppercase;
             letter-spacing: 2px;
             margin-bottom: 12px;
-            opacity: 0.6;
+            opacity: 0.7;
         }
 
         .item-preview {
             font-size: 14.5px;
-            color: #bdb6ae;
+            color: var(--muted);
             line-height: 1.7;
             margin-bottom: 14px;
             font-style: italic;
@@ -332,18 +370,18 @@
 
         .read-more:hover {
             opacity: 1;
-            text-shadow: 0 0 6px rgba(143,255,172,0.25);
             letter-spacing: 2px;
         }
 
         /* ─── EXPANDED CONTENT ─── */
         .poem-full {
             display: none;
-            background: rgba(255,255,255,0.015);
+            background: rgba(31,26,21,0.6);
             padding: 40px 44px;
             margin-top: 20px;
-            border: 1px solid var(--panel-border);
-            border-left: 1px solid rgba(127,255,155,0.3);
+            border: 1px solid var(--border);
+            border-left: 2px solid var(--accent);
+            box-shadow: 0 0 20px rgba(122,157,111,0.06);
             position: relative;
         }
 
@@ -353,8 +391,8 @@
             top: 16px;
             left: 20px;
             font-size: 48px;
-            color: var(--accent);
-            opacity: 0.08;
+            color: var(--attention);
+            opacity: 0.15;
             font-family: Georgia, serif;
             line-height: 1;
         }
@@ -373,7 +411,7 @@
             font-size: 15px;
             line-height: 2.1;
             white-space: pre-line;
-            color: #ddd6cf;
+            color: var(--text);
             opacity: 0.9;
         }
 
@@ -407,8 +445,8 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.75);
-            z-index: 1000;
+            background: rgba(0,0,0,0.6);
+            z-index: 10001;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(4px);
@@ -420,12 +458,13 @@
 
         .modal {
             background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-top: 1px solid rgba(127,255,155,0.25);
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--attention);
             padding: 44px 48px;
             width: 360px;
             max-width: 90vw;
             animation: fadeIn 0.25s ease;
+            box-shadow: 0 0 40px rgba(196,93,74,0.2);
         }
 
         .modal-label {
@@ -433,7 +472,7 @@
             font-size: 10px;
             letter-spacing: 3px;
             text-transform: uppercase;
-            color: var(--accent);
+            color: var(--attention);
             opacity: 0.7;
             margin-bottom: 12px;
         }
@@ -455,9 +494,9 @@
 
         .modal input {
             width: 100%;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--panel-border);
-            border-bottom: 1px solid rgba(127,255,155,0.3);
+            background: rgba(31,26,21,0.6);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--attention);
             color: var(--text);
             font-family: 'Courier Prime', monospace;
             font-size: 14px;
@@ -481,7 +520,7 @@
         .modal-error {
             font-family: 'Courier Prime', monospace;
             font-size: 11px;
-            color: #ff7f7f;
+            color: #c54545;
             letter-spacing: 1px;
             margin-bottom: 16px;
             display: none;
@@ -506,13 +545,13 @@
             border: 1px solid var(--accent);
             color: var(--accent);
             padding: 10px 22px;
-            cursor: crosshair;
+            cursor: pointer;
             transition: background 0.2s, color 0.2s;
         }
 
         .btn-enter:hover {
             background: var(--accent);
-            color: #000;
+            color: white;
         }
 
         .btn-cancel {
@@ -524,7 +563,7 @@
             border: none;
             color: var(--muted);
             padding: 10px 0;
-            cursor: crosshair;
+            cursor: pointer;
             transition: color 0.2s;
         }
 
@@ -538,7 +577,7 @@
             background: var(--panel);
             padding: 44px 64px;
             text-align: center;
-            border-top: 1px solid var(--panel-border);
+            border-top: 1px solid var(--border);
         }
 
         .footer-text {
@@ -552,7 +591,7 @@
         .footer-link {
             display: inline-block;
             background: transparent;
-            border: 1px solid rgba(127,255,155,0.4);
+            border: 1px solid var(--accent);
             color: var(--accent);
             padding: 11px 28px;
             text-decoration: none;
@@ -565,29 +604,14 @@
 
         .footer-link:hover {
             background: var(--accent);
-            color: #000;
+            color: white;
             border-color: var(--accent);
         }
 
         /* ─── MOBILE ─── */
         @media (max-width: 768px) {
-            :root { --sidebar-w: 0px; }
-
-            .sidebar {
-                width: 100%;
-                height: auto;
-                position: static;
-                border-right: none;
-                border-bottom: 1px solid var(--panel-border);
-                padding: 24px 20px;
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
             .hero {
-                padding: 60px 28px 50px;
+                padding: 80px 28px 60px;
             }
 
             .hero h1 {
@@ -610,6 +634,9 @@
 </head>
 <body>
 
+<!-- MENU TOGGLE -->
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰ Menu</button>
+
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="passwordModal">
     <div class="modal">
@@ -627,7 +654,7 @@
 
 <div class="container">
     <!-- ─── SIDEBAR ─── -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">rubnyemile</div>
 
         <nav class="sidebar-nav">
@@ -707,708 +734,8 @@
             <p>everyday i try</p>
         </div>
 
-        <!-- ═══ POETRY PAGE ═══ -->
-        <div class="page-content" id="poetry-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Poetry</h2>
-                    <span class="count">16 poems</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Longing</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">Describe it, how? When its reach feels far-fetched.</div>
-                    <a class="read-more" onclick="togglePoem('poem-longing')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-longing">
-                    <div class="poem-text">Describe it, how?
-When its reach feels far-fetched.
-When reaching for myself is selfish.
-As the reach itself decays.
-We do not talk out of necessity, fear, or longing.
-I hold this corner — hoping, wishing, pacing.
-Is anything accomplished?
-Shall I wander in perpetuity?
-Shall I move on when time allows?
-Neither feels right— or true— in this moment.
-In the vastness — that is where we are.
-I met you. I lost you.
-All for the better, I ought to believe— of you, me, nature.
-Nature never harms intentionally.
-I did.
-That is my cross to bear.
-Or the cross I choose to bear?
-So what then?
-I sit and ask again and again:
-What then?
-No answers come. None shall.
-Shall I learn to love the query?
-Should it remain unsolved,
-Would that be the end of me?
-It has— for days, weeks hence.
-If the goal is the journey,
-And the journey never ends —
-What then?</div>
-                    <span class="poem-close" onclick="togglePoem('poem-longing')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">In My Own Way</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">I hope to one day tell you,</div>
-                    <a class="read-more" onclick="togglePoem('poem-inmyownway')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-inmyownway">
-                    <div class="poem-text">I hope to one day tell you,
-That I am scared.
-Because I love you.
-So, I became scared of loving you.
-I loved you the more for it naturally.
-I even pretended to love you,
-When I didn't think I could love you anymore.
-Then I broke you.
-Because, I loved you too much.
-And me, not enough.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-inmyownway')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Parallels</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">Seeing her was like seeing myself.</div>
-                    <a class="read-more" onclick="togglePoem('poem-parallels')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-parallels">
-                    <div class="poem-text">Seeing her was like seeing myself.
-A mirror held up in the dark.
-I recognized the weight she carried —
-I had carried it too.
-
-Two people, two roads,
-Running parallel.
-Never touching.
-Always aware.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-parallels')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Seeing Her</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">Have you ever been afraid?</div>
-                    <a class="read-more" onclick="togglePoem('poem-seeingher')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-seeingher">
-                    <div class="poem-text"> Have you ever been afraid?
-Of losing something, that wasn't yours?
-Seeing her. 
-Felt like that.
-
-I was scared, happily so. 
-Paralyzed by fear. 
-Not thoughts this time, 
-a lie. 
-
-Lost her anyway. 
-Get her, don't get her. 
-
-Spiraled into thoughts of unworthiness. 
-Paralyzed by thoughts anyway.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-seeingher')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Yesterday</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">I missed you, yesterday.</div>
-                    <a class="read-more" onclick="togglePoem('poem-yesterday')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-yesterday">
-                    <div class="poem-text">I missed you, yesterday.
-Yesterday, I missed you
-Today —not so much.
-
-But Yesterday, every "I" ended with you.
-
-Yesterday, you lingered on my mind
-Like summer heat on paved roads.
-
-Yesterday, Where waves kissed the rocky shore. For every teary-eyed infant,
-For every cord cut.
-
-Well, I missed you. I missed you
-As if you were missing from me.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-yesterday')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Yosemite</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">We rode under the cover of night.</div>
-                    <a class="read-more" onclick="togglePoem('poem-yosemite')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-yosemite">
-                    <div class="poem-text">We rode under the cover of night.
-Illuminated by the still moon.
-Centered as chaos danced around it,
-It glowed in the night sky.
-It was magical.
-They gave me joy,
-And I hope I gave them some as well.
-May we share this again someday,
-No matter what the future holds.
-I shall hold these memories hostage.
-I will water them so they bloom
-Into sunflowers and cherry blossoms.
-May these memories bring a smile to your face.
-The moon is no longer still,
-Bright as ever though.
-A crater staring back at me.
-It's light guiding us through the night.
-In truth, it is the GPS.
-But how wonderful would it be
-If it was us and the moon?
-Us and a fire.
-I yawn and crave my bed.
-May you read these words one day and wonder if they are about you.
-They are, and you will know.
-Maybe you won't.
-Until then, my friend.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-yosemite')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">KJ</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">In the Aeroplane over the sea,</div>
-                    <a class="read-more" onclick="togglePoem('poem-kj')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-kj">
-                    <div class="poem-text">In the Aeroplane
-Over the sea,
-We laughed
-Until my sides hurt.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-kj')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Dear Boy</div>
-                    <div class="item-meta">May 2025</div>
-                    <div class="item-preview">Oh! my dear boy. If you could see what I see...</div>
-                    <a class="read-more" onclick="togglePoem('poem-dearboy')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-dearboy">
-                    <div class="poem-text">Oh! my dear boy.
-If you could see what I see,
-You would know love eternal.
-
-Be brave.
-Often paralyzed by fear.
-Act, and the path will clear.
-
-Sleeping,
-Comfort begets death of dreams.
-Wake!
-
-Follow the river, past the bend,
-The tree, free.
-Chain your own thought.
-Ask, ask for thy wisdom.
-
-Sweet,
-This heart, mine, tenderly.
-
-I love you, always.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-dearboy')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Waste It</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">What an inconsequential run.</div>
-                    <a class="read-more" onclick="togglePoem('poem-wasteit')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-wasteit">
-                    <div class="poem-text">What an inconsequential run.
-Limited print.
-A fleeting moment.
-So ephemeral.
-
-What little of it we have.
-Why, then, is so much wasted?
-Somehow— we plan its waste.
-Not the journey.
-Not the destination.
-But the company.
-
-Waste it.
-With the right people.
-Waste it.
-
-Time.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-wasteit')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Where The Pole Stood</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">This feeling is unmatched.</div>
-                    <a class="read-more" onclick="togglePoem('poem-pole')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-pole">
-                    <div class="poem-text">This feeling is unmatched.
-Brought to you by shame and complacency.
-Awoke to pole in the middle of my bedroom.
-A pole tethered, as above so below.
-Made of light wood.
-Straight as an arrow.
-Thick as a brick.
-The pole does not move.
-It moves not, it does not bend.
-No, you may not chip away at it.
-You must navigate this pole.
-Immutable, non transferable— eternally steady.
-Presence, presently felt.
-The pole feels nothing.
-No joy, pain, anger or sadness.
-It reflects me back at me.
-Woke up one morning and the pole was gone.
-I sit where the pole once stood,
-Only the void remains.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-pole')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Loop</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">I once had a thought— one that thought about...</div>
-                    <a class="read-more" onclick="togglePoem('poem-loop')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-loop">
-                    <div class="poem-text">I once had a thought— 
-One that thought about itself. 
-It questioned its own roots 
-Until it became a mirror.
-Are all thoughts self-thinking? 
-A thought that thought thinking... 
-A waste?
-If every thought thought, 
-Would thinking be?</div>
-                    <span class="poem-close" onclick="togglePoem('poem-loop')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">I AM GREEN</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">Purple is such an ugly color.</div>
-                    <a class="read-more" onclick="togglePoem('poem-green')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-green">
-                    <div class="poem-text">Purple is such an ugly color.
-Violet— strikes me at my heart.
-It awakens in me a rage.
-Violates me.
-Yet, I am all the better for it.
-Lavender, kisses me.
-With the rhythmic pulse of the enamored.
-They cannot hold me.
-For—
-I am green.
-Like tree moss and anthurium.
-Green like where the sun meets the sea.
-Like eucalyptus vines and emerald days.
-Call me—
-Envy,
-Grass,
-Jealousy,
-Do Not—
-Call me purple.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-green')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Green Patches</div>
-                    <div class="item-meta">July 2025</div>
-                    <div class="item-preview">She was a kid. Hair ablaze.</div>
-                    <a class="read-more" onclick="togglePoem('poem-greenpatches')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-greenpatches">
-                    <div class="poem-text">She was a kid.
-Hair ablaze by green patches.
-Salt of the earth.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-greenpatches')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Lament</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview"> Death comes for us all — a return to the self.</div>
-                    <a class="read-more" onclick="togglePoem('poem-lament')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-lament">
-                    <div class="poem-text"> Death comes for us all — a return to the self. 
-Destruction of the body, the soul left eternally free. 
-A path. A journey. A mountain. 
-What is it to be truly free? 
-Free from the self, from others, from society?
-Compare. 
-Contrast. 
-Nuance.
-Call me Winston Smith. Call me O'Brien. 
-I am both object and watcher. 
-Endless — as if the end were something to fear.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-lament')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Rejection</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">Rain in it's domain. Supreme.</div>
-                    <a class="read-more" onclick="togglePoem('poem-rejection')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-rejection">
-                    <div class="poem-text">Rain in it's domain
-Supreme
-Light but heavy is the burden
-The souls crash
-The heart disintegrates
-The thoughts evaporate
-Alone
-In the dark
-Out of reach
-You run and run and run
-In the dark
-
-The line
-A kid, an adult
-A familiar chain
-A familiar place
-One in front of the other
-We follow order
-A break in line
-Raised eyebrows
-Shocked faces
-The line
-Why do we follow
-The line
-Why do we skip
-The line
-Who invented it
-The line
-When was the last time you thought about it
-The line human Decline</div>
-                    <span class="poem-close" onclick="togglePoem('poem-rejection')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">As If They Were Watching</div>
-                    <div class="item-meta">2025</div>
-                    <div class="item-preview">What are you???</div>
-                    <a class="read-more" onclick="togglePoem('poem-watching')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-watching">
-                    <div class="poem-text">What are you? A feeling? An ache — a moment? The edge of an echo?
-A heart in motion. Hungry for blood. Eyes wide open. Seeking salvation.
-A solid pump. A silver blade. Two sharp jabs. The debt is paid.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-watching')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Bicycle</div>
-                    <div class="item-meta">July 2025</div>
-                    <div class="item-preview">Two bikes. Two Christmas mornings. One mouth full of dirt.</div>
-                    <a class="read-more" onclick="togglePoem('poem-bicycle')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-bicycle">
-                    <div class="poem-text">I've had two bikes in my lifetime.
-One small and black.
-The other tall,
-red and blue.
-Both Christmas presents.
-
-One cycled me to death's door.
-Gave exclusion,
-Gave victory,
-Scraped knees,
-A mouth full of dirt.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-bicycle')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Coffee</div>
-                    <div class="item-meta">April 2025</div>
-                    <div class="item-preview">Two hands cradle a mug.</div>
-                    <a class="read-more" onclick="togglePoem('poem-coffee')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-coffee">
-                    <div class="poem-text">Two hands cradle a mug.
-The eyes wonder in the distance.
-A sip — transfer of warmth.
-A pause — engage with the moment.
-
-Cloth filled with ground beans;
-work steady.
-A smell as familiar as morning dew.
-Rose-colored mumu.
-
-Electricity in a sip.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-coffee')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Coffee (II)</div>
-                    <div class="item-meta">April 2025</div>
-                    <div class="item-preview">I take a sip, cradle the mug in my hands.</div>
-                    <a class="read-more" onclick="togglePoem('poem-coffee2')">Read Full Poem →</a>
-                </div>
-                <div class="poem-full" id="poem-coffee2">
-                    <div class="poem-text">I take a sip,
-Cradle the mug in my hands.
-The warmth now resides in me
-Until my eyes and mind wander.
-
-It's then I set it aside,
-Bask in the moment.
-I wish this would last.</div>
-                    <span class="poem-close" onclick="togglePoem('poem-coffee2')">← Close</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ OPINIONS PAGE ═══ -->
-        <div class="page-content" id="opinions-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Opinions</h2>
-                    <span class="count">5 essays</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">On Opinions</div>
-                    <div class="item-meta">February 2026</div>
-                    <div class="item-preview">Opinions are armor and weapons. The only real difference between people is what they value vs what they give value to.</div>
-                    <a class="read-more" onclick="togglePoem('opinion-on-opinions')">Read More →</a>
-                </div>
-                <div class="poem-full" id="opinion-on-opinions">
-                    <div class="poem-text">Opinions are an ease by which any society creates and maintains standards. Those standards are applicable to a portion of the society, rarely all. Simple opinion, take Uggs : you may not have one as you don't wear any. You may be an avid advocate of theirs. You may not like their product yet remain silent, you evoke a sense of neutrality or indifference.
-
-The issue isn't our opinions, rather how we communicate them. The issue is we can't have an unbiased discussion, everything we do is related to a thought, a feeling, a want, a need we've carried our entire lives. Say you make a decision about your life based on the opinions or advice of others it invites a feeling of uneasiness if the decision was bad. Even if it was good, if you were opposed to it in the beginning it still feels foreign. The decision not being your own leaves a bad taste in your mouth. In part opinions have become part of our identity. Opinions were an ease by which society created and maintained standards. Opinions are now armor and weapons used during an argument.
-
-Next time you argue with someone, note how you feel after. You will see the range from winning or losing the argument will fluctuate with external factors ( did anyone raise their voice, did anyone cry, was anyone offended or offensive). The best way to win an argument is not to have the right opinion. It is to speak clearly about things you understand. Having the facts is well in good, but simply spewing them on the table amounts to very little. It amounts to a messy table where no one wants to eat their dinner. How do most people use their opinions thus?
-
-Their use varies deeply depending on culture or the century. Once Humans started thriving on a difference of opinions it became an unstoppable machine. They differed on everything, is the difference to say they are different or are they actually different. A fact I can neither prove nor disprove since it has been embedded into our society as an opinion. If someone had a negative opinion on Uggs, you listing facts from their website would move them very little or not at all, you might in fact reinforce that negative belief. Changing someone's opinion is as hard as getting them to chop off their arm voluntarily. The only real difference between people is what they value vs what they give value to.
-
-If you are entitled to believe what you want then so are others, do not leave your armor at home. In a society where we've been literally numbing ourselves for fear of bearing the full weight of human emotions without a chemical buffer now I must also bear your opinion of me. No thank you, literally.
-
-The spread of misinformation is rampant and serves as building blocks for argumentative opinions. The little territories our ancestors divvied up claiming independence yet unable to survive without human hyper-connectivity is amusing. The interdependence of nations is as contrary to their independent claims as opinions are from fact.</div>
-                    <span class="poem-close" onclick="togglePoem('opinion-on-opinions')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Church and Ice Cream</div>
-                    <div class="item-meta">February 2026</div>
-                    <div class="item-preview">As a child I was very gullible. My mom promised me rum raisin ice cream if I went to church with her.</div>
-                    <a class="read-more" onclick="togglePoem('opinion-church')">Read More →</a>
-                </div>
-                <div class="poem-full" id="opinion-church">
-                    <div class="poem-text">As a child I was very gullible. When I was seven my mom promised me rum raisin ice cream (our favorite) if I went to church with her. I did not like church, I thought it was weird. The idea that an all-knowing creature required me to be somewhere specific at any given time seemed strange and a lame excuse to make poor people poorer.
-
-We went to church that Sunday. I watched the pastor wipe the sweat off his brow as he yelled "God is good" and waited for the congregation to reply "All the time." The thought of ice cream kept me from squirming too much.
-
-When it was time to stand for the sermon I could no longer see the pastor clearly. My line of sight was blocked by this lady in front of me, she had a large flowing white hat. She would raise her hand and the hat would ebb every time the pastor stomped his feet. He was adamant that he was a messenger of God and the congregation needed to give back to God to thank him for his blessings. Why did God never want you to keep your money. Money is the root of all evil and God is entirely pure. Only he could sanctify your money, through us of course.
-
-Why did we need to give money to the church? Why did we need to pray together?
-
-I don't have answers to those questions—none that would satisfy anyway.
-
-Much of my time was casually interrupted to provide exaltations to a being that I never received a reply from. I was told to pray when I woke up, I was told to pray before going to bed. We prayed before class started, we prayed after class ended. We went to church on Sundays.
-
-My whole being is bothered by the church. In such an unfathomable way that I look back at that child and almost pity him. I do not pity adult Christians, they have made a choice. My heart could ache for every Christian child but then I would give value to hell. The adults are led to believe that a mystical being that is all-knowing and all-powerful placed the pastor here for his purposes. His purposes most often involving guiding the congregation both spiritually and financially. We cannot forget financially.
-
-I don't hate church as much as I hate the way it turns fair-minded people into dogmatic believers. I knew this doctor and his family when I was little. They were my neighbors and they were Adventist. The women were not allowed to wear pants. I thought as a child that doctors were educated. What do pants have to do with the will of God? The church did not invent dogma but as our records indicate it has made the best use of it.
-
-I'm still waiting for that ice cream.</div>
-                    <span class="poem-close" onclick="togglePoem('opinion-church')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">On Continuous Effort</div>
-                    <div class="item-meta">February 2026</div>
-                    <div class="item-preview">The bane of my current existence. The act of being aware that you are trying and that you will fail.</div>
-                    <a class="read-more" onclick="togglePoem('opinion-effort')">Read More →</a>
-                </div>
-                <div class="poem-full" id="opinion-effort">
-                    <div class="poem-text">I did not invent effort. Until recently that concept was not at all familiar to me. Effort here we will take to mean a determined and vigorous attempt. I think effort should not be classified under what people do but what people are. For there to be effort the attempt must be vigorous and determined. Yes, but an attempt can be made to look as such, therefore no effort was made but appropriately simulated.
-
-Conscious effort seems to be the default since we are conscious we can drop that word. I think we should add another.
-
-Continuous Conscious effort. The bane of my current existence. The act of being not only aware that you are trying therefore exerting effort but also that you will fail.
-
-Failure is the greatest teacher no one seems to care about. I was deeply afraid of it. Now I bask in it against my will. I did not choose to fail, I know I must. I know I will, I know it is part of the process. My earlier attachments to the definition of failing have kept me tied up. They have kept me at war with myself over little failures and big ones alike.
-
-I am not an expert in failure, I have failed many times however and each time I was harder on myself than I needed to be. This is a classic mind pitfall where what you know and how you know it does not merge. I know I must fail so why be my own enemy when I fail. Systems do not dissolve overnight. My view of failure was systemic.
-
-I now make an effort to be less hard on myself. If it was easy and I had it figured out, this would be called I figured it out. Alas. I am better at noticing when the failure was within my control (requires more effort), and when it was not within my control (nothing I could have done to change the outcome). One lets me know where to improve, the other lets me know that I have improved.</div>
-                    <span class="poem-close" onclick="togglePoem('opinion-effort')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">The Mountain Doesn't Care</div>
-                    <div class="item-meta">February 25, 2026</div>
-                    <div class="item-preview">I often wonder how much I can take of this panopticon. The mountain must be climbed however long it must take.</div>
-                    <a class="read-more" onclick="togglePoem('opinion-mountain')">Read More →</a>
-                </div>
-                <div class="poem-full" id="opinion-mountain">
-                    <div class="poem-text">I often wonder how much I can take of this panopticon. I wonder too much, even in my mind I slide into cascades of thoughts until they become an avalanche while I am still at the base of the mountain. It is an inexperienced climber that lets the distance between him and the top get to him. The mountain must be climbed however long it must take. Thinking about climbing the mountain does not move our feet, it does not move our heart. It breeds paralysis.
-
-Paralysis of thought. When you undertake the future, overlooking the present and succumb to the past. Now, this moment here is the only true moment. It is the only one that exists and all others are imaginary versions of this moment. Some you lament. Some you hope come to pass. Neither does because you are not looking at what is in front of you. You look at what is ahead with complete disregard for what lies beneath you. You look at the past with utter disgust without recognizing that you are no longer there. The present is much harder to see.
-
-The present is a present most have said. But what is a present one does not know how to make use of? I'm sure there must be a term for it, I do not know it.
-
-Trash?
-
-Perhaps, not quite though. A present one does not know the full utility of can become a burden. You may try to figure out all its uses rather than mastering one at a time. We know this. Knowing and avoiding the pitfalls of our mind is a game of battleships. One where we both know where the ships of the opposition rest. The winner then is decidedly who attacks first and the most. Your past self knows you very well, he knows when you are about to fall but rarely saves you. Why?
-
-The most common line of reasoning seems to be that it must be protecting you from something. Someone? Yourself? All possibilities yet none come forth at this moment. If it is indeed protecting me from myself what do I seek protection from. A heavy heart is all that weighs on me these days. One where it would eclipse me to not speak of the love it holds. To let it bubble and fester within me as if it was shameful. It has been shameful to love at times. I have been shameful about my love of the self at times.
-
-Shame and embarrassment are not unexplored emotions we carry from day to day. They are a living breathing part of our organism. Parts that I should treat with more care. Though they are temporary in reality the mind bends time and space to distort when they become too heavy. Yet it is only with familiarity that we must enable ourselves to recognize that these feelings are not negative they are instructive.
-
-The lesson learned from them will last a lifetime. I have attended the classes but I seem to retain none of the information when it truly matters. The mind would sooner drown itself than detach itself from non self-serving identity.</div>
-                    <span class="poem-close" onclick="togglePoem('opinion-mountain')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Anchor</div>
-                    <div class="item-meta">February 25, 2026</div>
-                    <div class="item-preview">We have looked into the depths of our soul. We have waged war against the void, the darkness, the never ending ocean.</div>
-                    <a class="read-more" onclick="togglePoem('opinion-anchor')">Read More →</a>
-                </div>
-                <div class="poem-full" id="opinion-anchor">
-                    <div class="poem-text">We have looked into the depths of our soul. We have waged war against the void, the darkness the never ending ocean. Know your enemy, spend as much time with them as you would your friends. You learn to embody them, you learn to let them crawl on your skin and overpower you. You learn that you are only as resilient as you believe you are when you are anchor-less. In this world you need an anchor, for many of us it is other people. Child, significant other, I have neither. Sure there are other anchors, pleasure, pain, achievements, recognition. But for most of us it is other people. Those anchors are solid, alive and reciprocal. Those anchors guarantee a sense of safety and purpose. I want to find an anchor that I can rely upon, rather than seeking anchor should I build one? Should I realize that I am already building one. Realize that it is heavy and a burden, that it breaks and breaks me in the process. Realize that the void and the anchor are at war over the foundation of our being. That this process came at my request and now I need to choose not only the anchor, the foundation but the systems in which we will use to advance our goals. Our goals will shift as we align ourselves more with who we are but we must choose with what speed and intensity we will pursue them. We cannot be lackluster, or lackadaisical about this pursuit. We cannot be half in half out, we must embody the pursuit like we embrace the dark. We must let it wash over us like waves in the ocean and carry us to shores unseen. It is easy to speak in hyperbole and see that we are far from where we want to be. It is easy to see how far we must go. It is hard to admit that the only way is through and one step at a time. It is always hard and knowing this does not make it easier. Nothing really makes it easier when you wage against nothing. It all feels pointless at some point and that is the point where motivation dies. Kant is not for the faint of heart but we must continue in these muddy waters. If anything sways you or moves you in a direction in which you do not want to go, it is a sign that you are not yet anchored. Like a swell in the chest, your breath gets heavier and you start to wonder where you are going and if you must go. You go and you drown. You've drowned plenty and now you wonder if you want to drown at all. You know you must break a thousand times to solidify yourself but upon breaking at the 100th you wonder where the courage to break 900 more times will come. You have abandoned the hope that motivation alone will carry you that is good. Consistency is the only vehicle you have left and it is the most boring path ever, it does not excite, you fear, and the dopamine will not let you forget. Do not forget once we came. Do not forget once we struggled to do what feels basic now. Do not forget that getting here was not mere luck but practice and patience. I know you feel like both are at their limit but you are merely an impetuous child, one who has much to learn, in the ways of being, becoming and the world. We forget so easily. We slip into the past like old clothes and bad habits. We forget. We forget. We wonder why we forget as we forget still. It is an infernal loop human memory. So we learn, we forget, we strive, we fail, we loop. Squabbling creatures in the dark unaware of what lies in front of them because they are busy staring off in the distance at what could be or ought to be, but cannot for the life of me focus on what is. We spoke of anchors and tethers, we spoke of what keeps the boat steady and what the waves take with them. We spoke of what we embody and how we do it. It's not a fantasy that we live but a reality in which the right thing does mostly nothing. It mostly does nothing, like it doesn't move the flames of the heart in any particular direction. You could do the right thing for 50 consecutive days and feel more adrift and lost at sea than you did when you did the wrong thing. So what does doing the right thing bring, what does it accumulate to that successive days should be a goal, an achievement. I don't have an answer for you. But I know that doing the wrong thing disables me from putting a roof over the foundation. That the foundation is what is the most important thing we can have besides the anchor. That the foundation remains when everything else is gone. That within the depths I saw it, like a sinking ship in the night disappear into the waters submerged once again by that great darkness. Yet you are here at the page, not anywhere else. Present against the thoughts that would drag you to the bottom of your being. I have been there, I have seen it. I have stared it in the eyes and I have been honest with it. Left me emptier than the water aisle at grocery stores during a hurricane. Yet we muster. We put on our boots, we wipe our tears and we muster. Ahead. Lonely. Alone. We muster the courage to put one foot in front of the other and scream into the void you may break me a 1000 times but you will not own me. I am my own, and no I may not believe it entirely now, someday I must. Someday is not today but today is the reflection that someday might bring. Anchored you are not, anchored you haven't been. Anchor that anchor you seek, you found and rejected because you knew not what it meant to be anchored. Now you beseech it to come back and it won't. You must build your anchor, you must build your foundation, You must build anything you want to rely on otherwise you must watch it crumble again and again. So what keeps me going, what anchors me now. All my goals are not the goals of a dreamer, are they? What goal keeps you going now. None, to be fair, I stopped looking at goals to get me going, I don't know what keeps me going, maybe it is a giant ball of shame. Maybe it is the dreams of a younger me in which I found something I can accomplish. Maybe it is that I have become accustomed to fighting the void, the nothing, the wasteland that no other adversary would suffice. Maybe I have fooled myself into thinking that I need something to go on when going on in itself is enough. I do want to go somewhere though. I don't want to be confined to the likes of the now. My destination is far from where I am I can feel it in my bones. I belong somewhere. Something out there even by accident created me and imbued me with a sense of something. Something I can't quite explain but it hungers. Call it intuition. Call it space, void or purpose. Call it what you want but it keeps me going. When my knees bleed and my voice breaks, when my chest tightens and it hurts more to keep going than to give up something picks me up and says I must go on. If not for myself, for who, for what? Simply to go on. Because the earth will shake and the foundation will be rocked, will it stand tall? Will it crumble? I look at my hands for nothing else could build it.</div>
-                    <span class="poem-close" onclick="togglePoem('opinion-anchor')">← Close</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Thoughts On Progress</div>
-                    <div class="item-meta">January 2026</div>
-                    <div class="item-preview">Progress is not linear. It circles. It breaks. And we keep going anyway.</div>
-                    <a class="read-more">Coming Soon →</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ REVIEWS PAGE ═══ -->
-        <div class="page-content" id="reviews-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Reviews</h2>
-                    <span class="count">1 review</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Wuthering Heights — Emily Brontë</div>
-                    <div class="item-meta">Book Review · January 2026</div>
-                    <div class="item-preview">On difficult prose, dialect, and what it means to be loved badly.</div>
-                    <a class="read-more">Read Review →</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ RECIPES PAGE ═══ -->
-        <div class="page-content" id="recipes-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Recipes</h2>
-                    <span class="count">coming soon</span>
-                </div>
-                <div class="item">
-                    <div class="item-title">Coming Soon</div>
-                    <div class="item-meta">2026</div>
-                    <div class="item-preview">Recipes will be added here.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ LOVE LETTERS PAGE ═══ -->
-        <div class="page-content" id="letters-love-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Love Letters</h2>
-                    <span class="count">protected</span>
-                </div>
-                <div class="item">
-                    <div class="item-title">Coming Soon</div>
-                    <div class="item-meta">Protected</div>
-                    <div class="item-preview">Love letters will appear here once you add them.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ ANGRY LETTERS PAGE ═══ -->
-        <div class="page-content" id="letters-angry-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Angry Letters</h2>
-                    <span class="count">protected</span>
-                </div>
-                <div class="item">
-                    <div class="item-title">Coming Soon</div>
-                    <div class="item-meta">Protected</div>
-                    <div class="item-preview">Angry letters will appear here once you add them.</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ UNSENT LETTERS PAGE ═══ -->
-        <div class="page-content" id="letters-unsent-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>Unsent Letters</h2>
-                    <span class="count">1 letter</span>
-                </div>
-
-                <div class="item">
-                    <div class="item-title">Another Unsent Letter II</div>
-                    <div class="item-meta">February 25, 2026</div>
-                    <div class="item-preview">This might be liquor in me but I'm feeling a tingling sensation that I will be able to write something beautiful...</div>
-                    <a class="read-more" onclick="togglePoem('unsent-letter-2')">Read Letter →</a>
-                </div>
-                <div class="poem-full" id="unsent-letter-2">
-                    <div class="poem-text">This might be liquor in me but I'm feeling a tingling sensation that I will be able to write something beautiful over the next couple of days. The feeling not only stems from the multitude of sips I took from this mimosa but also from a deep, deep place in my heart. My days are still overshadowed by thoughts of her, but lately realized that I had an issue finishing anything I liked too much, because I never wanted it to end but I actively sought the end. I pushed everything to the edge and hoped that whatever stared back was something beautiful. Negotiated with death on trivial matters. I walked the path alone yet we were an ensemble. I have many regrets.
-
-The title of this reads I love this woman. But one question remains unanswered amidst all of this turmoil. Why did you think it was okay to hurt her as such. I did not think it was okay. I knew it was wrong but that did not stop me. Why you ask? Because then I did not know what I had. I am not saying that was the reason.
-
-I did not know what I had, I did not feel worthy of it, I was terrified. Those are all excuses that do not engage the behavior or the underlying cause of the problem. Because two things can be true at once even when they seem opposite. I love this person and I hurt this person. This seems like an easy thought to follow because those two feelings are not ever adjacent when one talks about love.
-
-Lest we forget that part of love is our ability to endure. Not only at the cost of our own comfort but for those who cheer for us when no one else is. Part of me will always try to explain what happened as best I can. Not because I need an answer. The answer to me is simple I was selfish, afraid and arrogant.
-
-Those are the things that lead me there, but what lead me to those things. Invariably a multitude of things. For one my inability to communicate any discomfort. This is two fold, whenever I needed space I was afraid to ask, because I had already been categorized as distant and it had been a topic of contention I did not need to prolong any further. This is not to shift blame, it was my responsibility to communicate you do not reside inside my mind. All too often we hope that someone will realize something we have not told them. All too often they do, but it is rarely the thing we wished they had noticed.
-
-Arrogance, I thought I could get away with it. Not in the long run but I thought in this moment I could. Because then I was at my lowest. I needed to feel in control of something (this statement bothers me mostly because it is true in a way I cannot explain yet). I was also jealous of your progress. I did not know how to articulate that. Not jealous in the sense that I did not wish for you to succeed. If anyone deserves to succeed it is you. Jealous because I became afraid that I would no longer be enough for you. Enough to provide the life that you want. Which made me resent myself and in turn you for making me resent myself. A simple conversation could have solved both issues. At the time I did not know how to articulate those issues. It may seem simple now but it was anything but.
-
-Fear is a component of my life that I engage with everyday. It is not one that I discuss with many people however (until recently I discussed it with no one). I have many fears. That I will never be enough. That I will never find love. That I will never get out of poverty to name a few. Yet I was enough for someone, I was loved by someone. I was too busy looking at the fear to realize what was in front of me. I seek neither absolution nor forgiveness. I don't think I deserve them.
-
-I now realize that thought was absolutely stupid, why did I care what those people thought. They weren't real, the only person whose thoughts I should have been concerned with were yours. I am so sorry for that.
-
-It may seem like I have an inability to move on. I may as well state here that I do. Moving on to me seems contrarian. If it keeps you tied to me in a way you do not wish to be that is worse. I do not want worse for you. I may have to accept that I am not the best for you.
-
-If I should move on, and I have thought plenty about this. I have no wish or desire for another person. Not because I shall love you for the rest of my days (I will, I have no choice in the matter, it is futile to fight it, admit it and move on.) but rather my love for you seems to endure time not as a dimension but as a condition.</div>
-                    <span class="poem-close" onclick="togglePoem('unsent-letter-2')">← Close</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- ═══ ABOUT PAGE ═══ -->
-        <div class="page-content" id="about-page">
-            <div class="content">
-                <div class="content-header">
-                    <h2>About</h2>
-                </div>
-                <p style="margin-bottom: 22px; font-size: 15px; color: var(--text); opacity: 0.85; line-height: 1.9;">I am trying. Most days I fail. Some days I get close. But I keep going.</p>
-                <p style="margin-bottom: 22px; font-size: 15px; color: var(--muted); line-height: 1.9;">This space exists for those who are also trying. For scouts and thinkers. For anyone brave enough to keep an open mind in a world that resists it.</p>
-                <p style="font-size: 15px; color: var(--muted); line-height: 1.9;">I don't have all the answers. In fact, I have very few. But I'm willing to sit in the uncertainty with you and figure it out together.</p>
-            </div>
-        </div>
+        <!-- CONTENT WILL BE LOADED FROM content.json -->
+        <div id="contentContainer"></div>
 
         <!-- Footer -->
         <div class="footer">
@@ -1420,6 +747,223 @@ If I should move on, and I have thought plenty about this. I have no wish or des
 </div><!-- /.container -->
 
 <script>
+    let contentData = {};
+
+    // Load content from JSON
+    async function loadContent() {
+        try {
+            const response = await fetch('content.json');
+            contentData = await response.json();
+            renderAllPages();
+        } catch (error) {
+            console.error('Error loading content:', error);
+            // Fallback: show error message
+            document.getElementById('contentContainer').innerHTML = '<div class="content"><p>Error loading content. Please refresh the page.</p></div>';
+        }
+    }
+
+    // Render all pages
+    function renderAllPages() {
+        const container = document.getElementById('contentContainer');
+        container.innerHTML = `
+            ${renderPoetryPage()}
+            ${renderOpinionsPage()}
+            ${renderReviewsPage()}
+            ${renderRecipesPage()}
+            ${renderLettersPages()}
+            ${renderAboutPage()}
+        `;
+    }
+
+    // Render Poetry Page
+    function renderPoetryPage() {
+        const poems = contentData.poetry || [];
+        const poemsHTML = poems.map(poem => `
+            <div class="item">
+                <div class="item-title">${poem.title}</div>
+                <div class="item-meta">${poem.date}</div>
+                <div class="item-preview">${poem.preview}</div>
+                <a class="read-more" onclick="togglePoem('poem-${poem.id}')">Read Full Poem →</a>
+            </div>
+            <div class="poem-full" id="poem-${poem.id}">
+                <div class="poem-text">${poem.text}</div>
+                <span class="poem-close" onclick="togglePoem('poem-${poem.id}')">← Close</span>
+            </div>
+        `).join('');
+
+        return `
+            <div class="page-content" id="poetry-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Poetry</h2>
+                        <span class="count">${poems.length} poems</span>
+                    </div>
+                    ${poemsHTML}
+                </div>
+            </div>
+        `;
+    }
+
+    // Render Opinions Page
+    function renderOpinionsPage() {
+        const opinions = contentData.opinions || [];
+        const opinionsHTML = opinions.map(op => `
+            <div class="item">
+                <div class="item-title">${op.title}</div>
+                <div class="item-meta">${op.date}</div>
+                <div class="item-preview">${op.preview}</div>
+                ${op.text ? `<a class="read-more" onclick="togglePoem('opinion-${op.id}')">Read More →</a>` : '<a class="read-more">Coming Soon →</a>'}
+            </div>
+            ${op.text ? `
+            <div class="poem-full" id="opinion-${op.id}">
+                <div class="poem-text">${op.text}</div>
+                <span class="poem-close" onclick="togglePoem('opinion-${op.id}')">← Close</span>
+            </div>
+            ` : ''}
+        `).join('');
+
+        return `
+            <div class="page-content" id="opinions-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Opinions</h2>
+                        <span class="count">${opinions.length} essays</span>
+                    </div>
+                    ${opinionsHTML}
+                </div>
+            </div>
+        `;
+    }
+
+    // Render Reviews Page
+    function renderReviewsPage() {
+        return `
+            <div class="page-content" id="reviews-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Reviews</h2>
+                        <span class="count">coming soon</span>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">2026</div>
+                        <div class="item-preview">Reviews will be added here.</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Render Recipes Page
+    function renderRecipesPage() {
+        return `
+            <div class="page-content" id="recipes-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Recipes</h2>
+                        <span class="count">coming soon</span>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">2026</div>
+                        <div class="item-preview">Recipes will be added here.</div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Render Letters Pages
+    function renderLettersPages() {
+        const unsentLetters = contentData.unsent_letters || [];
+        const unsentHTML = unsentLetters.map(letter => `
+            <div class="item">
+                <div class="item-title">${letter.title}</div>
+                <div class="item-meta">${letter.date}</div>
+                <div class="item-preview">${letter.preview}</div>
+                <a class="read-more" onclick="togglePoem('unsent-${letter.id}')">Read Letter →</a>
+            </div>
+            <div class="poem-full" id="unsent-${letter.id}">
+                <div class="poem-text">${letter.text}</div>
+                <span class="poem-close" onclick="togglePoem('unsent-${letter.id}')">← Close</span>
+            </div>
+        `).join('');
+
+        return `
+            <div class="page-content" id="letters-love-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Love Letters</h2>
+                        <span class="count">protected</span>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">Protected</div>
+                        <div class="item-preview">Love letters will appear here.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content" id="letters-angry-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Angry Letters</h2>
+                        <span class="count">protected</span>
+                    </div>
+                    <div class="item">
+                        <div class="item-title">Coming Soon</div>
+                        <div class="item-meta">Protected</div>
+                        <div class="item-preview">Angry letters will appear here.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-content" id="letters-unsent-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>Unsent Letters</h2>
+                        <span class="count">${unsentLetters.length} letter${unsentLetters.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    ${unsentHTML}
+                </div>
+            </div>
+        `;
+    }
+
+    // Render About Page
+    function renderAboutPage() {
+        return `
+            <div class="page-content" id="about-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>About</h2>
+                    </div>
+                    <p style="margin-bottom: 22px; font-size: 15px; color: var(--text); opacity: 0.85; line-height: 1.9;">I am trying. Most days I fail. Some days I get close. But I keep going.</p>
+                    <p style="margin-bottom: 22px; font-size: 15px; color: var(--muted); line-height: 1.9;">This space exists for those who are also trying. For scouts and thinkers. For anyone brave enough to keep an open mind in a world that resists it.</p>
+                    <p style="font-size: 15px; color: var(--muted); line-height: 1.9;">I don't have all the answers. In fact, I have very few. But I'm willing to sit in the uncertainty with you and figure it out together.</p>
+                </div>
+            </div>
+        `;
+    }
+
+    // ── SIDEBAR TOGGLE ──
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.getElementById('menuToggle');
+        sidebar.classList.toggle('open');
+        toggle.classList.toggle('active');
+    }
+
+    // Close sidebar when clicking a nav link on mobile
+    function closeSidebarOnMobile() {
+        if (window.innerWidth <= 968) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.getElementById('menuToggle');
+            sidebar.classList.remove('open');
+            toggle.classList.remove('active');
+        }
+    }
+
     // ── NAV TOGGLE ──
     function toggleNav(element) {
         const arrow = element.querySelector('.dropdown-arrow');
@@ -1436,13 +980,14 @@ If I should move on, and I have thought plenty about this. I have no wish or des
         const el = document.getElementById(page + '-page');
         if (el) el.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        closeSidebarOnMobile();
     }
 
     // ── PASSWORD MODAL ──
     const passwords = {
         'letters-love':   'tenderness',
         'letters-angry':  'fury',
-        'letters-unsent': 'aicsam'
+        'letters-unsent': 'aiscam'
     };
     let pendingPage = null;
 
@@ -1486,16 +1031,21 @@ If I should move on, and I have thought plenty about this. I have no wish or des
     // ── POEM TOGGLE ──
     function togglePoem(poemId) {
         const poem = document.getElementById(poemId);
+        if (!poem) return;
         poem.classList.toggle('active');
         if (poem.classList.contains('active')) {
             setTimeout(() => poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
         }
     }
 
-    // ── OPEN FIRST DROPDOWN ON LOAD ──
+    // ── INITIALIZE ──
     document.addEventListener('DOMContentLoaded', function() {
-        const firstNav = document.querySelector('.nav-title');
-        if (firstNav) firstNav.click();
+        loadContent();
+        // Open first dropdown by default
+        setTimeout(() => {
+            const firstNav = document.querySelector('.nav-title');
+            if (firstNav) firstNav.click();
+        }, 100);
     });
 </script>
 </body>
