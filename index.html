@@ -342,11 +342,16 @@
 
         .item:hover {
             transform: translateX(5px);
-            background: var(--hover-bg);
+            background: rgba(122, 157, 111, 0.08);
             border-left-color: var(--accent);
-            box-shadow: inset 0 0 0 1px rgba(122, 157, 111, 0.15),
-                        0 0 12px rgba(122, 157, 111, 0.08);
+            box-shadow: inset 0 0 0 1px rgba(122, 157, 111, 0.2),
+                        0 0 16px rgba(122, 157, 111, 0.1);
         }
+
+        .item:hover .item-title   { color: var(--accent); }
+        .item:hover .item-meta    { color: var(--accent); opacity: 1; }
+        .item:hover .item-preview { color: rgba(122, 157, 111, 0.8); }
+        .item:hover .read-more    { color: var(--accent); opacity: 1; letter-spacing: 2px; }
 
         .item-title {
             font-family: var(--font-mono);
@@ -369,6 +374,7 @@
 
         .item-preview {
             font-size: 16px;
+            font-weight: 300;
             font-style: italic;
             color: var(--muted);
             line-height: 1.7;
@@ -810,6 +816,7 @@
             renderOpinions(),
             renderPlaceholder('reviews',  'Reviews',  'Books &amp; Films'),
             renderPlaceholder('recipes',  'Recipes',  'All Recipes'),
+            renderLettersHub(),
             ...renderLetters(),
             renderAbout(),
         ].join('');
@@ -849,6 +856,21 @@
                 ${op.text ? drawer(`opinion-${op.id}`, op.text) : ''}
             `).join('')
         );
+    }
+
+    /* Letters hub ---------------------------------------------- */
+
+    function renderLettersHub() {
+        const categories = data.letter_categories || [];
+        const cards = categories.map(cat => `
+            <div class="item letter-hub-item" onclick="promptCategoryPassword('${cat.id}')">
+                <div class="item-title">${cat.name}</div>
+                <div class="item-meta">Protected · ${cat.letters ? cat.letters.length : 0} letter${cat.letters && cat.letters.length !== 1 ? 's' : ''}</div>
+                <div class="item-preview">${cat.description || 'Enter password to read.'}</div>
+                <a class="read-more">Open →</a>
+            </div>
+        `).join('');
+        return page('letters', 'Letters', `${categories.length} collections`, cards);
     }
 
     /* Letters --------------------------------------------------- */
@@ -983,11 +1005,14 @@
     }
 
     function closeSidebarOnMobile() {
-        if (window.innerWidth <= 968) {
-            document.getElementById('sidebar').classList.remove('open');
-            document.getElementById('menuToggle').classList.remove('active');
-        }
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('menuToggle').classList.remove('active');
     }
+
+    // close sidebar whenever any nav link is clicked
+    document.addEventListener('click', function (e) {
+        if (e.target.closest('.nav-items')) closeSidebarOnMobile();
+    });
 
     function openFirstNav() {
         const first = document.querySelector('.nav-title');
@@ -996,10 +1021,8 @@
 
     function populateLettersNav() {
         const nav = document.getElementById('letters-nav');
-        if (!nav || !data.letter_categories) return;
-        nav.innerHTML = data.letter_categories
-            .map(cat => `<a onclick="promptCategoryPassword('${cat.id}')">${cat.name}</a>`)
-            .join('');
+        if (!nav) return;
+        nav.innerHTML = `<a onclick="showPage('letters')">All Letters</a>`;
     }
 
 
