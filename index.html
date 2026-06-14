@@ -7,34 +7,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* RESET */
+
+        /* ─── RESET ─────────────────────────────────────────────── */
+
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ROOT VARIABLES */
+
+        /* ─── TOKENS ─────────────────────────────────────────────── */
+
         :root {
-            --bg: #4a4035;              /* Lighter warm brown - peaceful base */
-            --panel: #5a5047;           /* Slightly lighter brown panel */
-            --text: #e8dfd2;            /* Warm off-white text */
-            --muted: #a89984;           /* Muted tan/brown */
-            --accent: #7a9d6f;          /* Sage green - growth, highlights */
-            --attention: #c45d4a;       /* Muted terracotta red - watched, attention */
-            --border: rgba(200,93,74,0.15);  /* Subtle red-tinted borders - being watched */
-            --sidebar-w: 260px;
-            --sidebar-bg: #3d3529;      /* Lighter darkest brown - grounding */
-            --hover-glow: rgba(122,157,111,0.12);  /* Green glow on hover */
+            --bg:           #4a4035;
+            --panel:        #5a5047;
+            --sidebar-bg:   #3d3529;
+
+            --text:         #e8dfd2;
+            --muted:        #a89984;
+
+            --accent:       #7a9d6f;
+            --attention:    #c45d4a;
+
+            --border:       rgba(200, 93, 74, 0.15);
+            --hover-bg:     rgba(58, 49, 40, 0.5);
+
+            --sidebar-w:    260px;
+
+            --font-serif:   'EB Garamond', Georgia, serif;
+            --font-mono:    'Courier Prime', monospace;
         }
 
-        /* BODY */
-        html, body {
-            height: 100%;
-        }
+
+        /* ─── BASE ───────────────────────────────────────────────── */
+
+        html, body { height: 100%; }
 
         body {
-            font-family: 'EB Garamond', Georgia, serif;
+            font-family: var(--font-serif);
             background: radial-gradient(circle at 20% 20%, #5a5047 0%, #4a4035 60%);
             color: var(--text);
             line-height: 1.85;
@@ -42,7 +53,7 @@
             font-size: 18px;
         }
 
-        /* GRAIN OVERLAY */
+        /* film grain */
         body::after {
             content: "";
             position: fixed;
@@ -53,54 +64,33 @@
             z-index: 9999;
         }
 
-        /* SCROLLBAR */
-        ::-webkit-scrollbar { width: 4px; }
+
+        /* ─── SCROLLBAR ──────────────────────────────────────────── */
+
+        ::-webkit-scrollbar       { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--attention); border-radius: 2px; opacity: 0.6; }
 
-        /* ─── LAYOUT ─── */
+
+        /* ─── LAYOUT ─────────────────────────────────────────────── */
+
         .container {
             display: flex;
             min-height: 100vh;
         }
 
-        /* HAMBURGER MENU */
-        .menu-toggle {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            z-index: 10000;
-            background: var(--sidebar-bg);
-            border: 1px solid var(--attention);
-            padding: 10px 12px;
-            cursor: pointer;
-            font-family: 'Courier Prime', monospace;
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text);
-            transition: background 0.2s, box-shadow 0.2s;
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: margin-left 0.3s ease;
         }
 
-        .menu-toggle:hover {
-            background: var(--attention);
-            color: var(--bg);
-            box-shadow: 0 0 12px rgba(196,93,74,0.3);
-        }
 
-        .menu-toggle.active {
-            background: var(--attention);
-            color: var(--bg);
-        }
+        /* ─── SIDEBAR ────────────────────────────────────────────── */
 
-        @media (max-width: 968px) {
-            .menu-toggle {
-                display: block;
-            }
-        }
-
-        /* ─── SIDEBAR ─── */
         .sidebar {
             width: var(--sidebar-w);
             background: linear-gradient(180deg, var(--sidebar-bg) 0%, #251f1a 100%);
@@ -111,51 +101,48 @@
             height: 100vh;
             overflow-y: auto;
             border-right: 1px solid var(--border);
-            box-shadow: inset -1px 0 0 rgba(122,157,111,0.05);
+            box-shadow: inset -1px 0 0 rgba(122, 157, 111, 0.05);
             display: flex;
             flex-direction: column;
             transition: transform 0.3s ease;
             z-index: 9998;
         }
 
-        @media (max-width: 968px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-        }
-
         .sidebar-brand {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 13px;
             letter-spacing: 3px;
             text-transform: uppercase;
             color: var(--attention);
             margin-bottom: 48px;
             opacity: 0.9;
-            text-shadow: 0 0 8px rgba(196,93,74,0.3);
+            text-shadow: 0 0 8px rgba(196, 93, 74, 0.3);
             cursor: pointer;
             transition: opacity 0.2s;
         }
 
-        .sidebar-brand:hover {
-            opacity: 1;
+        .sidebar-brand:hover { opacity: 1; }
+
+        .sidebar-nav  { flex: 1; }
+
+        .sidebar-footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            opacity: 0.5;
         }
 
-        .sidebar-nav {
-            flex: 1;
-        }
 
-        /* NAV SECTION */
-        .nav-section {
-            margin-bottom: 6px;
-        }
+        /* ─── NAV SECTIONS ───────────────────────────────────────── */
+
+        .nav-section { margin-bottom: 6px; }
 
         .nav-title {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2.5px;
@@ -169,17 +156,15 @@
             user-select: none;
         }
 
-        .nav-title:hover {
-            color: var(--accent);
-        }
+        .nav-title:hover { color: var(--accent); }
 
-        .dropdown-arrow {
+        .nav-arrow {
             font-size: 8px;
-            transition: transform 0.35s ease;
             opacity: 0.5;
+            transition: transform 0.35s ease;
         }
 
-        .dropdown-arrow.open {
+        .nav-arrow.open {
             transform: rotate(180deg);
             opacity: 1;
         }
@@ -191,58 +176,59 @@
             margin-left: 1px;
         }
 
-        .nav-items.show {
-            display: block;
-        }
+        .nav-items.show { display: block; }
 
         .nav-items a {
             display: block;
             text-decoration: none;
             color: var(--text);
             font-size: 13.5px;
-            font-family: 'EB Garamond', serif;
+            font-family: var(--font-serif);
             font-style: italic;
             padding: 5px 0;
             opacity: 0.65;
-            transition: opacity 0.2s, transform 0.2s, color 0.2s;
             cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s, color 0.2s;
         }
 
         .nav-items a:hover {
             opacity: 1;
             transform: translateX(4px);
             color: var(--accent);
-            text-shadow: 0 0 6px rgba(122,157,111,0.4);
+            text-shadow: 0 0 6px rgba(122, 157, 111, 0.4);
         }
 
-        .sidebar-footer {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            font-family: 'Courier Prime', monospace;
+
+        /* ─── HAMBURGER ──────────────────────────────────────────── */
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 20px;
+            z-index: 10000;
+            background: var(--sidebar-bg);
+            border: 1px solid var(--attention);
+            padding: 10px 12px;
+            cursor: pointer;
+            font-family: var(--font-mono);
             font-size: 10px;
-            letter-spacing: 1.5px;
-            color: var(--muted);
-            opacity: 0.5;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text);
+            transition: background 0.2s, box-shadow 0.2s;
         }
 
-        /* ─── MAIN ─── */
-        .main {
-            margin-left: var(--sidebar-w);
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            transition: margin-left 0.3s ease;
+        .menu-toggle:hover,
+        .menu-toggle.active {
+            background: var(--attention);
+            color: var(--bg);
+            box-shadow: 0 0 12px rgba(196, 93, 74, 0.3);
         }
 
-        @media (max-width: 968px) {
-            .main {
-                margin-left: 0;
-            }
-        }
 
-        /* ─── HERO ─── */
+        /* ─── HERO ───────────────────────────────────────────────── */
+
         .hero {
             background: radial-gradient(circle at center, #5a5047 0%, #4a4035 100%);
             padding: 110px 64px 90px;
@@ -255,12 +241,12 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at 50% 100%, rgba(196,93,74,0.04) 0%, transparent 70%);
+            background: radial-gradient(circle at 50% 100%, rgba(196, 93, 74, 0.04) 0%, transparent 70%);
             pointer-events: none;
         }
 
         .hero-eyebrow {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 4px;
             text-transform: uppercase;
@@ -269,7 +255,7 @@
             margin-bottom: 20px;
         }
 
-        .hero h1 {
+        .hero-title {
             font-size: 52px;
             font-weight: 400;
             letter-spacing: 4px;
@@ -278,14 +264,39 @@
             line-height: 1.1;
         }
 
-        .hero p {
+        .hero-tagline {
             font-size: 17px;
             color: var(--muted);
             font-style: italic;
             letter-spacing: 0.5px;
         }
 
-        /* ─── CONTENT ─── */
+        /* featured poem variant on hero */
+        .hero-poem-body {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-size: 16px;
+            line-height: 2;
+            white-space: pre-line;
+            color: var(--muted);
+        }
+
+        .hero-poem-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .hero-poem-link:hover { opacity: 1; }
+
+
+        /* ─── CONTENT AREA ───────────────────────────────────────── */
+
         .content {
             padding: 60px 64px;
             max-width: 820px;
@@ -308,70 +319,72 @@
             color: var(--text);
         }
 
-        .content-header .count {
-            font-family: 'Courier Prime', monospace;
+        .content-count {
+            font-family: var(--font-mono);
             font-size: 11px;
             color: var(--muted);
             letter-spacing: 1px;
         }
 
-        /* ─── ITEM CARDS ─── */
+
+        /* ─── ITEM CARDS ─────────────────────────────────────────── */
+
         .item {
             margin-bottom: 20px;
             padding: 14px 16px 12px;
-            background: rgba(58,49,40,0.3);
+            background: rgba(58, 49, 40, 0.3);
             border-left: 2px solid var(--attention);
-            box-shadow: inset 0 0 0 1px rgba(196,93,74,0.1);
-            transition: transform 0.22s ease, background 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+            box-shadow: inset 0 0 0 1px rgba(196, 93, 74, 0.1);
             position: relative;
+            transition: transform 0.22s ease, background 0.22s ease,
+                        border-color 0.22s ease, box-shadow 0.22s ease;
         }
 
         .item:hover {
             transform: translateX(5px);
-            background: rgba(58,49,40,0.5);
+            background: var(--hover-bg);
             border-left-color: var(--accent);
-            box-shadow: inset 0 0 0 1px rgba(122,157,111,0.15), 0 0 12px rgba(122,157,111,0.08);
+            box-shadow: inset 0 0 0 1px rgba(122, 157, 111, 0.15),
+                        0 0 12px rgba(122, 157, 111, 0.08);
         }
 
         .item-title {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 14px;
+            font-weight: 500;
             letter-spacing: 1.2px;
             color: var(--text);
             margin-bottom: 7px;
-            position: relative;
-            font-weight: 500;
         }
 
         .item-meta {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
-            color: var(--attention);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 12px;
+            color: var(--attention);
             opacity: 0.7;
+            margin-bottom: 12px;
         }
 
         .item-preview {
             font-size: 16px;
+            font-style: italic;
             color: var(--muted);
             line-height: 1.7;
             margin-bottom: 14px;
-            font-style: italic;
         }
 
         .read-more {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
-            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            color: var(--accent);
             text-decoration: none;
             opacity: 0.75;
-            transition: opacity 0.2s, letter-spacing 0.2s;
             cursor: pointer;
-            position: relative;
+            transition: opacity 0.2s, letter-spacing 0.2s;
         }
 
         .read-more:hover {
@@ -379,19 +392,22 @@
             letter-spacing: 2px;
         }
 
-        /* ─── EXPANDED CONTENT ─── */
-        .poem-full {
+
+        /* ─── EXPANDED DRAWER ────────────────────────────────────── */
+
+        .drawer {
             display: none;
-            background: rgba(31,26,21,0.6);
+            background: rgba(31, 26, 21, 0.6);
             padding: 28px 32px;
             margin-top: 16px;
             border: 1px solid var(--border);
             border-left: 2px solid var(--accent);
-            box-shadow: 0 0 20px rgba(122,157,111,0.06);
+            box-shadow: 0 0 20px rgba(122, 157, 111, 0.06);
             position: relative;
         }
 
-        .poem-full::before {
+        /* decorative opening quote */
+        .drawer::before {
             content: '"';
             position: absolute;
             top: 16px;
@@ -403,17 +419,12 @@
             line-height: 1;
         }
 
-        .poem-full.active {
+        .drawer.active {
             display: block;
-            animation: fadeIn 0.3s ease;
+            animation: fadeUp 0.3s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .poem-text {
+        .drawer-body {
             font-size: 17px;
             line-height: 2.1;
             white-space: pre-line;
@@ -421,46 +432,35 @@
             opacity: 0.9;
         }
 
-        .poem-close {
-            font-family: 'Courier Prime', monospace;
+        .drawer-close {
+            display: inline-block;
+            margin-top: 28px;
+            font-family: var(--font-mono);
             font-size: 10px;
-            color: var(--muted);
             text-transform: uppercase;
             letter-spacing: 1.5px;
+            color: var(--muted);
             cursor: pointer;
-            margin-top: 28px;
-            display: inline-block;
             transition: color 0.2s;
         }
 
-        .poem-close:hover {
-            color: var(--accent);
-        }
+        .drawer-close:hover { color: var(--accent); }
 
-        /* ─── PAGE VISIBILITY ─── */
-        .page-content {
-            display: none;
-        }
 
-        .page-content.active {
-            display: block;
-        }
+        /* ─── PASSWORD MODAL ─────────────────────────────────────── */
 
-        /* ─── PASSWORD MODAL ─── */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 10001;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(4px);
         }
 
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
 
         .modal {
             background: var(--panel);
@@ -469,12 +469,12 @@
             padding: 44px 48px;
             width: 360px;
             max-width: 90vw;
-            animation: fadeIn 0.25s ease;
-            box-shadow: 0 0 40px rgba(196,93,74,0.2);
+            box-shadow: 0 0 40px rgba(196, 93, 74, 0.2);
+            animation: fadeUp 0.25s ease;
         }
 
-        .modal-label {
-            font-family: 'Courier Prime', monospace;
+        .modal-eyebrow {
+            font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -486,55 +486,46 @@
         .modal h3 {
             font-size: 22px;
             font-weight: 400;
+            font-style: italic;
             color: var(--text);
             margin-bottom: 8px;
-            font-style: italic;
         }
 
         .modal p {
             font-size: 13px;
             color: var(--muted);
-            margin-bottom: 28px;
             line-height: 1.6;
+            margin-bottom: 28px;
         }
 
         .modal input {
             width: 100%;
-            background: rgba(31,26,21,0.6);
+            background: rgba(31, 26, 21, 0.6);
             border: 1px solid var(--border);
             border-bottom: 2px solid var(--attention);
             color: var(--text);
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 14px;
             letter-spacing: 2px;
             padding: 12px 14px;
             outline: none;
-            transition: border-color 0.2s;
             margin-bottom: 20px;
+            transition: border-color 0.2s;
         }
 
-        .modal input:focus {
-            border-bottom-color: var(--accent);
-        }
-
-        .modal input::placeholder {
-            color: var(--muted);
-            opacity: 0.5;
-            letter-spacing: 1px;
-        }
+        .modal input:focus        { border-bottom-color: var(--accent); }
+        .modal input::placeholder { color: var(--muted); opacity: 0.5; letter-spacing: 1px; }
 
         .modal-error {
-            font-family: 'Courier Prime', monospace;
-            font-size: 11px;
-            color: #c54545;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
             display: none;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: #c54545;
+            margin-bottom: 16px;
         }
 
-        .modal-error.show {
-            display: block;
-        }
+        .modal-error.show { display: block; }
 
         .modal-actions {
             display: flex;
@@ -543,7 +534,7 @@
         }
 
         .btn-enter {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -561,7 +552,7 @@
         }
 
         .btn-cancel {
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -573,11 +564,11 @@
             transition: color 0.2s;
         }
 
-        .btn-cancel:hover {
-            color: var(--text);
-        }
+        .btn-cancel:hover { color: var(--text); }
 
-        /* ─── FOOTER ─── */
+
+        /* ─── FOOTER ─────────────────────────────────────────────── */
+
         .footer {
             margin-top: auto;
             background: var(--panel);
@@ -586,12 +577,12 @@
             border-top: 1px solid var(--border);
         }
 
-        .footer-text {
+        .footer p {
             font-size: 14px;
-            color: var(--muted);
             font-style: italic;
-            margin-bottom: 20px;
+            color: var(--muted);
             line-height: 1.6;
+            margin-bottom: 20px;
         }
 
         .footer-link {
@@ -601,55 +592,79 @@
             color: var(--accent);
             padding: 11px 28px;
             text-decoration: none;
-            font-family: 'Courier Prime', monospace;
+            font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 2.5px;
             text-transform: uppercase;
-            transition: background 0.25s, color 0.25s, border-color 0.25s;
+            transition: background 0.25s, color 0.25s;
         }
 
         .footer-link:hover {
             background: var(--accent);
             color: white;
-            border-color: var(--accent);
         }
 
-        /* ─── MOBILE ─── */
+
+        /* ─── PAGE VISIBILITY ────────────────────────────────────── */
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+
+        /* ─── ANIMATION ──────────────────────────────────────────── */
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+
+        /* ─── RESPONSIVE ─────────────────────────────────────────── */
+
+        @media (max-width: 968px) {
+            .menu-toggle { display: block; }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main { margin-left: 0; }
+        }
+
         @media (max-width: 768px) {
-            .hero {
-                padding: 80px 28px 60px;
-            }
-
-            .hero h1 {
-                font-size: 36px;
-            }
-
-            .content {
-                padding: 36px 24px;
-            }
-
-            .poem-full {
-                padding: 28px 24px;
-            }
-
-            .footer {
-                padding: 36px 24px;
-            }
+            .hero           { padding: 80px 28px 60px; }
+            .hero-title     { font-size: 36px; }
+            .content        { padding: 36px 24px; }
+            .drawer         { padding: 28px 24px; }
+            .footer         { padding: 36px 24px; }
         }
+
     </style>
 </head>
 <body>
 
-<!-- MENU TOGGLE -->
-<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()"><span id="menuText">☰ Menu</span></button>
+<!-- ─── HAMBURGER ──────────────────────────────────────────────── -->
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
+    <span id="menuText">☰ Menu</span>
+</button>
 
-<!-- PASSWORD MODAL -->
+<!-- ─── PASSWORD MODAL ────────────────────────────────────────── -->
 <div class="modal-overlay" id="passwordModal">
     <div class="modal">
-        <div class="modal-label">Protected</div>
+        <div class="modal-eyebrow">Protected</div>
         <h3 id="modalTitle">Letters</h3>
         <p id="modalDesc">This section is private. Enter the password to continue.</p>
-        <input type="password" id="passwordInput" placeholder="password" autocomplete="off" onkeydown="if(event.key==='Enter') submitPassword()">
+        <input
+            type="password"
+            id="passwordInput"
+            placeholder="password"
+            autocomplete="off"
+            onkeydown="if (event.key === 'Enter') submitPassword()"
+        >
         <div class="modal-error" id="modalError">incorrect. try again.</div>
         <div class="modal-actions">
             <button class="btn-enter" onclick="submitPassword()">Enter →</button>
@@ -658,343 +673,376 @@
     </div>
 </div>
 
+<!-- ─── LAYOUT ────────────────────────────────────────────────── -->
 <div class="container">
-    <!-- ─── SIDEBAR ─── -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-brand" onclick="location.reload()" style="cursor: pointer;">rubnyemile</div>
 
-        <nav class="sidebar-nav" style="margin-top: 20px;">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand" onclick="location.reload()">rubnyemile</div>
+
+        <nav class="sidebar-nav">
+
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Poetry
-                    <span class="dropdown-arrow">▼</span>
+                    Poetry <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('poetry'); return false;">All Poems</a>
+                    <a onclick="showPage('poetry')">All Poems</a>
                 </div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Opinions
-                    <span class="dropdown-arrow">▼</span>
+                    Opinions <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('opinions'); return false;">All Opinions</a>
+                    <a onclick="showPage('opinions')">All Opinions</a>
                 </div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Reviews
-                    <span class="dropdown-arrow">▼</span>
+                    Reviews <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('reviews'); return false;">Books &amp; Films</a>
+                    <a onclick="showPage('reviews')">Books &amp; Films</a>
                 </div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Recipes
-                    <span class="dropdown-arrow">▼</span>
+                    Recipes <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('recipes'); return false;">All Recipes</a>
+                    <a onclick="showPage('recipes')">All Recipes</a>
                 </div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    Letters
-                    <span class="dropdown-arrow">▼</span>
+                    Letters <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items" id="letters-nav">
-                    <!-- Generated from JSON -->
+                    <!-- populated from content.json -->
                 </div>
             </div>
 
             <div class="nav-section">
                 <div class="nav-title" onclick="toggleNav(this)">
-                    About
-                    <span class="dropdown-arrow">▼</span>
+                    About <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('about'); return false;">Who I Am</a>
+                    <a onclick="showPage('about')">Who I Am</a>
                 </div>
             </div>
+
         </nav>
 
         <div class="sidebar-footer">© 2026</div>
-    </div>
 
-    <!-- ─── MAIN ─── -->
-    <div class="main">
+    </aside>
 
-        <!-- Hero -->
-        <div class="hero" id="heroSection">
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- Hero (replaced by a featured poem on load) -->
+        <header class="hero" id="hero">
             <div class="hero-eyebrow">a personal space</div>
-            <h1>welcome</h1>
-            <p>everyday i try</p>
-        </div>
+            <h1 class="hero-title">welcome</h1>
+            <p class="hero-tagline">everyday i try</p>
+        </header>
 
-        <!-- CONTENT WILL BE LOADED FROM content.json -->
-        <div id="contentContainer"></div>
+        <!-- Pages injected here -->
+        <div id="pages"></div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-text">Questions? Thoughts? Want to berate me further?</div>
+        <footer class="footer">
+            <p>Questions? Thoughts? Want to berate me further?</p>
             <a href="mailto:contact@rubnyemile.com" class="footer-link">Get In Touch</a>
-        </div>
+        </footer>
 
-    </div><!-- /.main -->
+    </main>
+
 </div><!-- /.container -->
 
 <script>
-    let contentData = {};
 
-    // Load content from JSON
+    /* ─────────────────────────────────────────────────────────────
+       STATE
+    ───────────────────────────────────────────────────────────── */
+
+    let data       = {};
+    let pendingId  = null; // letter id awaiting password
+    let pendingCat = null; // category id awaiting password
+
+
+    /* ─────────────────────────────────────────────────────────────
+       BOOT
+    ───────────────────────────────────────────────────────────── */
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadContent();
+        renderPages();
+        populateLettersNav();
+        showFeaturedPoem();
+        openFirstNav();
+    });
+
     async function loadContent() {
         try {
-            const response = await fetch('content.json');
-            contentData = await response.json();
-            renderAllPages();
-        } catch (error) {
-            console.error('Error loading content:', error);
-            // Fallback: show error message
-            document.getElementById('contentContainer').innerHTML = '<div class="content"><p>Error loading content. Please refresh the page.</p></div>';
+            const res = await fetch('content.json');
+            data = await res.json();
+        } catch (e) {
+            console.error('Could not load content.json', e);
+            document.getElementById('pages').innerHTML =
+                '<div class="content"><p>Error loading content. Please refresh.</p></div>';
         }
     }
 
-    // Render all pages
-    function renderAllPages() {
-        const container = document.getElementById('contentContainer');
-        container.innerHTML = `
-            ${renderPoetryPage()}
-            ${renderOpinionsPage()}
-            ${renderReviewsPage()}
-            ${renderRecipesPage()}
-            ${renderLettersPages()}
-            ${renderAboutPage()}
-        `;
+
+    /* ─────────────────────────────────────────────────────────────
+       RENDER PAGES
+    ───────────────────────────────────────────────────────────── */
+
+    function renderPages() {
+        document.getElementById('pages').innerHTML = [
+            renderPoetry(),
+            renderOpinions(),
+            renderPlaceholder('reviews',  'Reviews',  'Books &amp; Films'),
+            renderPlaceholder('recipes',  'Recipes',  'All Recipes'),
+            ...renderLetters(),
+            renderAbout(),
+        ].join('');
     }
 
-    // Render Poetry Page
-    function renderPoetryPage() {
-        const poems = contentData.poetry || [];
-        const poemsHTML = poems.map(poem => `
-            <div class="item">
-                <div class="item-title">${poem.title}</div>
-                <div class="item-meta">${poem.date}</div>
-                <div class="item-preview">${poem.preview}</div>
-                <a class="read-more" onclick="togglePoem('poem-${poem.id}')">Read Full Poem →</a>
-            </div>
-            <div class="poem-full" id="poem-${poem.id}">
-                <div class="poem-text">${poem.text}</div>
-                <span class="poem-close" onclick="togglePoem('poem-${poem.id}')">← Close</span>
-            </div>
-        `).join('');
+    /* Poetry ---------------------------------------------------- */
 
-        return `
-            <div class="page-content" id="poetry-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Poetry</h2>
-                        <span class="count">${poems.length} poems</span>
-                    </div>
-                    ${poemsHTML}
-                </div>
-            </div>
-        `;
+    function renderPoetry() {
+        const poems = data.poetry || [];
+        return page('poetry', 'Poetry', `${poems.length} poems`,
+            poems.map(poem => `
+                ${card({
+                    title:   poem.title,
+                    meta:    poem.date,
+                    preview: poem.preview,
+                    action:  `toggleDrawer('poem-${poem.id}')`,
+                    label:   'Read Full Poem →',
+                })}
+                ${drawer(`poem-${poem.id}`, poem.text)}
+            `).join('')
+        );
     }
 
-    // Render Opinions Page
-    function renderOpinionsPage() {
-        const opinions = contentData.opinions || [];
-        const opinionsHTML = opinions.map(op => `
-            <div class="item">
-                <div class="item-title">${op.title}</div>
-                <div class="item-meta">${op.date}</div>
-                <div class="item-preview">${op.preview}</div>
-                ${op.text ? `<a class="read-more" onclick="togglePoem('opinion-${op.id}')">Read More →</a>` : '<a class="read-more">Coming Soon →</a>'}
-            </div>
-            ${op.text ? `
-            <div class="poem-full" id="opinion-${op.id}">
-                <div class="poem-text">${op.text}</div>
-                <span class="poem-close" onclick="togglePoem('opinion-${op.id}')">← Close</span>
-            </div>
-            ` : ''}
-        `).join('');
+    /* Opinions -------------------------------------------------- */
 
-        return `
-            <div class="page-content" id="opinions-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Opinions</h2>
-                        <span class="count">${opinions.length} essays</span>
-                    </div>
-                    ${opinionsHTML}
-                </div>
-            </div>
-        `;
+    function renderOpinions() {
+        const opinions = data.opinions || [];
+        return page('opinions', 'Opinions', `${opinions.length} essays`,
+            opinions.map(op => `
+                ${card({
+                    title:   op.title,
+                    meta:    op.date,
+                    preview: op.preview,
+                    action:  op.text ? `toggleDrawer('opinion-${op.id}')` : null,
+                    label:   op.text ? 'Read More →' : 'Coming Soon →',
+                })}
+                ${op.text ? drawer(`opinion-${op.id}`, op.text) : ''}
+            `).join('')
+        );
     }
 
-    // Render Reviews Page
-    function renderReviewsPage() {
-        return `
-            <div class="page-content" id="reviews-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Reviews</h2>
-                        <span class="count">coming soon</span>
-                    </div>
-                    <div class="item">
-                        <div class="item-title">Coming Soon</div>
-                        <div class="item-meta">2026</div>
-                        <div class="item-preview">Reviews will be added here.</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
+    /* Letters --------------------------------------------------- */
 
-    // Render Recipes Page
-    function renderRecipesPage() {
-        return `
-            <div class="page-content" id="recipes-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Recipes</h2>
-                        <span class="count">coming soon</span>
-                    </div>
-                    <div class="item">
-                        <div class="item-title">Coming Soon</div>
-                        <div class="item-meta">2026</div>
-                        <div class="item-preview">Recipes will be added here.</div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
+    function renderLetters() {
+        const categories = data.letter_categories || [];
 
-    // Render Letters Pages
-    function renderLettersPages() {
-        const categories = contentData.letter_categories || [];
-        
-        return categories.map(category => `
-            <div class="page-content" id="${category.id}-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>${category.name}</h2>
-                        <span class="count">${category.letters ? category.letters.length : 0} letter${category.letters && category.letters.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    ${category.letters && category.letters.length > 0 ? category.letters.map(letter => `
-                        <div class="item">
-                            <div class="item-title">${letter.title}</div>
-                            <div class="item-meta">${letter.date} · Protected</div>
-                            <div class="item-preview">${letter.preview}</div>
-                            <a class="read-more" onclick="unlockIndividualLetter('${letter.id}', '${letter.password}')">Read Letter →</a>
-                        </div>
-                        <div class="poem-full" id="letter-${letter.id}">
-                            <div class="poem-text">${letter.text}</div>
-                            <span class="poem-close" onclick="togglePoem('letter-${letter.id}')">← Close</span>
-                        </div>
-                    `).join('') : `
-                        <div class="item">
-                            <div class="item-title">Coming Soon</div>
-                            <div class="item-meta">Protected</div>
-                            <div class="item-preview">Letters will appear here.</div>
-                        </div>
-                    `}
-                </div>
-            </div>
-        `).join('');
-    }
+        return categories.map(cat => {
+            const letters = cat.letters || [];
+            const items = letters.length
+                ? letters.map(letter => `
+                    ${card({
+                        title:   letter.title,
+                        meta:    `${letter.date} · Protected`,
+                        preview: letter.preview,
+                        action:  `promptLetterPassword('${letter.id}')`,
+                        label:   'Read Letter →',
+                    })}
+                    ${drawer(`letter-${letter.id}`, letter.text)}
+                  `).join('')
+                : card({ title: 'Coming Soon', meta: 'Protected', preview: 'Letters will appear here.' });
 
-    // Render About Page
-    function renderAboutPage() {
-        return `
-            <div class="page-content" id="about-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>About</h2>
-                    </div>
-                    <p style="margin-bottom: 22px; font-size: 15px; color: var(--text); opacity: 0.85; line-height: 1.9;">I am trying. Most days I fail. Some days I get close. But I keep going.</p>
-                    <p style="margin-bottom: 22px; font-size: 15px; color: var(--muted); line-height: 1.9;">This space exists for those who are also trying. For scouts and thinkers. For anyone brave enough to keep an open mind in a world that resists it.</p>
-                    <p style="font-size: 15px; color: var(--muted); line-height: 1.9;">I don't have all the answers. In fact, I have very few. But I'm willing to sit in the uncertainty with you and figure it out together.</p>
-                </div>
-            </div>
-        `;
-    }
-
-    // ── SIDEBAR TOGGLE ──
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const toggle = document.getElementById('menuToggle');
-        sidebar.classList.toggle('open');
-        toggle.classList.toggle('active');
-    }
-
-    // Close sidebar when clicking a nav link on mobile
-    function closeSidebarOnMobile() {
-        if (window.innerWidth <= 968) {
-            const sidebar = document.getElementById('sidebar');
-            const toggle = document.getElementById('menuToggle');
-            sidebar.classList.remove('open');
-            toggle.classList.remove('active');
-        }
-    }
-
-    // ── NAV TOGGLE ──
-    function toggleNav(element) {
-        const arrow = element.querySelector('.dropdown-arrow');
-        const items = element.nextElementSibling;
-        arrow.classList.toggle('open');
-        items.classList.toggle('show');
-    }
-
-    // ── PAGE NAVIGATION ──
-    function showPage(page) {
-        document.getElementById('heroSection').style.display = 'none';
-        document.querySelectorAll('.page-content').forEach(el => {
-            el.classList.remove('active');
-            el.style.display = 'none';
+            return page(cat.id, cat.name, `${letters.length} letter${letters.length !== 1 ? 's' : ''}`, items);
         });
-        document.querySelectorAll('.poem-full').forEach(el => el.classList.remove('active'));
-        const el = document.getElementById(page + '-page');
-        if (el) {
-            el.classList.add('active');
-            el.style.display = 'block';
-        }
+    }
+
+    /* Placeholder pages ----------------------------------------- */
+
+    function renderPlaceholder(id, title, label) {
+        return page(id, title, 'coming soon',
+            card({ title: 'Coming Soon', meta: '2026', preview: `${label} will be added here.` })
+        );
+    }
+
+    /* About ----------------------------------------------------- */
+
+    function renderAbout() {
+        return page('about', 'About', '',
+            `<p style="margin-bottom:22px; font-size:15px; color:var(--text); opacity:0.85; line-height:1.9;">
+                I am trying. Most days I fail. Some days I get close. But I keep going.
+             </p>
+             <p style="margin-bottom:22px; font-size:15px; color:var(--muted); line-height:1.9;">
+                This space exists for those who are also trying. For scouts and thinkers.
+                For anyone brave enough to keep an open mind in a world that resists it.
+             </p>
+             <p style="font-size:15px; color:var(--muted); line-height:1.9;">
+                I don't have all the answers. In fact, I have very few. But I'm willing
+                to sit in the uncertainty with you and figure it out together.
+             </p>`
+        );
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────
+       HTML PRIMITIVES
+    ───────────────────────────────────────────────────────────── */
+
+    function page(id, title, count, body) {
+        return `
+            <div class="page" id="${id}-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>${title}</h2>
+                        ${count ? `<span class="content-count">${count}</span>` : ''}
+                    </div>
+                    ${body}
+                </div>
+            </div>
+        `;
+    }
+
+    function card({ title, meta, preview, action, label }) {
+        const link = action
+            ? `<a class="read-more" onclick="${action}">${label}</a>`
+            : label
+                ? `<a class="read-more">${label}</a>`
+                : '';
+        return `
+            <div class="item">
+                <div class="item-title">${title}</div>
+                ${meta    ? `<div class="item-meta">${meta}</div>`       : ''}
+                ${preview ? `<div class="item-preview">${preview}</div>` : ''}
+                ${link}
+            </div>
+        `;
+    }
+
+    function drawer(id, text) {
+        return `
+            <div class="drawer" id="${id}">
+                <div class="drawer-body">${text}</div>
+                <span class="drawer-close" onclick="toggleDrawer('${id}')">← Close</span>
+            </div>
+        `;
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────
+       NAVIGATION
+    ───────────────────────────────────────────────────────────── */
+
+    function showPage(pageId) {
+        document.getElementById('hero').style.display = 'none';
+        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.drawer').forEach(el => el.classList.remove('active'));
+
+        const target = document.getElementById(pageId + '-page');
+        if (target) target.classList.add('active');
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Hide "Menu" text, show only hamburger on other pages
         document.getElementById('menuText').textContent = '☰';
         closeSidebarOnMobile();
     }
 
-    // ── PASSWORD MODAL ──
-    let pendingPage = null;
-    let pendingLetterId = null;
-
-    function openModal(page) {
-        pendingPage = page;
-        pendingLetterId = null;
-        const category = contentData.letter_categories?.find(c => c.id === page);
-        const name = category ? category.name : 'Protected';
-        
-        document.getElementById('modalTitle').textContent = name;
-        document.getElementById('passwordInput').value = '';
-        document.getElementById('modalError').classList.remove('show');
-        document.getElementById('passwordModal').classList.add('active');
-        setTimeout(() => document.getElementById('passwordInput').focus(), 50);
+    function toggleNav(el) {
+        el.querySelector('.nav-arrow').classList.toggle('open');
+        el.nextElementSibling.classList.toggle('show');
     }
 
-    function unlockIndividualLetter(letterId, correctPassword) {
-        pendingLetterId = letterId;
-        pendingPage = null;
-        
-        document.getElementById('modalTitle').textContent = 'Letter';
-        document.getElementById('passwordInput').value = '';
+    function toggleDrawer(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.toggle('active');
+        if (el.classList.contains('active')) {
+            setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+        }
+    }
+
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+        document.getElementById('menuToggle').classList.toggle('active');
+    }
+
+    function closeSidebarOnMobile() {
+        if (window.innerWidth <= 968) {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('menuToggle').classList.remove('active');
+        }
+    }
+
+    function openFirstNav() {
+        const first = document.querySelector('.nav-title');
+        if (first) toggleNav(first);
+    }
+
+    function populateLettersNav() {
+        const nav = document.getElementById('letters-nav');
+        if (!nav || !data.letter_categories) return;
+        nav.innerHTML = data.letter_categories
+            .map(cat => `<a onclick="promptCategoryPassword('${cat.id}')">${cat.name}</a>`)
+            .join('');
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────
+       HERO — FEATURED POEM
+    ───────────────────────────────────────────────────────────── */
+
+    function showFeaturedPoem() {
+        const poems = data.poetry;
+        if (!poems || poems.length === 0) return;
+
+        const poem = poems[Math.floor(Math.random() * poems.length)];
+        const hero = document.getElementById('hero');
+
+        hero.innerHTML = `
+            <div class="hero-eyebrow">featured this moment</div>
+            <h1 class="hero-title" style="font-size:32px; margin-bottom:30px;">${poem.title}</h1>
+            <div class="hero-poem-body">${poem.text}</div>
+            <a class="hero-poem-link" onclick="showPage('poetry')">View All Poems →</a>
+        `;
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────
+       PASSWORD MODAL
+    ───────────────────────────────────────────────────────────── */
+
+    function promptCategoryPassword(catId) {
+        const cat = data.letter_categories?.find(c => c.id === catId);
+        pendingCat = catId;
+        pendingId  = null;
+        openModal(cat?.name || 'Protected');
+    }
+
+    function promptLetterPassword(letterId) {
+        pendingId  = letterId;
+        pendingCat = null;
+        openModal('Letter');
+    }
+
+    function openModal(title) {
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('passwordInput').value   = '';
         document.getElementById('modalError').classList.remove('show');
         document.getElementById('passwordModal').classList.add('active');
         setTimeout(() => document.getElementById('passwordInput').focus(), 50);
@@ -1002,101 +1050,52 @@
 
     function closeModal() {
         document.getElementById('passwordModal').classList.remove('active');
-        pendingPage = null;
-        pendingLetterId = null;
+        pendingId  = null;
+        pendingCat = null;
     }
 
     function submitPassword() {
-        const input = document.getElementById('passwordInput').value;
-        
-        if (pendingPage) {
-            // Category password
-            const category = contentData.letter_categories?.find(c => c.id === pendingPage);
-            if (category && input && input.toLowerCase() === category.password.toLowerCase()) {
-                closeModal();
-                showPage(pendingPage);
-            } else {
-                document.getElementById('modalError').classList.add('show');
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordInput').focus();
+        const input    = document.getElementById('passwordInput').value;
+        const correct  = resolvePassword();
+
+        if (correct && input && input.toLowerCase() === correct.toLowerCase()) {
+            closeModal();
+
+            if (pendingCat) {
+                showPage(pendingCat);
+            } else if (pendingId) {
+                toggleDrawer('letter-' + pendingId);
             }
-        } else if (pendingLetterId) {
-            // Individual letter password - need to find it
-            let correctPassword = null;
-            for (let category of (contentData.letter_categories || [])) {
-                const letter = category.letters?.find(l => l.id === pendingLetterId);
-                if (letter) {
-                    correctPassword = letter.password;
-                    break;
-                }
-            }
-            
-            if (correctPassword && input && input.toLowerCase() === correctPassword.toLowerCase()) {
-                closeModal();
-                togglePoem('letter-' + pendingLetterId);
-            } else {
-                document.getElementById('modalError').classList.add('show');
-                document.getElementById('passwordInput').value = '';
-                document.getElementById('passwordInput').focus();
-            }
+
+            pendingCat = null;
+            pendingId  = null;
+        } else {
+            document.getElementById('modalError').classList.add('show');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').focus();
         }
     }
 
-    // Close modal on overlay click
-    document.getElementById('passwordModal').addEventListener('click', function(e) {
+    function resolvePassword() {
+        if (pendingCat) {
+            return data.letter_categories?.find(c => c.id === pendingCat)?.password;
+        }
+
+        if (pendingId) {
+            for (const cat of data.letter_categories || []) {
+                const letter = cat.letters?.find(l => l.id === pendingId);
+                if (letter) return letter.password;
+            }
+        }
+
+        return null;
+    }
+
+    // close modal on backdrop click
+    document.getElementById('passwordModal').addEventListener('click', function (e) {
         if (e.target === this) closeModal();
     });
 
-    // ── POEM TOGGLE ──
-    function togglePoem(poemId) {
-        const poem = document.getElementById(poemId);
-        if (!poem) return;
-        poem.classList.toggle('active');
-        if (poem.classList.contains('active')) {
-            setTimeout(() => poem.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
-        }
-    }
-
-    // Populate letters navigation
-    function populateLettersNav() {
-        const lettersNav = document.getElementById('letters-nav');
-        if (!lettersNav || !contentData.letter_categories) return;
-        
-        lettersNav.innerHTML = contentData.letter_categories.map(category => 
-            `<a onclick="openModal('${category.id}'); return false;">${category.name}</a>`
-        ).join('');
-    }
-
-    // ── INITIALIZE ──
-    document.addEventListener('DOMContentLoaded', function() {
-        loadContent().then(() => {
-            displayRandomPoem();
-            populateLettersNav();
-            const firstNav = document.querySelector('.nav-title');
-            if (firstNav) firstNav.click();
-        });
-    });
-
-    // Display random poem on hero section
-    function displayRandomPoem() {
-        if (!contentData.poetry || contentData.poetry.length === 0) return;
-        
-        const randomPoem = contentData.poetry[Math.floor(Math.random() * contentData.poetry.length)];
-        const heroSection = document.getElementById('heroSection');
-        
-        if (heroSection) {
-            heroSection.innerHTML = `
-                <div class="hero-eyebrow">featured this moment</div>
-                <h1 style="font-size: 32px; margin-bottom: 30px;">${randomPoem.title}</h1>
-                <div style="max-width: 700px; margin: 0 auto; font-size: 16px; line-height: 2; white-space: pre-line; color: var(--muted); margin-bottom: 30px;">
-${randomPoem.text}
-                </div>
-                <div style="margin-top: 40px;">
-                    <a onclick="showPage('poetry'); return false;" style="color: var(--accent); text-decoration: none; font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">View All Poems →</a>
-                </div>
-            `;
-        }
-    }
 </script>
 </body>
 </html>
