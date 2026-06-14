@@ -16,15 +16,15 @@
 
         /* ROOT VARIABLES */
         :root {
-            --bg: #2b251f;              /* Deep warm brown - peaceful base */
-            --panel: #3a3128;           /* Slightly lighter brown panel */
+            --bg: #4a4035;              /* Lighter warm brown - peaceful base */
+            --panel: #5a5047;           /* Slightly lighter brown panel */
             --text: #e8dfd2;            /* Warm off-white text */
             --muted: #a89984;           /* Muted tan/brown */
             --accent: #7a9d6f;          /* Sage green - growth, highlights */
             --attention: #c45d4a;       /* Muted terracotta red - watched, attention */
             --border: rgba(200,93,74,0.15);  /* Subtle red-tinted borders - being watched */
             --sidebar-w: 260px;
-            --sidebar-bg: #1f1a15;      /* Darkest brown - grounding */
+            --sidebar-bg: #3d3529;      /* Lighter darkest brown - grounding */
             --hover-glow: rgba(122,157,111,0.12);  /* Green glow on hover */
         }
 
@@ -35,7 +35,7 @@
 
         body {
             font-family: 'EB Garamond', Georgia, serif;
-            background: radial-gradient(circle at 20% 20%, #3a3128 0%, #2b251f 60%);
+            background: radial-gradient(circle at 20% 20%, #5a5047 0%, #4a4035 60%);
             color: var(--text);
             line-height: 1.85;
             letter-spacing: 0.2px;
@@ -244,7 +244,7 @@
 
         /* ─── HERO ─── */
         .hero {
-            background: radial-gradient(circle at center, #3a3128 0%, #2b251f 100%);
+            background: radial-gradient(circle at center, #5a5047 0%, #4a4035 100%);
             padding: 110px 64px 90px;
             text-align: center;
             border-bottom: 1px solid var(--border);
@@ -641,7 +641,7 @@
 <body>
 
 <!-- MENU TOGGLE -->
-<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">☰ Menu</button>
+<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()"><span id="menuText">☰ Menu</span></button>
 
 <!-- PASSWORD MODAL -->
 <div class="modal-overlay" id="passwordModal">
@@ -709,10 +709,8 @@
                     Letters
                     <span class="dropdown-arrow">▼</span>
                 </div>
-                <div class="nav-items">
-                    <a onclick="openModal('letters-love'); return false;">Love Letters</a>
-                    <a onclick="openModal('letters-angry'); return false;">Angry Letters</a>
-                    <a onclick="openModal('letters-unsent'); return false;">Unsent Letters</a>
+                <div class="nav-items" id="letters-nav">
+                    <!-- Generated from JSON -->
                 </div>
             </div>
 
@@ -881,59 +879,36 @@
 
     // Render Letters Pages
     function renderLettersPages() {
-        const unsentLetters = contentData.unsent_letters || [];
-        const unsentHTML = unsentLetters.map(letter => `
-            <div class="item">
-                <div class="item-title">${letter.title}</div>
-                <div class="item-meta">${letter.date}</div>
-                <div class="item-preview">${letter.preview}</div>
-                <a class="read-more" onclick="togglePoem('unsent-${letter.id}')">Read Letter →</a>
-            </div>
-            <div class="poem-full" id="unsent-${letter.id}">
-                <div class="poem-text">${letter.text}</div>
-                <span class="poem-close" onclick="togglePoem('unsent-${letter.id}')">← Close</span>
+        const categories = contentData.letter_categories || [];
+        
+        return categories.map(category => `
+            <div class="page-content" id="${category.id}-page">
+                <div class="content">
+                    <div class="content-header">
+                        <h2>${category.name}</h2>
+                        <span class="count">${category.letters ? category.letters.length : 0} letter${category.letters && category.letters.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    ${category.letters && category.letters.length > 0 ? category.letters.map(letter => `
+                        <div class="item">
+                            <div class="item-title">${letter.title}</div>
+                            <div class="item-meta">${letter.date} · Protected</div>
+                            <div class="item-preview">${letter.preview}</div>
+                            <a class="read-more" onclick="unlockIndividualLetter('${letter.id}', '${letter.password}')">Read Letter →</a>
+                        </div>
+                        <div class="poem-full" id="letter-${letter.id}">
+                            <div class="poem-text">${letter.text}</div>
+                            <span class="poem-close" onclick="togglePoem('letter-${letter.id}')">← Close</span>
+                        </div>
+                    `).join('') : `
+                        <div class="item">
+                            <div class="item-title">Coming Soon</div>
+                            <div class="item-meta">Protected</div>
+                            <div class="item-preview">Letters will appear here.</div>
+                        </div>
+                    `}
+                </div>
             </div>
         `).join('');
-
-        return `
-            <div class="page-content" id="letters-love-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Love Letters</h2>
-                        <span class="count">protected</span>
-                    </div>
-                    <div class="item">
-                        <div class="item-title">Coming Soon</div>
-                        <div class="item-meta">Protected</div>
-                        <div class="item-preview">Love letters will appear here.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="page-content" id="letters-angry-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Angry Letters</h2>
-                        <span class="count">protected</span>
-                    </div>
-                    <div class="item">
-                        <div class="item-title">Coming Soon</div>
-                        <div class="item-meta">Protected</div>
-                        <div class="item-preview">Angry letters will appear here.</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="page-content" id="letters-unsent-page">
-                <div class="content">
-                    <div class="content-header">
-                        <h2>Unsent Letters</h2>
-                        <span class="count">${unsentLetters.length} letter${unsentLetters.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    ${unsentHTML}
-                </div>
-            </div>
-        `;
     }
 
     // Render About Page
@@ -986,25 +961,33 @@
         const el = document.getElementById(page + '-page');
         if (el) el.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Hide "Menu" text, show only hamburger on other pages
+        document.getElementById('menuText').textContent = '☰';
         closeSidebarOnMobile();
     }
 
     // ── PASSWORD MODAL ──
-    const passwords = {
-        'letters-love':   'tenderness',
-        'letters-angry':  'fury',
-        'letters-unsent': 'aiscam'
-    };
     let pendingPage = null;
+    let pendingLetterId = null;
 
     function openModal(page) {
         pendingPage = page;
-        const names = {
-            'letters-love':   'Love Letters',
-            'letters-angry':  'Angry Letters',
-            'letters-unsent': 'Unsent Letters'
-        };
-        document.getElementById('modalTitle').textContent = names[page] || 'Protected';
+        pendingLetterId = null;
+        const category = contentData.letter_categories?.find(c => c.id === page);
+        const name = category ? category.name : 'Protected';
+        
+        document.getElementById('modalTitle').textContent = name;
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('modalError').classList.remove('show');
+        document.getElementById('passwordModal').classList.add('active');
+        setTimeout(() => document.getElementById('passwordInput').focus(), 50);
+    }
+
+    function unlockIndividualLetter(letterId, correctPassword) {
+        pendingLetterId = letterId;
+        pendingPage = null;
+        
+        document.getElementById('modalTitle').textContent = 'Letter';
         document.getElementById('passwordInput').value = '';
         document.getElementById('modalError').classList.remove('show');
         document.getElementById('passwordModal').classList.add('active');
@@ -1014,18 +997,42 @@
     function closeModal() {
         document.getElementById('passwordModal').classList.remove('active');
         pendingPage = null;
+        pendingLetterId = null;
     }
 
     function submitPassword() {
         const input = document.getElementById('passwordInput').value;
-        const correct = passwords[pendingPage];
-        if (input && input.toLowerCase() === correct.toLowerCase()) {
-            closeModal();
-            showPage(pendingPage);
-        } else {
-            document.getElementById('modalError').classList.add('show');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').focus();
+        
+        if (pendingPage) {
+            // Category password
+            const category = contentData.letter_categories?.find(c => c.id === pendingPage);
+            if (category && input && input.toLowerCase() === category.password.toLowerCase()) {
+                closeModal();
+                showPage(pendingPage);
+            } else {
+                document.getElementById('modalError').classList.add('show');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        } else if (pendingLetterId) {
+            // Individual letter password - need to find it
+            let correctPassword = null;
+            for (let category of (contentData.letter_categories || [])) {
+                const letter = category.letters?.find(l => l.id === pendingLetterId);
+                if (letter) {
+                    correctPassword = letter.password;
+                    break;
+                }
+            }
+            
+            if (correctPassword && input && input.toLowerCase() === correctPassword.toLowerCase()) {
+                closeModal();
+                togglePoem('letter-' + pendingLetterId);
+            } else {
+                document.getElementById('modalError').classList.add('show');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
         }
     }
 
@@ -1044,15 +1051,46 @@
         }
     }
 
+    // Populate letters navigation
+    function populateLettersNav() {
+        const lettersNav = document.getElementById('letters-nav');
+        if (!lettersNav || !contentData.letter_categories) return;
+        
+        lettersNav.innerHTML = contentData.letter_categories.map(category => 
+            `<a onclick="openModal('${category.id}'); return false;">${category.name}</a>`
+        ).join('');
+    }
+
     // ── INITIALIZE ──
     document.addEventListener('DOMContentLoaded', function() {
-        loadContent();
-        // Open first dropdown by default
-        setTimeout(() => {
+        loadContent().then(() => {
+            displayRandomPoem();
+            populateLettersNav();
             const firstNav = document.querySelector('.nav-title');
             if (firstNav) firstNav.click();
-        }, 100);
+        });
     });
+
+    // Display random poem on hero section
+    function displayRandomPoem() {
+        if (!contentData.poetry || contentData.poetry.length === 0) return;
+        
+        const randomPoem = contentData.poetry[Math.floor(Math.random() * contentData.poetry.length)];
+        const heroSection = document.getElementById('heroSection');
+        
+        if (heroSection) {
+            heroSection.innerHTML = `
+                <div class="hero-eyebrow">featured this moment</div>
+                <h1 style="font-size: 32px; margin-bottom: 30px;">${randomPoem.title}</h1>
+                <div style="max-width: 700px; margin: 0 auto; font-size: 16px; line-height: 2; white-space: pre-line; color: var(--muted); margin-bottom: 30px;">
+${randomPoem.text}
+                </div>
+                <div style="margin-top: 40px;">
+                    <a onclick="showPage('poetry'); return false;" style="color: var(--accent); text-decoration: none; font-family: 'Courier Prime', monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; opacity: 0.7; transition: opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">View All Poems →</a>
+                </div>
+            `;
+        }
+    }
 </script>
 </body>
 </html>
