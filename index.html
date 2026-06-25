@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rubny Emile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
     <style>
 
         /* ─── RESET ─────────────────────────────────────────────── */
@@ -33,7 +33,7 @@
             --border:       rgba(200, 93, 74, 0.15);
             --hover-bg:     rgba(58, 49, 40, 0.5);
 
-            --sidebar-w:    260px;
+            --sidebar-w:    96px; /* 1 inch at 96dpi */
 
             --font-serif:   'EB Garamond', Georgia, serif;
             --font-mono:    'Courier Prime', monospace;
@@ -94,7 +94,7 @@
         .sidebar {
             width: var(--sidebar-w);
             background: linear-gradient(180deg, var(--sidebar-bg) 0%, #251f1a 100%);
-            padding: 44px 28px 40px;
+            padding: 44px 10px 40px;
             position: fixed;
             top: 0;
             left: 0;
@@ -109,19 +109,16 @@
         }
 
         .sidebar-brand {
-            font-family: var(--font-mono);
-            font-size: 13px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
+            font-family: var(--font-serif);
+            font-size: 11px;
+            font-style: italic;
+            letter-spacing: 0.5px;
             color: var(--attention);
             margin-bottom: 48px;
             opacity: 0.9;
             text-shadow: 0 0 8px rgba(196, 93, 74, 0.3);
-            cursor: pointer;
-            transition: opacity 0.2s;
+            cursor: default;
         }
-
-        .sidebar-brand:hover { opacity: 1; }
 
         .sidebar-nav  { flex: 1; }
 
@@ -143,9 +140,9 @@
 
         .nav-title {
             font-family: var(--font-mono);
-            font-size: 10px;
+            font-size: 8px;
             text-transform: uppercase;
-            letter-spacing: 2.5px;
+            letter-spacing: 1px;
             color: var(--muted);
             cursor: pointer;
             display: flex;
@@ -156,53 +153,45 @@
             user-select: none;
         }
 
-        .nav-title:hover { color: var(--accent); }
+
 
         .nav-arrow {
-            font-size: 8px;
-            opacity: 0.5;
-            transition: transform 0.35s ease;
-        }
-
-        .nav-arrow.open {
-            transform: rotate(180deg);
-            opacity: 1;
+            display: none;
         }
 
         .nav-items {
-            display: none;
-            padding: 4px 0 8px 14px;
-            border-left: 1px solid var(--accent);
+            padding: 4px 0 8px 8px;
+            border-left: none;
             margin-left: 1px;
         }
 
         .nav-items.show { display: block; }
 
         .nav-items a {
-            display: block;
+            display: inline-block;
             text-decoration: none;
             color: var(--text);
-            font-size: 13.5px;
-            font-family: var(--font-serif);
-            font-style: italic;
-            padding: 5px 0;
+            font-size: 10px;
+            font-family: var(--font-mono);
+            font-style: normal;
+            padding: 4px 0;
             opacity: 0.65;
             cursor: pointer;
-            transition: opacity 0.2s, transform 0.2s, color 0.2s;
+            transition: opacity 0.2s;
+            background: none !important;
+            -webkit-tap-highlight-color: transparent;
         }
+        .nav-items { display: none; }
 
         .nav-items a:hover {
             opacity: 1;
-            transform: translateX(4px);
-            color: var(--accent);
-            text-shadow: 0 0 6px rgba(122, 157, 111, 0.4);
         }
 
 
         /* ─── HAMBURGER ──────────────────────────────────────────── */
 
         .menu-toggle {
-            display: none;
+            display: none !important;
             position: fixed;
             top: 70px;
             left: 20px;
@@ -303,6 +292,8 @@
             width: 100%;
         }
 
+
+
         .content-header {
             display: flex;
             align-items: baseline;
@@ -330,8 +321,8 @@
         /* ─── ITEM CARDS ─────────────────────────────────────────── */
 
         .item {
-            margin-bottom: 20px;
-            padding: 14px 16px 12px;
+            margin-bottom: 8px;
+            padding: 4px 16px 4px;
             background: rgba(58, 49, 40, 0.3);
             border-left: 2px solid var(--attention);
             box-shadow: inset 0 0 0 1px rgba(196, 93, 74, 0.1);
@@ -628,17 +619,7 @@
         /* ─── RESPONSIVE ─────────────────────────────────────────── */
 
         @media (max-width: 968px) {
-            .menu-toggle { display: block; }
-
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .main { margin-left: 0; }
+            .main { margin-left: var(--sidebar-w); }
         }
 
         @media (max-width: 768px) {
@@ -649,14 +630,316 @@
             .footer         { padding: 36px 24px; }
         }
 
+
+        /* ─── PAGE THEMES ────────────────────────────────────────────── */
+
+        /* Poetry — soft sage, muted greens, dusty */
+        body.theme-poetry {
+            background: radial-gradient(circle at 20% 20%, #6b8c72 0%, #4a6653 60%);
+        }
+        body.theme-poetry .sidebar {
+            background: linear-gradient(180deg, #3d5c45 0%, #273d2e 100%);
+            border-right-color: rgba(160, 200, 160, 0.15);
+        }
+        body.theme-poetry .sidebar-brand          { color: #b8d4b0; text-shadow: 0 0 8px rgba(184,212,176,0.2); }
+        body.theme-poetry .nav-title:hover         { color: #d0e8c8; }
+        body.theme-poetry .nav-items               { border-left-color: #b8d4b0; }
+        body.theme-poetry .nav-items a:hover       { color: #d0e8c8; }
+        body.theme-poetry .hero                    { background: radial-gradient(circle at center, #6b8c72 0%, #4a6653 100%); }
+        body.theme-poetry .content-header          { border-bottom-color: rgba(160,200,160,0.2); }
+        body.theme-poetry .item                    { border-left-color: #b8d4b0; box-shadow: inset 0 0 0 1px rgba(160,200,160,0.1); }
+        body.theme-poetry .item:hover              { background: rgba(160,200,160,0.08); border-left-color: #d0e8c8; box-shadow: inset 0 0 0 1px rgba(208,232,200,0.18), 0 0 14px rgba(208,232,200,0.06); }
+        body.theme-poetry .item:hover .item-title  { color: #d0e8c8; }
+        body.theme-poetry .item:hover .item-meta   { color: #d0e8c8; opacity:1; }
+        body.theme-poetry .item:hover .item-preview{ color: rgba(208,232,200,0.75); }
+        body.theme-poetry .item:hover .read-more   { color: #d0e8c8; opacity:1; }
+        body.theme-poetry .item-meta               { color: #b8d4b0; }
+        body.theme-poetry .read-more               { color: #b8d4b0; }
+        body.theme-poetry .drawer                  { border-left-color: #b8d4b0; border-color: rgba(160,200,160,0.18); }
+        body.theme-poetry .drawer::before          { color: #b8d4b0; }
+        body.theme-poetry .footer                  { background: #3d5c45; border-top-color: rgba(160,200,160,0.15); }
+        body.theme-poetry .footer-link             { border-color: #b8d4b0; color: #b8d4b0; }
+        body.theme-poetry .footer-link:hover       { background: #b8d4b0; color: #273d2e; }
+        body.theme-poetry ::-webkit-scrollbar-thumb { background: #b8d4b0; }
+
+        /* Opinions — white background, black text */
+        body.theme-opinions {
+            background: #ffffff;
+            color: #111111;
+        }
+        body.theme-opinions .sidebar {
+            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-right-color: rgba(0,0,0,0.12);
+        }
+        body.theme-opinions .sidebar-brand          { color: #111111; text-shadow: none; }
+        body.theme-opinions .nav-title              { color: #444444; }
+        body.theme-opinions .nav-title:hover        { color: #111111; }
+        body.theme-opinions .nav-items              { border-left-color: #111111; }
+        body.theme-opinions .nav-items a            { color: #333333; }
+        body.theme-opinions .nav-items a:hover      { color: #111111; }
+        body.theme-opinions .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
+        body.theme-opinions .nav-arrow              { color: #555555; }
+        body.theme-opinions .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
+        body.theme-opinions .hero-eyebrow           { color: #555555; }
+        body.theme-opinions .hero-title             { color: #111111; }
+        body.theme-opinions .hero-tagline           { color: #444444; }
+        body.theme-opinions .hero-poem-body         { color: #333333; }
+        body.theme-opinions .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
+        body.theme-opinions .content-header h2      { color: #111111; }
+        body.theme-opinions .content-count          { color: #666666; }
+        body.theme-opinions .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+        body.theme-opinions .item-title             { color: #111111; }
+        body.theme-opinions .item-meta              { color: #555555; }
+        body.theme-opinions .item-preview           { color: #444444; }
+        body.theme-opinions .read-more              { color: #111111; }
+        body.theme-opinions .item:hover             { background: #efefef; border-left-color: #000000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        body.theme-opinions .item:hover .item-title { color: #000000; }
+        body.theme-opinions .item:hover .item-meta  { color: #000000; opacity:1; }
+        body.theme-opinions .item:hover .item-preview{ color: #222222; }
+        body.theme-opinions .item:hover .read-more  { color: #000000; opacity:1; }
+        body.theme-opinions .drawer                 { background: #f5f5f5; border-left-color: #111111; border-color: rgba(0,0,0,0.1); }
+        body.theme-opinions .drawer::before         { color: #cccccc; }
+        body.theme-opinions .drawer-body            { color: #111111; }
+        body.theme-opinions .drawer-close           { color: #666666; }
+        body.theme-opinions .drawer-close:hover     { color: #111111; }
+        body.theme-opinions .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
+        body.theme-opinions .footer p               { color: #555555; }
+        body.theme-opinions .footer-link            { border-color: #111111; color: #111111; }
+        body.theme-opinions .footer-link:hover      { background: #111111; color: #ffffff; }
+        body.theme-opinions ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+
+        /* Reviews — white background, black text, Baskerville */
+        body.theme-reviews {
+            background: #ffffff;
+            color: #111111;
+        }
+        body.theme-reviews .sidebar {
+            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-right-color: rgba(0,0,0,0.12);
+        }
+        body.theme-reviews .sidebar-brand          { color: #111111; text-shadow: none; }
+        body.theme-reviews .nav-title              { color: #444444; }
+        body.theme-reviews .nav-title:hover        { color: #111111; }
+        body.theme-reviews .nav-items a            { color: #333333; }
+        body.theme-reviews .nav-items a:hover      { color: #111111; }
+        body.theme-reviews .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
+        body.theme-reviews .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
+        body.theme-reviews .hero-eyebrow           { color: #555555; }
+        body.theme-reviews .hero-title             { color: #111111; }
+        body.theme-reviews .hero-tagline           { color: #444444; }
+        body.theme-reviews .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
+        body.theme-reviews .content-header h2      { color: #111111; }
+        body.theme-reviews .content-count          { color: #666666; }
+        body.theme-reviews .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+        body.theme-reviews .item-title             { color: #111111; }
+        body.theme-reviews .item-meta              { color: #555555; }
+        body.theme-reviews .item-preview           { color: #444444; }
+        body.theme-reviews .read-more              { color: #111111; }
+        body.theme-reviews .item:hover             { background: #efefef; border-left-color: #000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        body.theme-reviews .item:hover .item-title { color: #000; }
+        body.theme-reviews .item:hover .item-meta  { color: #000; opacity:1; }
+        body.theme-reviews .item:hover .item-preview{ color: #222; }
+        body.theme-reviews .item:hover .read-more  { color: #000; opacity:1; }
+        body.theme-reviews .drawer                 { background: #f5f5f5; border-left-color: #111; border-color: rgba(0,0,0,0.1); }
+        body.theme-reviews .drawer::before         { color: #cccccc; }
+        body.theme-reviews .drawer-body            { color: #111111; }
+        body.theme-reviews .drawer-close           { color: #666; }
+        body.theme-reviews .drawer-close:hover     { color: #111; }
+        body.theme-reviews .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
+        body.theme-reviews .footer p               { color: #555555; }
+        body.theme-reviews .footer-link            { border-color: #111; color: #111; }
+        body.theme-reviews .footer-link:hover      { background: #111; color: #fff; }
+        body.theme-reviews ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+
+        /* Recipes — cerulean, blue, light wood */
+        body.theme-recipes {
+            background: radial-gradient(circle at 20% 20%, #2a5f7a 0%, #14303f 60%);
+        }
+        body.theme-recipes .sidebar {
+            background: linear-gradient(180deg, #14303f 0%, #091820 100%);
+            border-right-color: rgba(42,127,184,0.2);
+        }
+        body.theme-recipes .sidebar-brand          { color: #4a9fc4; text-shadow: 0 0 8px rgba(74,159,196,0.3); }
+        body.theme-recipes .nav-title:hover         { color: #85c4de; }
+        body.theme-recipes .nav-items               { border-left-color: #4a9fc4; }
+        body.theme-recipes .nav-items a:hover       { color: #85c4de; }
+        body.theme-recipes .hero                    { background: radial-gradient(circle at center, #2a5f7a 0%, #14303f 100%); }
+        body.theme-recipes .content-header          { border-bottom-color: rgba(42,127,184,0.2); }
+        body.theme-recipes .item                    { border-left-color: #4a9fc4; box-shadow: inset 0 0 0 1px rgba(42,127,184,0.12); }
+        body.theme-recipes .item:hover              { background: rgba(42,127,184,0.1); border-left-color: #85c4de; box-shadow: inset 0 0 0 1px rgba(133,196,222,0.2), 0 0 16px rgba(133,196,222,0.08); }
+        body.theme-recipes .item:hover .item-title  { color: #85c4de; }
+        body.theme-recipes .item:hover .item-meta   { color: #85c4de; opacity:1; }
+        body.theme-recipes .item:hover .item-preview{ color: rgba(133,196,222,0.8); }
+        body.theme-recipes .item:hover .read-more   { color: #85c4de; opacity:1; }
+        body.theme-recipes .item-meta               { color: #4a9fc4; }
+        body.theme-recipes .read-more               { color: #4a9fc4; }
+        body.theme-recipes .drawer                  { border-left-color: #4a9fc4; border-color: rgba(42,127,184,0.2); }
+        body.theme-recipes .drawer::before          { color: #4a9fc4; }
+        body.theme-recipes .footer                  { background: #14303f; border-top-color: rgba(42,127,184,0.2); }
+        body.theme-recipes .footer-link             { border-color: #4a9fc4; color: #4a9fc4; }
+        body.theme-recipes .footer-link:hover       { background: #4a9fc4; }
+        body.theme-recipes ::-webkit-scrollbar-thumb { background: #4a9fc4; }
+
+        /* Letters — white background, black text, Caveat font */
+        body.theme-letters {
+            background: #ffffff;
+            color: #111111;
+        }
+        body.theme-letters .sidebar {
+            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-right-color: rgba(0,0,0,0.12);
+        }
+        body.theme-letters .sidebar-brand          { color: #111111; text-shadow: none; }
+        body.theme-letters .nav-title              { color: #444444; }
+        body.theme-letters .nav-title:hover        { color: #111111; }
+        body.theme-letters .nav-items a            { color: #333333; }
+        body.theme-letters .nav-items a:hover      { color: #111111; }
+        body.theme-letters .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
+        body.theme-letters .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
+        body.theme-letters .hero-eyebrow           { color: #555555; }
+        body.theme-letters .hero-title             { color: #111111; }
+        body.theme-letters .hero-tagline           { color: #444444; }
+        body.theme-letters .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
+        body.theme-letters .content-header h2      { color: #111111; }
+        body.theme-letters .content-count          { color: #666666; }
+        body.theme-letters .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
+        body.theme-letters .item-title             { color: #111111; }
+        body.theme-letters .item-meta              { color: #555555; }
+        body.theme-letters .item-preview           { color: #444444; }
+        body.theme-letters .read-more              { color: #111111; }
+        body.theme-letters .item:hover             { background: #efefef; border-left-color: #000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
+        body.theme-letters .item:hover .item-title { color: #000; }
+        body.theme-letters .item:hover .item-meta  { color: #000; opacity:1; }
+        body.theme-letters .item:hover .item-preview{ color: #222; }
+        body.theme-letters .item:hover .read-more  { color: #000; opacity:1; }
+        body.theme-letters .drawer                 { background: #f5f5f5; border-left-color: #111; border-color: rgba(0,0,0,0.1); }
+        body.theme-letters .drawer::before         { color: #cccccc; }
+        body.theme-letters .drawer-body            { color: #111111; }
+        body.theme-letters .drawer-close           { color: #666; }
+        body.theme-letters .drawer-close:hover     { color: #111; }
+        body.theme-letters .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
+        body.theme-letters .footer p               { color: #555555; }
+        body.theme-letters .footer-link            { border-color: #111; color: #111; }
+        body.theme-letters .footer-link:hover      { background: #111; color: #fff; }
+        body.theme-letters ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+
+        /* About — earthier brown */
+        body.theme-about {
+            background: radial-gradient(circle at 20% 20%, #5c4830 0%, #332817 60%);
+        }
+        body.theme-about .sidebar {
+            background: linear-gradient(180deg, #332817 0%, #1a140a 100%);
+            border-right-color: rgba(160,110,60,0.2);
+        }
+        body.theme-about .sidebar-brand          { color: #b87840; text-shadow: 0 0 8px rgba(184,120,64,0.3); }
+        body.theme-about .nav-title:hover         { color: #d4a060; }
+        body.theme-about .nav-items               { border-left-color: #b87840; }
+        body.theme-about .nav-items a:hover       { color: #d4a060; }
+        body.theme-about .hero                    { background: radial-gradient(circle at center, #5c4830 0%, #332817 100%); }
+        body.theme-about .content-header          { border-bottom-color: rgba(160,110,60,0.2); }
+        body.theme-about .item                    { border-left-color: #b87840; box-shadow: inset 0 0 0 1px rgba(160,110,60,0.12); }
+        body.theme-about .item:hover              { background: rgba(160,110,60,0.1); border-left-color: #d4a060; box-shadow: inset 0 0 0 1px rgba(212,160,96,0.2), 0 0 16px rgba(212,160,96,0.08); }
+        body.theme-about .item:hover .item-title  { color: #d4a060; }
+        body.theme-about .item:hover .item-meta   { color: #d4a060; opacity:1; }
+        body.theme-about .item:hover .item-preview{ color: rgba(212,160,96,0.8); }
+        body.theme-about .item:hover .read-more   { color: #d4a060; opacity:1; }
+        body.theme-about .item-meta               { color: #b87840; }
+        body.theme-about .read-more               { color: #b87840; }
+        body.theme-about .drawer                  { border-left-color: #b87840; border-color: rgba(160,110,60,0.2); }
+        body.theme-about .drawer::before          { color: #b87840; }
+        body.theme-about .footer                  { background: #332817; border-top-color: rgba(160,110,60,0.2); }
+        body.theme-about .footer-link             { border-color: #b87840; color: #b87840; }
+        body.theme-about .footer-link:hover       { background: #b87840; }
+        body.theme-about ::-webkit-scrollbar-thumb { background: #b87840; }
+
+        /* smooth theme transition */
+        body, .sidebar, .hero, .footer {
+            transition: background 0.5s ease, border-color 0.5s ease;
+        }
+
+
+        /* ─── FALLING TEXT EFFECT ────────────────────────────────────── */
+
+        .content .item-title,
+        .content .item-preview,
+        .content .item-meta,
+        .content .read-more,
+        .content-header h2,
+        .content-header .content-count,
+        .drawer .drawer-body,
+        .hero-title,
+        .hero-tagline,
+        .hero-eyebrow,
+        .hero-poem-body {
+            text-shadow: 0 -2px 0 rgba(0,0,0,0.18), 0 1px 6px rgba(0,0,0,0.10);
+            position: relative;
+        }
+
+
+        /* ─── PER-PAGE FONTS ─────────────────────────────────────────── */
+
+        /* Letters — Caveat (personal, handwritten) */
+        body.theme-letters .content,
+        body.theme-letters .drawer,
+        body.theme-letters .item-title,
+        body.theme-letters .item-preview,
+        body.theme-letters .item-meta,
+        body.theme-letters .read-more,
+        body.theme-letters .content-header h2 {
+            font-family: 'Caveat', cursive;
+            font-size: 20px;
+            line-height: 1.7;
+        }
+        body.theme-letters .item-title   { font-size: 22px; font-weight: 700; }
+        body.theme-letters .drawer-body  { font-size: 20px; line-height: 1.9; }
+
+        /* Opinions — Arial Bold */
+        body.theme-opinions .content,
+        body.theme-opinions .drawer,
+        body.theme-opinions .item-title,
+        body.theme-opinions .item-preview,
+        body.theme-opinions .item-meta,
+        body.theme-opinions .content-header h2 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-weight: 700;
+        }
+        body.theme-opinions .item-preview { font-weight: 400; font-style: italic; }
+
+        /* Reviews — Baskerville */
+        body.theme-reviews .content,
+        body.theme-reviews .drawer,
+        body.theme-reviews .item-title,
+        body.theme-reviews .item-preview,
+        body.theme-reviews .item-meta,
+        body.theme-reviews .content-header h2 {
+            font-family: 'Baskerville', 'Libre Baskerville', 'Times New Roman', serif;
+        }
+
+        /* Recipes — Luckiest Guy */
+        body.theme-recipes .content-header h2,
+        body.theme-recipes .item-title {
+            font-family: 'Luckiest Guy', cursive;
+            letter-spacing: 2px;
+        }
+        body.theme-recipes .item-preview,
+        body.theme-recipes .drawer-body {
+            font-family: Georgia, serif;
+            font-weight: 300;
+        }
+
+        /* About — EB Garamond (already default, just reinforce) */
+        body.theme-about .content,
+        body.theme-about .content-header h2,
+        body.theme-about .item-preview {
+            font-family: 'EB Garamond', Georgia, serif;
+        }
+
+
     </style>
 </head>
 <body>
 
-<!-- ─── HAMBURGER ──────────────────────────────────────────────── -->
-<button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()">
-    <span id="menuText">☰ Menu</span>
-</button>
+<!-- sidebar is always visible -->
 
 <!-- ─── PASSWORD MODAL ────────────────────────────────────────── -->
 <div class="modal-overlay" id="passwordModal">
@@ -685,7 +968,7 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
-        <div class="sidebar-brand" onclick="location.reload()">rubnyemile</div>
+        <div class="sidebar-brand" onclick="location.reload()">Rubny Emile</div>
 
         <nav class="sidebar-nav">
 
@@ -694,7 +977,7 @@
                     Poetry <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('poetry')">All Poems</a>
+                    <a onclick="showPage('poetry')">Poems</a>
                 </div>
             </div>
 
@@ -703,7 +986,7 @@
                     Opinions <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('opinions')">All Opinions</a>
+                    <a onclick="showPage('opinions')">Opinions</a>
                 </div>
             </div>
 
@@ -721,7 +1004,7 @@
                     Recipes <span class="nav-arrow">▼</span>
                 </div>
                 <div class="nav-items">
-                    <a onclick="showPage('recipes')">All Recipes</a>
+                    <a onclick="showPage('recipes')">Recipes</a>
                 </div>
             </div>
 
@@ -861,7 +1144,22 @@
     /* Letters hub ---------------------------------------------- */
 
     function renderLettersHub() {
-        const categories = data.letter_categories || [];
+        const defaultCategories = [
+            { id: 'ziwi',           name: 'Ziwi the Kiwi',  description: 'Enter password to read.' },
+            { id: 'aicsa',          name: 'Aicsa',           description: 'Enter password to read.' },
+            { id: 'rubny',          name: 'Rubny',           description: 'Enter password to read.' },
+            { id: 'people',         name: 'People',          description: 'Enter password to read.' },
+            { id: 'things',         name: 'Things',          description: 'Enter password to read.' },
+        ];
+
+        // merge with any categories from content.json, defaultCategories fill in the rest
+        const jsonCategories = data.letter_categories || [];
+        const jsonIds = jsonCategories.map(c => c.id);
+        const categories = [
+            ...jsonCategories,
+            ...defaultCategories.filter(c => !jsonIds.includes(c.id)),
+        ];
+
         const cards = categories.map(cat => `
             <div class="item letter-hub-item" onclick="promptCategoryPassword('${cat.id}')">
                 <div class="item-title">${cat.name}</div>
@@ -972,6 +1270,16 @@
        NAVIGATION
     ───────────────────────────────────────────────────────────── */
 
+
+    const PAGE_THEMES = {
+        poetry:   'theme-poetry',
+        opinions: 'theme-opinions',
+        reviews:  'theme-reviews',
+        recipes:  'theme-recipes',
+        letters:  'theme-letters',
+        about:    'theme-about',
+    };
+
     function showPage(pageId) {
         document.getElementById('hero').style.display = 'none';
         document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
@@ -980,9 +1288,15 @@
         const target = document.getElementById(pageId + '-page');
         if (target) target.classList.add('active');
 
+        // apply page theme
+        const body = document.body;
+        Object.values(PAGE_THEMES).forEach(cls => body.classList.remove(cls));
+        const root = pageId.split('-')[0]; // handle letter sub-pages
+        const theme = PAGE_THEMES[root] || null;
+        if (theme) body.classList.add(theme);
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        document.getElementById('menuText').textContent = '☰';
-        closeSidebarOnMobile();
+
     }
 
     function toggleNav(el) {
@@ -999,30 +1313,19 @@
         }
     }
 
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('open');
-        document.getElementById('menuToggle').classList.toggle('active');
-    }
 
-    function closeSidebarOnMobile() {
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('menuToggle').classList.remove('active');
-    }
-
-    // close sidebar whenever any nav link is clicked
-    document.addEventListener('click', function (e) {
-        if (e.target.closest('.nav-items')) closeSidebarOnMobile();
-    });
 
     function openFirstNav() {
-        const first = document.querySelector('.nav-title');
-        if (first) toggleNav(first);
+        document.querySelectorAll('.nav-title').forEach(el => {
+            el.querySelector('.nav-arrow').classList.add('open');
+            el.nextElementSibling.classList.add('show');
+        });
     }
 
     function populateLettersNav() {
         const nav = document.getElementById('letters-nav');
         if (!nav) return;
-        nav.innerHTML = `<a onclick="showPage('letters')">All Letters</a>`;
+        nav.innerHTML = `<a onclick="showPage('letters')">Letters</a>`;
     }
 
 
