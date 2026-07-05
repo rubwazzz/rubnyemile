@@ -31,12 +31,28 @@
             --attention:    #c45d4a;
 
             --border:       rgba(200, 93, 74, 0.15);
-            --hover-bg:     rgba(58, 49, 40, 0.5);
 
             --sidebar-w:    96px; /* 1 inch at 96dpi */
 
             --font-serif:   'EB Garamond', Georgia, serif;
             --font-mono:    'Courier Prime', monospace;
+
+            /* theme-swappable tokens — every page theme below only
+               overrides these few variables, instead of repeating
+               dozens of selector rules per page. */
+            --t-bg-start:    #5a5047;
+            --t-bg-end:      #4a4035;
+            --t-sidebar-1:   var(--sidebar-bg);
+            --t-sidebar-2:   #251f1a;
+            --t-sidebar-border: var(--border);
+            --t-text:        var(--text);
+            --t-muted:       var(--muted);
+            --t-accent:      var(--accent);
+            --t-accent-soft: rgba(122, 157, 111, 0.7);
+            --t-card-bg:     rgba(58, 49, 40, 0.3);
+            --t-card-hover-bg: rgba(122, 157, 111, 0.08);
+            --t-border:      var(--border);
+            --t-font:        var(--font-mono);
         }
 
 
@@ -46,11 +62,12 @@
 
         body {
             font-family: var(--font-serif);
-            background: radial-gradient(circle at 20% 20%, #5a5047 0%, #4a4035 60%);
-            color: var(--text);
+            background: radial-gradient(circle at 20% 20%, var(--t-bg-start) 0%, var(--t-bg-end) 60%);
+            color: var(--t-text);
             line-height: 1.85;
             letter-spacing: 0.2px;
             font-size: 18px;
+            transition: background 0.4s ease;
         }
 
         /* film grain */
@@ -69,7 +86,7 @@
 
         ::-webkit-scrollbar       { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--attention); border-radius: 2px; opacity: 0.6; }
+        ::-webkit-scrollbar-thumb { background: var(--t-accent); border-radius: 2px; opacity: 0.6; }
 
 
         /* ─── LAYOUT ─────────────────────────────────────────────── */
@@ -84,8 +101,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            align-items: center;   /* center content instead of leaving it flush-left */
             min-height: 100vh;
-            transition: margin-left 0.3s ease;
         }
 
 
@@ -93,18 +110,17 @@
 
         .sidebar {
             width: var(--sidebar-w);
-            background: linear-gradient(180deg, var(--sidebar-bg) 0%, #251f1a 100%);
+            background: linear-gradient(180deg, var(--t-sidebar-1) 0%, var(--t-sidebar-2) 100%);
             padding: 44px 10px 40px;
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
             overflow-y: auto;
-            border-right: 1px solid var(--border);
-            box-shadow: inset -1px 0 0 rgba(122, 157, 111, 0.05);
+            border-right: 1px solid var(--t-sidebar-border);
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease;
+            transition: background 0.4s ease, border-color 0.4s ease;
             z-index: 9998;
         }
 
@@ -113,11 +129,10 @@
             font-size: 11px;
             font-style: italic;
             letter-spacing: 0.5px;
-            color: var(--attention);
+            color: var(--t-accent);
             margin-bottom: 48px;
             opacity: 0.9;
-            text-shadow: 0 0 8px rgba(196, 93, 74, 0.3);
-            cursor: default;
+            cursor: pointer;
         }
 
         .sidebar-nav  { flex: 1; }
@@ -125,11 +140,11 @@
         .sidebar-footer {
             margin-top: 32px;
             padding-top: 20px;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--t-border);
             font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 1.5px;
-            color: var(--muted);
+            color: var(--t-muted);
             opacity: 0.5;
         }
 
@@ -138,42 +153,37 @@
 
         .nav-section { margin-bottom: 6px; }
 
-        .nav-title {
+        .nav-link {
+            display: block;
             font-family: var(--font-mono);
             font-size: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--muted);
+            color: var(--t-muted);
             cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             padding: 9px 0;
-            transition: color 0.25s;
+            transition: color 0.2s;
             user-select: none;
+            text-decoration: none;
         }
 
+        .nav-link:hover { color: var(--t-accent); }
 
-
-        .nav-arrow {
-            display: none;
-        }
+        .nav-section.has-children > .nav-link { cursor: pointer; }
 
         .nav-items {
+            display: none;
             padding: 4px 0 8px 8px;
-            border-left: none;
-            margin-left: 1px;
         }
 
         .nav-items.show { display: block; }
 
         .nav-items a {
-            display: inline-block;
+            display: block;
             text-decoration: none;
-            color: var(--text);
+            color: var(--t-text);
             font-size: 10px;
             font-family: var(--font-mono);
-            font-style: normal;
             padding: 4px 0;
             opacity: 0.65;
             cursor: pointer;
@@ -181,57 +191,28 @@
             background: none !important;
             -webkit-tap-highlight-color: transparent;
         }
-        .nav-items { display: none; }
 
-        .nav-items a:hover {
-            opacity: 1;
-        }
-
-
-        /* ─── HAMBURGER ──────────────────────────────────────────── */
-
-        .menu-toggle {
-            display: none !important;
-            position: fixed;
-            top: 70px;
-            left: 20px;
-            z-index: 10000;
-            background: var(--sidebar-bg);
-            border: 1px solid var(--attention);
-            padding: 10px 12px;
-            cursor: pointer;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--text);
-            transition: background 0.2s, box-shadow 0.2s;
-        }
-
-        .menu-toggle:hover,
-        .menu-toggle.active {
-            background: var(--attention);
-            color: var(--bg);
-            box-shadow: 0 0 12px rgba(196, 93, 74, 0.3);
-        }
+        .nav-items a:hover { opacity: 1; }
 
 
         /* ─── HERO ───────────────────────────────────────────────── */
 
         .hero {
-            background: radial-gradient(circle at center, #5a5047 0%, #4a4035 100%);
-            padding: 110px 64px 90px;
+            width: 100%;
+            max-width: 820px;
+            background: radial-gradient(circle at center, var(--t-bg-start) 0%, var(--t-bg-end) 100%);
+            padding: 60px 64px;
             text-align: center;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--t-border);
             position: relative;
+            flex-shrink: 0;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 50% 100%, rgba(196, 93, 74, 0.04) 0%, transparent 70%);
-            pointer-events: none;
+        .hero-wrap {
+            min-height: calc(100vh - 250px); /* leaves room for footer so a short poem fits on one screen */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .hero-eyebrow {
@@ -239,39 +220,38 @@
             font-size: 10px;
             letter-spacing: 4px;
             text-transform: uppercase;
-            color: var(--attention);
+            color: var(--t-accent);
             opacity: 0.7;
             margin-bottom: 20px;
         }
 
         .hero-title {
-            font-size: 52px;
+            font-size: 38px;
             font-weight: 400;
-            letter-spacing: 4px;
-            color: var(--text);
-            margin-bottom: 20px;
-            line-height: 1.1;
+            letter-spacing: 2px;
+            color: var(--t-text);
+            margin-bottom: 24px;
+            line-height: 1.15;
         }
 
         .hero-tagline {
             font-size: 17px;
-            color: var(--muted);
+            color: var(--t-muted);
             font-style: italic;
             letter-spacing: 0.5px;
         }
 
-        /* featured poem variant on hero */
         .hero-poem-body {
             max-width: 700px;
-            margin: 0 auto 30px;
+            margin: 0 auto 26px;
             font-size: 16px;
-            line-height: 2;
+            line-height: 1.9;
             white-space: pre-line;
-            color: var(--muted);
+            color: var(--t-muted);
         }
 
         .hero-poem-link {
-            color: var(--accent);
+            color: var(--t-accent);
             text-decoration: none;
             font-family: var(--font-mono);
             font-size: 11px;
@@ -292,28 +272,27 @@
             width: 100%;
         }
 
-
-
         .content-header {
             display: flex;
             align-items: baseline;
             gap: 16px;
             margin-bottom: 44px;
             padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid var(--t-border);
         }
 
         .content-header h2 {
             font-size: 30px;
             font-weight: 400;
             letter-spacing: 1.5px;
-            color: var(--text);
+            color: var(--t-text);
+            font-family: var(--t-font);
         }
 
         .content-count {
             font-family: var(--font-mono);
             font-size: 11px;
-            color: var(--muted);
+            color: var(--t-muted);
             letter-spacing: 1px;
         }
 
@@ -328,33 +307,32 @@
             flex-direction: column;
             justify-content: center;
             overflow: hidden;
-            background: rgba(58, 49, 40, 0.3);
-            border-left: 2px solid var(--attention);
-            box-shadow: inset 0 0 0 1px rgba(196, 93, 74, 0.1);
+            background: var(--t-card-bg);
             position: relative;
-            transition: transform 0.22s ease, background 0.22s ease,
-                        border-color 0.22s ease, box-shadow 0.22s ease;
+            cursor: pointer;
+            transition: transform 0.22s ease, background 0.22s ease;
         }
 
         .item:hover {
             transform: translateX(5px);
-            background: rgba(122, 157, 111, 0.08);
-            border-left-color: var(--accent);
-            box-shadow: inset 0 0 0 1px rgba(122, 157, 111, 0.2),
-                        0 0 16px rgba(122, 157, 111, 0.1);
+            background: var(--t-card-hover-bg);
         }
 
-        .item:hover .item-title   { color: var(--accent); }
-        .item:hover .item-meta    { color: var(--accent); opacity: 1; }
-        .item:hover .item-preview { color: rgba(122, 157, 111, 0.8); }
-        .item:hover .read-more    { color: var(--accent); opacity: 1; letter-spacing: 2px; }
+        .item:hover .item-title,
+        .item:hover .item-meta,
+        .item:hover .read-more {
+            color: var(--t-accent);
+            opacity: 1;
+        }
+
+        .item:hover .item-preview { color: var(--t-accent-soft); }
 
         .item-title {
-            font-family: var(--font-mono);
+            font-family: var(--t-font);
             font-size: 14px;
             font-weight: 500;
             letter-spacing: 1.2px;
-            color: var(--text);
+            color: var(--t-text);
             margin-bottom: 2px;
             white-space: nowrap;
             overflow: hidden;
@@ -362,71 +340,60 @@
         }
 
         .item-meta {
-            font-family: var(--font-mono);
+            font-family: var(--t-font);
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--attention);
+            color: var(--t-muted);
             opacity: 0.7;
             margin-bottom: 2px;
         }
 
         .item-preview {
+            font-family: var(--t-font);
             font-size: 13px;
             font-weight: 300;
             font-style: italic;
-            color: var(--muted);
+            color: var(--t-muted);
             line-height: 1.3;
-            margin-bottom: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .read-more {
-            display: none; /* hidden inside fixed-height card; shown on hover */
-            font-family: var(--font-mono);
+            display: none;
+            font-family: var(--t-font);
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--accent);
-            text-decoration: none;
+            color: var(--t-accent);
             opacity: 0.75;
             cursor: pointer;
-            transition: opacity 0.2s, letter-spacing 0.2s;
         }
 
-        .item:hover .read-more {
-            display: inline;
-        }
-
-        .read-more:hover {
-            opacity: 1;
-            letter-spacing: 2px;
-        }
+        .item:hover .read-more { display: inline; }
 
 
         /* ─── EXPANDED DRAWER ────────────────────────────────────── */
 
         .drawer {
             display: none;
-            background: rgba(31, 26, 21, 0.6);
+            background: rgba(31, 26, 21, 0.25);
             padding: 28px 32px;
             margin-top: 16px;
-            border: 1px solid var(--border);
-            border-left: 2px solid var(--accent);
-            box-shadow: 0 0 20px rgba(122, 157, 111, 0.06);
+            margin-bottom: 16px;
+            border: 1px solid var(--t-border);
             position: relative;
         }
 
-        /* decorative opening quote */
         .drawer::before {
             content: '"';
             position: absolute;
             top: 16px;
             left: 20px;
             font-size: 48px;
-            color: var(--attention);
+            color: var(--t-accent);
             opacity: 0.15;
             font-family: Georgia, serif;
             line-height: 1;
@@ -438,10 +405,11 @@
         }
 
         .drawer-body {
+            font-family: var(--t-font);
             font-size: 17px;
             line-height: 2.1;
             white-space: pre-line;
-            color: var(--text);
+            color: var(--t-text);
             opacity: 0.9;
         }
 
@@ -452,148 +420,29 @@
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--muted);
+            color: var(--t-muted);
             cursor: pointer;
-            transition: color 0.2s;
         }
 
-        .drawer-close:hover { color: var(--accent); }
-
-
-        /* ─── PASSWORD MODAL ─────────────────────────────────────── */
-
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 10001;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal-overlay.active { display: flex; }
-
-        .modal {
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-top: 2px solid var(--attention);
-            padding: 44px 48px;
-            width: 360px;
-            max-width: 90vw;
-            box-shadow: 0 0 40px rgba(196, 93, 74, 0.2);
-            animation: fadeUp 0.25s ease;
-        }
-
-        .modal-eyebrow {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--attention);
-            opacity: 0.7;
-            margin-bottom: 12px;
-        }
-
-        .modal h3 {
-            font-size: 22px;
-            font-weight: 400;
-            font-style: italic;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
-
-        .modal p {
-            font-size: 13px;
-            color: var(--muted);
-            line-height: 1.6;
-            margin-bottom: 28px;
-        }
-
-        .modal input {
-            width: 100%;
-            background: rgba(31, 26, 21, 0.6);
-            border: 1px solid var(--border);
-            border-bottom: 2px solid var(--attention);
-            color: var(--text);
-            font-family: var(--font-mono);
-            font-size: 14px;
-            letter-spacing: 2px;
-            padding: 12px 14px;
-            outline: none;
-            margin-bottom: 20px;
-            transition: border-color 0.2s;
-        }
-
-        .modal input:focus        { border-bottom-color: var(--accent); }
-        .modal input::placeholder { color: var(--muted); opacity: 0.5; letter-spacing: 1px; }
-
-        .modal-error {
-            display: none;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            letter-spacing: 1px;
-            color: #c54545;
-            margin-bottom: 16px;
-        }
-
-        .modal-error.show { display: block; }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .btn-enter {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 10px 22px;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .btn-enter:hover {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-cancel {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            padding: 10px 0;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .btn-cancel:hover { color: var(--text); }
+        .drawer-close:hover { color: var(--t-accent); }
 
 
         /* ─── FOOTER ─────────────────────────────────────────────── */
 
         .footer {
             margin-top: auto;
+            width: 100%;
+            max-width: 820px;
             background: var(--panel);
             padding: 44px 64px;
             text-align: center;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--t-border);
         }
 
         .footer p {
             font-size: 14px;
             font-style: italic;
-            color: var(--muted);
+            color: var(--t-muted);
             line-height: 1.6;
             margin-bottom: 20px;
         }
@@ -601,8 +450,8 @@
         .footer-link {
             display: inline-block;
             background: transparent;
-            border: 1px solid var(--accent);
-            color: var(--accent);
+            border: 1px solid var(--t-accent);
+            color: var(--t-accent);
             padding: 11px 28px;
             text-decoration: none;
             font-family: var(--font-mono);
@@ -613,15 +462,15 @@
         }
 
         .footer-link:hover {
-            background: var(--accent);
+            background: var(--t-accent);
             color: white;
         }
 
 
         /* ─── PAGE VISIBILITY ────────────────────────────────────── */
 
-        .page { display: none; }
-        .page.active { display: block; }
+        .page { display: none; width: 100%; display: none; flex-direction: column; align-items: center; }
+        .page.active { display: flex; }
 
 
         /* ─── ANIMATION ──────────────────────────────────────────── */
@@ -634,370 +483,135 @@
 
         /* ─── RESPONSIVE ─────────────────────────────────────────── */
 
-        @media (max-width: 968px) {
-            .main { margin-left: var(--sidebar-w); }
-        }
-
         @media (max-width: 768px) {
-            .hero           { padding: 80px 28px 60px; }
-            .hero-title     { font-size: 36px; }
+            .hero, .hero-wrap { padding: 40px 28px; min-height: auto; }
+            .hero-title     { font-size: 30px; }
             .content        { padding: 36px 24px; }
             .drawer         { padding: 28px 24px; }
             .footer         { padding: 36px 24px; }
         }
 
 
-        /* ─── PAGE THEMES ────────────────────────────────────────────── */
+        /* ─── PAGE THEMES ────────────────────────────────────────────── 
+             Each theme only overrides the small set of --t-* tokens
+             declared above. No repeated selector blocks per page. */
 
-        /* Poetry — soft sage, muted greens, dusty */
         body.theme-poetry {
-            background: radial-gradient(circle at 20% 20%, #6b8c72 0%, #4a6653 60%);
+            --t-bg-start: #6b8c72;
+            --t-bg-end:   #4a6653;
+            --t-sidebar-1: #3d5c45;
+            --t-sidebar-2: #273d2e;
+            --t-sidebar-border: rgba(160,200,160,0.15);
+            --t-accent: #b8d4b0;
+            --t-accent-soft: rgba(208,232,200,0.75);
+            --t-card-bg: rgba(160,200,160,0.06);
+            --t-card-hover-bg: rgba(160,200,160,0.12);
+            --t-border: rgba(160,200,160,0.2);
+            --t-font: var(--font-mono);
         }
-        body.theme-poetry .sidebar {
-            background: linear-gradient(180deg, #3d5c45 0%, #273d2e 100%);
-            border-right-color: rgba(160, 200, 160, 0.15);
-        }
-        body.theme-poetry .sidebar-brand          { color: #b8d4b0; text-shadow: 0 0 8px rgba(184,212,176,0.2); }
-        body.theme-poetry .nav-title:hover         { color: #d0e8c8; }
-        body.theme-poetry .nav-items               { border-left-color: #b8d4b0; }
-        body.theme-poetry .nav-items a:hover       { color: #d0e8c8; }
-        body.theme-poetry .hero                    { background: radial-gradient(circle at center, #6b8c72 0%, #4a6653 100%); }
-        body.theme-poetry .content-header          { border-bottom-color: rgba(160,200,160,0.2); }
-        body.theme-poetry .item                    { border-left-color: #b8d4b0; box-shadow: inset 0 0 0 1px rgba(160,200,160,0.1); }
-        body.theme-poetry .item:hover              { background: rgba(160,200,160,0.08); border-left-color: #d0e8c8; box-shadow: inset 0 0 0 1px rgba(208,232,200,0.18), 0 0 14px rgba(208,232,200,0.06); }
-        body.theme-poetry .item:hover .item-title  { color: #d0e8c8; }
-        body.theme-poetry .item:hover .item-meta   { color: #d0e8c8; opacity:1; }
-        body.theme-poetry .item:hover .item-preview{ color: rgba(208,232,200,0.75); }
-        body.theme-poetry .item:hover .read-more   { color: #d0e8c8; opacity:1; }
-        body.theme-poetry .item-meta               { color: #b8d4b0; }
-        body.theme-poetry .read-more               { color: #b8d4b0; }
-        body.theme-poetry .drawer                  { border-left-color: #b8d4b0; border-color: rgba(160,200,160,0.18); }
-        body.theme-poetry .drawer::before          { color: #b8d4b0; }
-        body.theme-poetry .footer                  { background: #3d5c45; border-top-color: rgba(160,200,160,0.15); }
-        body.theme-poetry .footer-link             { border-color: #b8d4b0; color: #b8d4b0; }
-        body.theme-poetry .footer-link:hover       { background: #b8d4b0; color: #273d2e; }
-        body.theme-poetry ::-webkit-scrollbar-thumb { background: #b8d4b0; }
 
-        /* Opinions — white background, black text */
         body.theme-opinions {
-            background: #ffffff;
-            color: #111111;
+            --t-bg-start: #ffffff;
+            --t-bg-end:   #ffffff;
+            --t-sidebar-1: #f5f5f5;
+            --t-sidebar-2: #e8e8e8;
+            --t-sidebar-border: rgba(0,0,0,0.12);
+            --t-text: #111111;
+            --t-muted: #555555;
+            --t-accent: #111111;
+            --t-accent-soft: #222222;
+            --t-card-bg: #f9f9f9;
+            --t-card-hover-bg: #efefef;
+            --t-border: rgba(0,0,0,0.1);
+            --t-font: Arial, Helvetica, sans-serif;
         }
-        body.theme-opinions .sidebar {
-            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
-            border-right-color: rgba(0,0,0,0.12);
-        }
-        body.theme-opinions .sidebar-brand          { color: #111111; text-shadow: none; }
-        body.theme-opinions .nav-title              { color: #444444; }
-        body.theme-opinions .nav-title:hover        { color: #111111; }
-        body.theme-opinions .nav-items              { border-left-color: #111111; }
-        body.theme-opinions .nav-items a            { color: #333333; }
-        body.theme-opinions .nav-items a:hover      { color: #111111; }
-        body.theme-opinions .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
-        body.theme-opinions .nav-arrow              { color: #555555; }
-        body.theme-opinions .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
-        body.theme-opinions .hero-eyebrow           { color: #555555; }
-        body.theme-opinions .hero-title             { color: #111111; }
-        body.theme-opinions .hero-tagline           { color: #444444; }
-        body.theme-opinions .hero-poem-body         { color: #333333; }
-        body.theme-opinions .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
-        body.theme-opinions .content-header h2      { color: #111111; }
-        body.theme-opinions .content-count          { color: #666666; }
-        body.theme-opinions .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
-        body.theme-opinions .item-title             { color: #111111; }
-        body.theme-opinions .item-meta              { color: #555555; }
-        body.theme-opinions .item-preview           { color: #444444; }
-        body.theme-opinions .read-more              { color: #111111; }
-        body.theme-opinions .item:hover             { background: #efefef; border-left-color: #000000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
-        body.theme-opinions .item:hover .item-title { color: #000000; }
-        body.theme-opinions .item:hover .item-meta  { color: #000000; opacity:1; }
-        body.theme-opinions .item:hover .item-preview{ color: #222222; }
-        body.theme-opinions .item:hover .read-more  { color: #000000; opacity:1; }
-        body.theme-opinions .drawer                 { background: #f5f5f5; border-left-color: #111111; border-color: rgba(0,0,0,0.1); }
-        body.theme-opinions .drawer::before         { color: #cccccc; }
-        body.theme-opinions .drawer-body            { color: #111111; }
-        body.theme-opinions .drawer-close           { color: #666666; }
-        body.theme-opinions .drawer-close:hover     { color: #111111; }
-        body.theme-opinions .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
-        body.theme-opinions .footer p               { color: #555555; }
-        body.theme-opinions .footer-link            { border-color: #111111; color: #111111; }
-        body.theme-opinions .footer-link:hover      { background: #111111; color: #ffffff; }
-        body.theme-opinions ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+        body.theme-opinions .item-title  { font-weight: 700; font-size: 13px; letter-spacing: 0.5px; }
+        body.theme-opinions .item-preview{ font-weight: 400; font-style: italic; font-size: 12px; }
+        body.theme-opinions .item-meta   { font-weight: 700; font-size: 9px; }
+        body.theme-opinions .content-header h2 { font-weight: 700; }
 
-        /* Reviews — white background, black text, Baskerville */
         body.theme-reviews {
-            background: #ffffff;
-            color: #111111;
+            --t-bg-start: #ffffff;
+            --t-bg-end:   #ffffff;
+            --t-sidebar-1: #f5f5f5;
+            --t-sidebar-2: #e8e8e8;
+            --t-sidebar-border: rgba(0,0,0,0.12);
+            --t-text: #111111;
+            --t-muted: #555555;
+            --t-accent: #111111;
+            --t-accent-soft: #222222;
+            --t-card-bg: #f9f9f9;
+            --t-card-hover-bg: #efefef;
+            --t-border: rgba(0,0,0,0.1);
+            --t-font: 'Baskerville', 'Libre Baskerville', 'Times New Roman', serif;
         }
-        body.theme-reviews .sidebar {
-            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
-            border-right-color: rgba(0,0,0,0.12);
-        }
-        body.theme-reviews .sidebar-brand          { color: #111111; text-shadow: none; }
-        body.theme-reviews .nav-title              { color: #444444; }
-        body.theme-reviews .nav-title:hover        { color: #111111; }
-        body.theme-reviews .nav-items a            { color: #333333; }
-        body.theme-reviews .nav-items a:hover      { color: #111111; }
-        body.theme-reviews .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
-        body.theme-reviews .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
-        body.theme-reviews .hero-eyebrow           { color: #555555; }
-        body.theme-reviews .hero-title             { color: #111111; }
-        body.theme-reviews .hero-tagline           { color: #444444; }
-        body.theme-reviews .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
-        body.theme-reviews .content-header h2      { color: #111111; }
-        body.theme-reviews .content-count          { color: #666666; }
-        body.theme-reviews .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
-        body.theme-reviews .item-title             { color: #111111; }
-        body.theme-reviews .item-meta              { color: #555555; }
-        body.theme-reviews .item-preview           { color: #444444; }
-        body.theme-reviews .read-more              { color: #111111; }
-        body.theme-reviews .item:hover             { background: #efefef; border-left-color: #000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
-        body.theme-reviews .item:hover .item-title { color: #000; }
-        body.theme-reviews .item:hover .item-meta  { color: #000; opacity:1; }
-        body.theme-reviews .item:hover .item-preview{ color: #222; }
-        body.theme-reviews .item:hover .read-more  { color: #000; opacity:1; }
-        body.theme-reviews .drawer                 { background: #f5f5f5; border-left-color: #111; border-color: rgba(0,0,0,0.1); }
-        body.theme-reviews .drawer::before         { color: #cccccc; }
-        body.theme-reviews .drawer-body            { color: #111111; }
-        body.theme-reviews .drawer-close           { color: #666; }
-        body.theme-reviews .drawer-close:hover     { color: #111; }
-        body.theme-reviews .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
-        body.theme-reviews .footer p               { color: #555555; }
-        body.theme-reviews .footer-link            { border-color: #111; color: #111; }
-        body.theme-reviews .footer-link:hover      { background: #111; color: #fff; }
-        body.theme-reviews ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+        body.theme-reviews .item-title   { font-size: 14px; }
+        body.theme-reviews .item-preview { font-size: 13px; }
+        body.theme-reviews .item-meta    { font-size: 10px; }
 
-        /* Recipes — cerulean, blue, light wood */
         body.theme-recipes {
-            background: radial-gradient(circle at 20% 20%, #2a5f7a 0%, #14303f 60%);
+            --t-bg-start: #2a5f7a;
+            --t-bg-end:   #14303f;
+            --t-sidebar-1: #14303f;
+            --t-sidebar-2: #091820;
+            --t-sidebar-border: rgba(42,127,184,0.2);
+            --t-accent: #85c4de;
+            --t-accent-soft: rgba(133,196,222,0.8);
+            --t-card-bg: rgba(42,127,184,0.06);
+            --t-card-hover-bg: rgba(42,127,184,0.12);
+            --t-border: rgba(42,127,184,0.2);
+            --t-font: Georgia, serif;
         }
-        body.theme-recipes .sidebar {
-            background: linear-gradient(180deg, #14303f 0%, #091820 100%);
-            border-right-color: rgba(42,127,184,0.2);
-        }
-        body.theme-recipes .sidebar-brand          { color: #4a9fc4; text-shadow: 0 0 8px rgba(74,159,196,0.3); }
-        body.theme-recipes .nav-title:hover         { color: #85c4de; }
-        body.theme-recipes .nav-items               { border-left-color: #4a9fc4; }
-        body.theme-recipes .nav-items a:hover       { color: #85c4de; }
-        body.theme-recipes .hero                    { background: radial-gradient(circle at center, #2a5f7a 0%, #14303f 100%); }
-        body.theme-recipes .content-header          { border-bottom-color: rgba(42,127,184,0.2); }
-        body.theme-recipes .item                    { border-left-color: #4a9fc4; box-shadow: inset 0 0 0 1px rgba(42,127,184,0.12); }
-        body.theme-recipes .item:hover              { background: rgba(42,127,184,0.1); border-left-color: #85c4de; box-shadow: inset 0 0 0 1px rgba(133,196,222,0.2), 0 0 16px rgba(133,196,222,0.08); }
-        body.theme-recipes .item:hover .item-title  { color: #85c4de; }
-        body.theme-recipes .item:hover .item-meta   { color: #85c4de; opacity:1; }
-        body.theme-recipes .item:hover .item-preview{ color: rgba(133,196,222,0.8); }
-        body.theme-recipes .item:hover .read-more   { color: #85c4de; opacity:1; }
-        body.theme-recipes .item-meta               { color: #4a9fc4; }
-        body.theme-recipes .read-more               { color: #4a9fc4; }
-        body.theme-recipes .drawer                  { border-left-color: #4a9fc4; border-color: rgba(42,127,184,0.2); }
-        body.theme-recipes .drawer::before          { color: #4a9fc4; }
-        body.theme-recipes .footer                  { background: #14303f; border-top-color: rgba(42,127,184,0.2); }
-        body.theme-recipes .footer-link             { border-color: #4a9fc4; color: #4a9fc4; }
-        body.theme-recipes .footer-link:hover       { background: #4a9fc4; }
-        body.theme-recipes ::-webkit-scrollbar-thumb { background: #4a9fc4; }
+        body.theme-recipes .content-header h2 { font-family: 'Luckiest Guy', cursive; letter-spacing: 2px; }
+        body.theme-recipes .item-title { font-family: 'Luckiest Guy', cursive; letter-spacing: 1px; font-size: 13px; }
 
-        /* Letters — white background, black text, Caveat font */
+        /* Letters — home palette, Caveat font, no password styling needed anymore */
         body.theme-letters {
-            background: #ffffff;
-            color: #111111;
+            --t-font: 'Caveat', cursive;
         }
-        body.theme-letters .sidebar {
-            background: linear-gradient(180deg, #f5f5f5 0%, #e8e8e8 100%);
-            border-right-color: rgba(0,0,0,0.12);
-        }
-        body.theme-letters .sidebar-brand          { color: #111111; text-shadow: none; }
-        body.theme-letters .nav-title              { color: #444444; }
-        body.theme-letters .nav-title:hover        { color: #111111; }
-        body.theme-letters .nav-items a            { color: #333333; }
-        body.theme-letters .nav-items a:hover      { color: #111111; }
-        body.theme-letters .sidebar-footer         { color: #888888; border-top-color: rgba(0,0,0,0.1); }
-        body.theme-letters .hero                   { background: #f0f0f0; border-bottom-color: rgba(0,0,0,0.08); }
-        body.theme-letters .hero-eyebrow           { color: #555555; }
-        body.theme-letters .hero-title             { color: #111111; }
-        body.theme-letters .hero-tagline           { color: #444444; }
-        body.theme-letters .content-header         { border-bottom-color: rgba(0,0,0,0.1); }
-        body.theme-letters .content-header h2      { color: #111111; }
-        body.theme-letters .content-count          { color: #666666; }
-        body.theme-letters .item                   { background: #f9f9f9; border-left-color: #111111; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06); }
-        body.theme-letters .item-title             { color: #111111; }
-        body.theme-letters .item-meta              { color: #555555; }
-        body.theme-letters .item-preview           { color: #444444; }
-        body.theme-letters .read-more              { color: #111111; }
-        body.theme-letters .item:hover             { background: #efefef; border-left-color: #000; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1); }
-        body.theme-letters .item:hover .item-title { color: #000; }
-        body.theme-letters .item:hover .item-meta  { color: #000; opacity:1; }
-        body.theme-letters .item:hover .item-preview{ color: #222; }
-        body.theme-letters .item:hover .read-more  { color: #000; opacity:1; }
-        body.theme-letters .drawer                 { background: #f5f5f5; border-left-color: #111; border-color: rgba(0,0,0,0.1); }
-        body.theme-letters .drawer::before         { color: #cccccc; }
-        body.theme-letters .drawer-body            { color: #111111; }
-        body.theme-letters .drawer-close           { color: #666; }
-        body.theme-letters .drawer-close:hover     { color: #111; }
-        body.theme-letters .footer                 { background: #f0f0f0; border-top-color: rgba(0,0,0,0.08); }
-        body.theme-letters .footer p               { color: #555555; }
-        body.theme-letters .footer-link            { border-color: #111; color: #111; }
-        body.theme-letters .footer-link:hover      { background: #111; color: #fff; }
-        body.theme-letters ::-webkit-scrollbar-thumb { background: #aaaaaa; }
+        body.theme-letters .content-header h2 { font-size: 28px; }
+        body.theme-letters .item-title  { font-size: 17px; font-weight: 700; }
+        body.theme-letters .item-preview{ font-size: 14px; }
+        body.theme-letters .item-meta   { font-size: 11px; }
+        body.theme-letters .drawer-body { font-size: 20px; line-height: 1.9; }
 
-        /* About — earthier brown */
         body.theme-about {
-            background: radial-gradient(circle at 20% 20%, #5c4830 0%, #332817 60%);
-        }
-        body.theme-about .sidebar {
-            background: linear-gradient(180deg, #332817 0%, #1a140a 100%);
-            border-right-color: rgba(160,110,60,0.2);
-        }
-        body.theme-about .sidebar-brand          { color: #b87840; text-shadow: 0 0 8px rgba(184,120,64,0.3); }
-        body.theme-about .nav-title:hover         { color: #d4a060; }
-        body.theme-about .nav-items               { border-left-color: #b87840; }
-        body.theme-about .nav-items a:hover       { color: #d4a060; }
-        body.theme-about .hero                    { background: radial-gradient(circle at center, #5c4830 0%, #332817 100%); }
-        body.theme-about .content-header          { border-bottom-color: rgba(160,110,60,0.2); }
-        body.theme-about .item                    { border-left-color: #b87840; box-shadow: inset 0 0 0 1px rgba(160,110,60,0.12); }
-        body.theme-about .item:hover              { background: rgba(160,110,60,0.1); border-left-color: #d4a060; box-shadow: inset 0 0 0 1px rgba(212,160,96,0.2), 0 0 16px rgba(212,160,96,0.08); }
-        body.theme-about .item:hover .item-title  { color: #d4a060; }
-        body.theme-about .item:hover .item-meta   { color: #d4a060; opacity:1; }
-        body.theme-about .item:hover .item-preview{ color: rgba(212,160,96,0.8); }
-        body.theme-about .item:hover .read-more   { color: #d4a060; opacity:1; }
-        body.theme-about .item-meta               { color: #b87840; }
-        body.theme-about .read-more               { color: #b87840; }
-        body.theme-about .drawer                  { border-left-color: #b87840; border-color: rgba(160,110,60,0.2); }
-        body.theme-about .drawer::before          { color: #b87840; }
-        body.theme-about .footer                  { background: #332817; border-top-color: rgba(160,110,60,0.2); }
-        body.theme-about .footer-link             { border-color: #b87840; color: #b87840; }
-        body.theme-about .footer-link:hover       { background: #b87840; }
-        body.theme-about ::-webkit-scrollbar-thumb { background: #b87840; }
-
-        /* smooth theme transition */
-        body, .sidebar, .hero, .footer {
-            transition: background 0.5s ease, border-color 0.5s ease;
+            --t-bg-start: #5c4830;
+            --t-bg-end:   #332817;
+            --t-sidebar-1: #332817;
+            --t-sidebar-2: #1a140a;
+            --t-sidebar-border: rgba(160,110,60,0.2);
+            --t-accent: #d4a060;
+            --t-accent-soft: rgba(212,160,96,0.8);
+            --t-card-bg: rgba(160,110,60,0.06);
+            --t-card-hover-bg: rgba(160,110,60,0.12);
+            --t-border: rgba(160,110,60,0.2);
+            --t-font: var(--font-serif);
         }
 
 
         /* ─── FALLING TEXT EFFECT (dark themes only) ───────────────────── */
 
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content .item-title,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content .item-preview,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content .item-meta,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content .read-more,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content-header h2,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .content-header .content-count,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .drawer .drawer-body,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .hero-title,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .hero-tagline,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .hero-eyebrow,
-        body:not(.theme-opinions):not(.theme-reviews):not(.theme-letters) .hero-poem-body {
+        body:not(.theme-opinions):not(.theme-reviews) .content .item-title,
+        body:not(.theme-opinions):not(.theme-reviews) .content .item-preview,
+        body:not(.theme-opinions):not(.theme-reviews) .content .item-meta,
+        body:not(.theme-opinions):not(.theme-reviews) .content-header h2,
+        body:not(.theme-opinions):not(.theme-reviews) .drawer .drawer-body,
+        body:not(.theme-opinions):not(.theme-reviews) .hero-title,
+        body:not(.theme-opinions):not(.theme-reviews) .hero-tagline,
+        body:not(.theme-opinions):not(.theme-reviews) .hero-eyebrow,
+        body:not(.theme-opinions):not(.theme-reviews) .hero-poem-body {
             text-shadow: 0 -2px 0 rgba(0,0,0,0.18), 0 1px 6px rgba(0,0,0,0.10);
-            position: relative;
         }
 
-        /* explicitly clear shadows on white pages */
         body.theme-opinions .content *,
-        body.theme-reviews .content *,
-        body.theme-letters .content *,
-        body.theme-opinions .content-header *,
-        body.theme-reviews .content-header *,
-        body.theme-letters .content-header * {
+        body.theme-reviews .content * {
             text-shadow: none !important;
         }
-
-
-        /* ─── PER-PAGE FONTS ─────────────────────────────────────────── */
-
-        /* Letters — Caveat (personal, handwritten) */
-        body.theme-letters .content-header h2 {
-            font-family: 'Caveat', cursive;
-            font-size: 28px;
-        }
-        body.theme-letters .item-title {
-            font-family: 'Caveat', cursive;
-            font-size: 16px;
-            font-weight: 700;
-            line-height: 1.2;
-        }
-        body.theme-letters .item-preview {
-            font-family: 'Caveat', cursive;
-            font-size: 13px;
-            line-height: 1.2;
-        }
-        body.theme-letters .item-meta {
-            font-family: 'Caveat', cursive;
-            font-size: 11px;
-        }
-        body.theme-letters .drawer-body {
-            font-family: 'Caveat', cursive;
-            font-size: 20px;
-            line-height: 1.9;
-        }
-
-        /* Opinions — Arial Bold */
-        body.theme-opinions .content,
-        body.theme-opinions .drawer,
-        body.theme-opinions .item-title,
-        body.theme-opinions .item-preview,
-        body.theme-opinions .item-meta,
-        body.theme-opinions .content-header h2 {
-            font-family: Arial, Helvetica, sans-serif;
-            font-weight: 700;
-        }
-        body.theme-opinions .item-preview { font-weight: 400; font-style: italic; }
-
-        /* Reviews — Baskerville */
-        body.theme-reviews .content,
-        body.theme-reviews .drawer,
-        body.theme-reviews .item-title,
-        body.theme-reviews .item-preview,
-        body.theme-reviews .item-meta,
-        body.theme-reviews .content-header h2 {
-            font-family: 'Baskerville', 'Libre Baskerville', 'Times New Roman', serif;
-        }
-
-        /* Recipes — Luckiest Guy */
-        body.theme-recipes .content-header h2,
-        body.theme-recipes .item-title {
-            font-family: 'Luckiest Guy', cursive;
-            letter-spacing: 2px;
-        }
-        body.theme-recipes .item-preview,
-        body.theme-recipes .drawer-body {
-            font-family: Georgia, serif;
-            font-weight: 300;
-        }
-
-        /* About — EB Garamond (already default, just reinforce) */
-        body.theme-about .content,
-        body.theme-about .content-header h2,
-        body.theme-about .item-preview {
-            font-family: 'EB Garamond', Georgia, serif;
-        }
-
 
     </style>
 </head>
 <body>
-
-<!-- sidebar is always visible -->
-
-<!-- ─── PASSWORD MODAL ────────────────────────────────────────── -->
-<div class="modal-overlay" id="passwordModal">
-    <div class="modal">
-        <div class="modal-eyebrow">Protected</div>
-        <h3 id="modalTitle">Letters</h3>
-        <p id="modalDesc">This section is private. Enter the password to continue.</p>
-        <input
-            type="password"
-            id="passwordInput"
-            placeholder="password"
-            autocomplete="off"
-            onkeydown="if (event.key === 'Enter') submitPassword()"
-        >
-        <div class="modal-error" id="modalError">incorrect. try again.</div>
-        <div class="modal-actions">
-            <button class="btn-enter" onclick="submitPassword()">Enter →</button>
-            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-        </div>
-    </div>
-</div>
 
 <!-- ─── LAYOUT ────────────────────────────────────────────────── -->
 <div class="container">
@@ -1005,64 +619,10 @@
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
 
-        <div class="sidebar-brand" onclick="location.reload()">Rubny Emile</div>
+        <div class="sidebar-brand" onclick="goHome()">Rubny Emile</div>
 
-        <nav class="sidebar-nav">
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    Poetry <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('poetry')">Poems</a>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    Opinions <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('opinions')">Opinions</a>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    Reviews <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('reviews')">Books &amp; Films</a>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    Recipes <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('recipes')">Recipes</a>
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    Letters <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items" id="letters-nav">
-                    <!-- populated from content.json -->
-                </div>
-            </div>
-
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">
-                    About <span class="nav-arrow">▼</span>
-                </div>
-                <div class="nav-items">
-                    <a onclick="showPage('about')">Who I Am</a>
-                </div>
-            </div>
-
+        <nav class="sidebar-nav" id="sidebarNav">
+            <!-- populated by buildSidebar() -->
         </nav>
 
         <div class="sidebar-footer">© 2026</div>
@@ -1072,15 +632,17 @@
     <!-- MAIN -->
     <main class="main">
 
-        <!-- Hero (replaced by a featured poem on load) -->
-        <header class="hero" id="hero">
-            <div class="hero-eyebrow">a personal space</div>
-            <h1 class="hero-title">welcome</h1>
-            <p class="hero-tagline">everyday i try</p>
+        <!-- Hero / home (replaced by a featured poem on load) -->
+        <header class="hero-wrap" id="heroWrap">
+            <div class="hero" id="hero">
+                <div class="hero-eyebrow">a personal space</div>
+                <h1 class="hero-title">welcome</h1>
+                <p class="hero-tagline">everyday i try</p>
+            </div>
         </header>
 
         <!-- Pages injected here -->
-        <div id="pages"></div>
+        <div id="pages" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
 
         <footer class="footer">
             <p>Questions? Thoughts? Want to berate me further?</p>
@@ -1097,9 +659,32 @@
        STATE
     ───────────────────────────────────────────────────────────── */
 
-    let data       = {};
-    let pendingId  = null; // letter id awaiting password
-    let pendingCat = null; // category id awaiting password
+    let data = {};
+
+    // Theme lookup by page-id root (handles sub-pages like reviews-books)
+    const PAGE_THEMES = {
+        poetry:   'theme-poetry',
+        opinions: 'theme-opinions',
+        reviews:  'theme-reviews',
+        recipes:  'theme-recipes',
+        letters:  'theme-letters',
+        about:    'theme-about',
+    };
+
+    // Sidebar structure — single source of truth for nav.
+    // 'reviews' and 'letters' have children; 'about' and others are direct links.
+    const NAV = [
+        { id: 'poetry',   label: 'Poetry',   direct: 'poetry' },
+        { id: 'opinions', label: 'Opinions', direct: 'opinions' },
+        { id: 'reviews',  label: 'Reviews',  children: [
+            { id: 'reviews-books', label: 'Books' },
+            { id: 'reviews-films', label: 'Films' },
+            { id: 'reviews-places', label: 'Places' },
+        ]},
+        { id: 'recipes',  label: 'Recipes',  direct: 'recipes' },
+        { id: 'letters',  label: 'Letters',  direct: 'letters' },
+        { id: 'about',    label: 'Who I Am', direct: 'about' },
+    ];
 
 
     /* ─────────────────────────────────────────────────────────────
@@ -1108,10 +693,9 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
         await loadContent();
+        buildSidebar();
         renderPages();
-        populateLettersNav();
         showFeaturedPoem();
-        openFirstNav();
     });
 
     async function loadContent() {
@@ -1127,6 +711,34 @@
 
 
     /* ─────────────────────────────────────────────────────────────
+       SIDEBAR
+    ───────────────────────────────────────────────────────────── */
+
+    function buildSidebar() {
+        const nav = document.getElementById('sidebarNav');
+        nav.innerHTML = NAV.map(section => {
+            if (section.direct) {
+                return `
+                    <div class="nav-section">
+                        <a class="nav-link" onclick="showPage('${section.direct}')">${section.label}</a>
+                    </div>
+                `;
+            }
+            // section with children — always expanded, no dropdown toggle
+            const children = (section.children || []).map(c =>
+                `<a onclick="showPage('${c.id}')">${c.label}</a>`
+            ).join('');
+            return `
+                <div class="nav-section has-children">
+                    <a class="nav-link" onclick="showPage('${section.children[0].id}')">${section.label}</a>
+                    <div class="nav-items show">${children}</div>
+                </div>
+            `;
+        }).join('');
+    }
+
+
+    /* ─────────────────────────────────────────────────────────────
        RENDER PAGES
     ───────────────────────────────────────────────────────────── */
 
@@ -1134,10 +746,11 @@
         document.getElementById('pages').innerHTML = [
             renderPoetry(),
             renderOpinions(),
-            renderPlaceholder('reviews',  'Reviews',  'Books &amp; Films'),
-            renderPlaceholder('recipes',  'Recipes',  'All Recipes'),
-            renderLettersHub(),
-            ...renderLetters(),
+            renderReviewsSub('reviews-books', 'Books'),
+            renderReviewsSub('reviews-films', 'Films'),
+            renderReviewsSub('reviews-places', 'Places'),
+            renderRecipes(),
+            renderLetters(),
             renderAbout(),
         ].join('');
     }
@@ -1163,95 +776,108 @@
     /* Opinions -------------------------------------------------- */
 
     function renderOpinions() {
-        const opinions = data.opinions || [];
+        const opinions = (data.opinions || []).filter(op => op.text); // skip empty entries
         return page('opinions', 'Opinions', `${opinions.length} essays`,
             opinions.map(op => `
                 ${card({
                     title:   op.title,
                     meta:    op.date,
                     preview: op.preview,
-                    action:  op.text ? `toggleDrawer('opinion-${op.id}')` : null,
-                    label:   op.text ? 'Read More →' : 'Coming Soon →',
+                    action:  `toggleDrawer('opinion-${op.id}')`,
+                    label:   'Read More →',
                 })}
-                ${op.text ? drawer(`opinion-${op.id}`, op.text) : ''}
+                ${drawer(`opinion-${op.id}`, op.text)}
             `).join('')
         );
     }
 
-    /* Letters hub ---------------------------------------------- */
+    /* Reviews — Books / Films / Places, each its own page -------- */
 
-    function renderLettersHub() {
-        const defaultCategories = [
-            { id: 'ziwi',           name: 'Ziwi the Kiwi',  description: 'Enter password to read.' },
-            { id: 'aicsa',          name: 'Aicsa',           description: 'Enter password to read.' },
-            { id: 'rubny',          name: 'Rubny',           description: 'Enter password to read.' },
-            { id: 'people',         name: 'People',          description: 'Enter password to read.' },
-            { id: 'things',         name: 'Things',          description: 'Enter password to read.' },
-        ];
+    function renderReviewsSub(pageId, label) {
+        const key = pageId.replace('reviews-', ''); // books | films | places
+        const items = (data.reviews && data.reviews[key]) || [];
+        // sort most recent → least recent by date string if present
+        const sorted = [...items].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
 
-        // merge with any categories from content.json, defaultCategories fill in the rest
-        const jsonCategories = data.letter_categories || [];
-        const jsonIds = jsonCategories.map(c => c.id);
-        const categories = [
-            ...jsonCategories,
-            ...defaultCategories.filter(c => !jsonIds.includes(c.id)),
-        ];
+        const body = sorted.length
+            ? sorted.map(r => `
+                ${card({
+                    title:   r.title,
+                    meta:    r.date,
+                    preview: r.preview,
+                    action:  r.text ? `toggleDrawer('${pageId}-${r.id}')` : null,
+                    label:   r.text ? 'Read More →' : 'Coming Soon →',
+                })}
+                ${r.text ? drawer(`${pageId}-${r.id}`, r.text) : ''}
+              `).join('')
+            : card({ title: 'Coming Soon', meta: '2026', preview: `${label} reviews will be added here.` });
 
-        const cards = categories.map(cat => `
-            <div class="item letter-hub-item" onclick="promptCategoryPassword('${cat.id}')">
-                <div class="item-title">${cat.name}</div>
-                <div class="item-meta">Protected · ${cat.letters ? cat.letters.length : 0} letter${cat.letters && cat.letters.length !== 1 ? 's' : ''}</div>
-                <div class="item-preview">${cat.description || 'Enter password to read.'}</div>
-                <a class="read-more">Open →</a>
-            </div>
-        `).join('');
-        return page('letters', 'Letters', `${categories.length} collections`, cards);
+        return page(pageId, label, `${sorted.length} ${label.toLowerCase()}`, body);
     }
 
-    /* Letters --------------------------------------------------- */
+    /* Recipes ----------------------------------------------------- */
+
+    function renderRecipes() {
+        const recipes = data.recipes || [];
+        const sorted = [...recipes].sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+        const body = sorted.length
+            ? sorted.map(r => `
+                ${card({
+                    title:   r.title,
+                    meta:    r.date,
+                    preview: r.preview,
+                    action:  r.text ? `toggleDrawer('recipe-${r.id}')` : null,
+                    label:   r.text ? 'Read More →' : 'Coming Soon →',
+                })}
+                ${r.text ? drawer(`recipe-${r.id}`, r.text) : ''}
+              `).join('')
+            : card({ title: 'Coming Soon', meta: '2026', preview: 'Recipes will be added here.' });
+        return page('recipes', 'Recipes', `${sorted.length} recipes`, body);
+    }
+
+    /* Letters — flat list, no password, links straight to content
+       or to a "coming soon" drawer if a category has no letters yet ---- */
 
     function renderLetters() {
         const categories = data.letter_categories || [];
-
-        return categories.map(cat => {
+        const body = categories.map(cat => {
             const letters = cat.letters || [];
-            const items = letters.length
-                ? letters.map(letter => `
-                    ${card({
-                        title:   letter.title,
-                        meta:    `${letter.date} · Protected`,
-                        preview: letter.preview,
-                        action:  `promptLetterPassword('${letter.id}')`,
-                        label:   'Read Letter →',
-                    })}
-                    ${drawer(`letter-${letter.id}`, letter.text)}
-                  `).join('')
-                : card({ title: 'Coming Soon', meta: 'Protected', preview: 'Letters will appear here.' });
+            if (letters.length === 0) {
+                return card({
+                    title:   cat.name,
+                    meta:    'Coming Soon',
+                    preview: 'Letters will appear here.',
+                });
+            }
+            // one card per letter (category name shown in meta)
+            return letters.map(letter => `
+                ${card({
+                    title:   letter.title,
+                    meta:    `${cat.name} · ${letter.date}`,
+                    preview: letter.preview,
+                    action:  `toggleDrawer('letter-${letter.id}')`,
+                    label:   'Read Letter →',
+                })}
+                ${drawer(`letter-${letter.id}`, letter.text)}
+            `).join('');
+        }).join('');
 
-            return page(cat.id, cat.name, `${letters.length} letter${letters.length !== 1 ? 's' : ''}`, items);
-        });
+        const totalLetters = categories.reduce((sum, c) => sum + (c.letters ? c.letters.length : 0), 0);
+        return page('letters', 'Letters', `${totalLetters} letters`, body);
     }
 
-    /* Placeholder pages ----------------------------------------- */
-
-    function renderPlaceholder(id, title, label) {
-        return page(id, title, 'coming soon',
-            card({ title: 'Coming Soon', meta: '2026', preview: `${label} will be added here.` })
-        );
-    }
-
-    /* About ----------------------------------------------------- */
+    /* About / Who I Am -------------------------------------------- */
 
     function renderAbout() {
-        return page('about', 'About', '',
-            `<p style="margin-bottom:22px; font-size:15px; color:var(--text); opacity:0.85; line-height:1.9;">
+        return page('about', 'Who I Am', '',
+            `<p style="margin-bottom:22px; font-size:15px; color:var(--t-text); opacity:0.85; line-height:1.9;">
                 I am trying. Most days I fail. Some days I get close. But I keep going.
              </p>
-             <p style="margin-bottom:22px; font-size:15px; color:var(--muted); line-height:1.9;">
+             <p style="margin-bottom:22px; font-size:15px; color:var(--t-muted); line-height:1.9;">
                 This space exists for those who are also trying. For scouts and thinkers.
                 For anyone brave enough to keep an open mind in a world that resists it.
              </p>
-             <p style="font-size:15px; color:var(--muted); line-height:1.9;">
+             <p style="font-size:15px; color:var(--t-muted); line-height:1.9;">
                 I don't have all the answers. In fact, I have very few. But I'm willing
                 to sit in the uncertainty with you and figure it out together.
              </p>`
@@ -1278,13 +904,14 @@
     }
 
     function card({ title, meta, preview, action, label }) {
+        const onclick = action ? `onclick="${action}"` : '';
         const link = action
-            ? `<a class="read-more" onclick="${action}">${label}</a>`
+            ? `<a class="read-more">${label}</a>`
             : label
                 ? `<a class="read-more">${label}</a>`
                 : '';
         return `
-            <div class="item">
+            <div class="item" ${onclick}>
                 <div class="item-title">${title}</div>
                 ${meta    ? `<div class="item-meta">${meta}</div>`       : ''}
                 ${preview ? `<div class="item-preview">${preview}</div>` : ''}
@@ -1297,7 +924,7 @@
         return `
             <div class="drawer" id="${id}">
                 <div class="drawer-body">${text}</div>
-                <span class="drawer-close" onclick="toggleDrawer('${id}')">← Close</span>
+                <span class="drawer-close" onclick="event.stopPropagation(); toggleDrawer('${id}')">← Close</span>
             </div>
         `;
     }
@@ -1307,38 +934,33 @@
        NAVIGATION
     ───────────────────────────────────────────────────────────── */
 
-
-    const PAGE_THEMES = {
-        poetry:   'theme-poetry',
-        opinions: 'theme-opinions',
-        reviews:  'theme-reviews',
-        recipes:  'theme-recipes',
-        letters:  'theme-letters',
-        about:    'theme-about',
-    };
-
     function showPage(pageId) {
-        document.getElementById('hero').style.display = 'none';
+        document.getElementById('heroWrap').style.display = 'none';
         document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.drawer').forEach(el => el.classList.remove('active'));
 
         const target = document.getElementById(pageId + '-page');
         if (target) target.classList.add('active');
 
-        // apply page theme
-        const body = document.body;
-        Object.values(PAGE_THEMES).forEach(cls => body.classList.remove(cls));
-        const root = pageId.split('-')[0]; // handle letter sub-pages
-        const theme = PAGE_THEMES[root] || null;
-        if (theme) body.classList.add(theme);
-
+        applyTheme(pageId);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-
     }
 
-    function toggleNav(el) {
-        el.querySelector('.nav-arrow').classList.toggle('open');
-        el.nextElementSibling.classList.toggle('show');
+    function applyTheme(pageId) {
+        const body = document.body;
+        Object.values(PAGE_THEMES).forEach(cls => body.classList.remove(cls));
+        const root = pageId.split('-')[0]; // 'reviews-books' -> 'reviews'
+        const theme = PAGE_THEMES[root];
+        if (theme) body.classList.add(theme);
+    }
+
+    function goHome() {
+        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.drawer').forEach(el => el.classList.remove('active'));
+        document.getElementById('heroWrap').style.display = 'flex';
+        document.body.className = ''; // back to default home palette
+        showFeaturedPoem();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function toggleDrawer(id) {
@@ -1351,113 +973,24 @@
     }
 
 
-
-    function openFirstNav() {
-        document.querySelectorAll('.nav-title').forEach(el => {
-            el.querySelector('.nav-arrow').classList.add('open');
-            el.nextElementSibling.classList.add('show');
-        });
-    }
-
-    function populateLettersNav() {
-        const nav = document.getElementById('letters-nav');
-        if (!nav) return;
-        nav.innerHTML = `<a onclick="showPage('letters')">Letters</a>`;
-    }
-
-
     /* ─────────────────────────────────────────────────────────────
-       HERO — FEATURED POEM
+       HERO — FEATURED POEM (centered on screen, scrolls only if long)
     ───────────────────────────────────────────────────────────── */
 
     function showFeaturedPoem() {
         const poems = data.poetry;
+        const hero = document.getElementById('hero');
         if (!poems || poems.length === 0) return;
 
         const poem = poems[Math.floor(Math.random() * poems.length)];
-        const hero = document.getElementById('hero');
 
         hero.innerHTML = `
             <div class="hero-eyebrow">featured this moment</div>
-            <h1 class="hero-title" style="font-size:32px; margin-bottom:30px;">${poem.title}</h1>
+            <h1 class="hero-title" style="font-size:30px;">${poem.title}</h1>
             <div class="hero-poem-body">${poem.text}</div>
             <a class="hero-poem-link" onclick="showPage('poetry')">View All Poems →</a>
         `;
     }
-
-
-    /* ─────────────────────────────────────────────────────────────
-       PASSWORD MODAL
-    ───────────────────────────────────────────────────────────── */
-
-    function promptCategoryPassword(catId) {
-        const cat = data.letter_categories?.find(c => c.id === catId);
-        pendingCat = catId;
-        pendingId  = null;
-        openModal(cat?.name || 'Protected');
-    }
-
-    function promptLetterPassword(letterId) {
-        pendingId  = letterId;
-        pendingCat = null;
-        openModal('Letter');
-    }
-
-    function openModal(title) {
-        document.getElementById('modalTitle').textContent = title;
-        document.getElementById('passwordInput').value   = '';
-        document.getElementById('modalError').classList.remove('show');
-        document.getElementById('passwordModal').classList.add('active');
-        setTimeout(() => document.getElementById('passwordInput').focus(), 50);
-    }
-
-    function closeModal() {
-        document.getElementById('passwordModal').classList.remove('active');
-        pendingId  = null;
-        pendingCat = null;
-    }
-
-    function submitPassword() {
-        const input    = document.getElementById('passwordInput').value;
-        const correct  = resolvePassword();
-
-        if (correct && input && input.toLowerCase() === correct.toLowerCase()) {
-            closeModal();
-
-            if (pendingCat) {
-                showPage(pendingCat);
-            } else if (pendingId) {
-                toggleDrawer('letter-' + pendingId);
-            }
-
-            pendingCat = null;
-            pendingId  = null;
-        } else {
-            document.getElementById('modalError').classList.add('show');
-            document.getElementById('passwordInput').value = '';
-            document.getElementById('passwordInput').focus();
-        }
-    }
-
-    function resolvePassword() {
-        if (pendingCat) {
-            return data.letter_categories?.find(c => c.id === pendingCat)?.password;
-        }
-
-        if (pendingId) {
-            for (const cat of data.letter_categories || []) {
-                const letter = cat.letters?.find(l => l.id === pendingId);
-                if (letter) return letter.password;
-            }
-        }
-
-        return null;
-    }
-
-    // close modal on backdrop click
-    document.getElementById('passwordModal').addEventListener('click', function (e) {
-        if (e.target === this) closeModal();
-    });
 
 </script>
 </body>
