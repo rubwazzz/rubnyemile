@@ -203,57 +203,13 @@
       "id": "people",
       "name": "People",
       "description": "Enter password to read.",
-      "letters": [
-        {
-          "id": "hard-day",
-          "title": "A Hard Day",
-          "date": "2026",
-          "preview": "I learned that the part of me most attached to life would rather die than let go.",
-          "text": },
-        {
-          "id": "a-journey",
-          "title": "A Journey",
-          "date": "2026",
-          "preview": "I wasn't sure what I was going to write when I started this.",
-          "text": }
-      ]
+      "letters": []
     },
     {
       "id": "ziwi",
       "name": "Ziwi the Kiwi",
       "description": "Enter password to read.",
-      "letters": [
-        {
-          "id": "letter-to-kiwi",
-          "title": "Letter to Kiwi",
-          "date": "2026",
-          "preview": "I've been thinking about you lately far more often than I had over the past months.",
-          "text": },
-        {
-          "id": "the-brown-dress",
-          "title": "The Brown Dress",
-          "date": "2026",
-          "preview": "There is a part of me that still cherishes the memories and times we shared.",
-          "text": },
-        {
-          "id": "the-kiwii",
-          "title": "The Kiwii",
-          "date": "2026",
-          "preview": "With New York constantly on my feed these days I cannot help to think about you.",
-          "text": },
-        {
-          "id": "zariah",
-          "title": "Zariah",
-          "date": "2026",
-          "preview": "I wrote the previous paragraph last year, about the time that you left.",
-          "text": }
-        {
-          "id": "zee-zee",
-          "title": "Zee Zee",
-          "date": "2023",
-          "preview": "I apologize if I have done anything to offend you. Yesterday I was in a bad mood.",
-          "text": 
-      ]
+      "letters": []
     },
     {
       "id": "things",
@@ -265,20 +221,7 @@
       "id": "rubny",
       "name": "Rubny",
       "description": "Enter password to read.",
-      "letters": [
-        {
-          "id": "unsent-001",
-          "title": "Another Unsent Letter II",
-          "date": "February 25, 2026",
-          "preview": "This might be liquor in me but I'm feeling a tingling sensation...",
-          "text": 
-        {
-          "id": "dear-rubny-emile",
-          "title": "Dear Rubny Emile",
-          "date": "2026",
-          "preview": "It has not been easy being you. It has been even less easy becoming you.",
-          "text": 
-      ]
+      "letters": []
     }
   ],
   "reviews": {
