@@ -40,6 +40,7 @@
             font-size: 18px;
             display: flex;
             flex-direction: column;
+            padding-top: 80px;
         }
 
         ::-webkit-scrollbar { width: 4px; }
@@ -48,8 +49,8 @@
 
         .container {
             display: flex;
-            min-height: 100vh;
-            flex-direction: row;
+            flex-direction: column;
+            width: 100%;
         }
 
         .main {
@@ -57,81 +58,98 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
             width: 100%;
         }
 
         .sidebar {
-            width: 96px;
-            background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-dark) 100%);
-            padding: 44px 10px 40px;
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(90deg, var(--sidebar) 0%, var(--sidebar-dark) 100%);
+            padding: 0 40px;
             position: fixed;
             top: 0;
             left: 0;
-            height: 100vh;
-            overflow-y: auto;
-            border-right: 1px solid var(--border);
+            right: 0;
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
             z-index: 9998;
         }
 
         .sidebar-brand {
             font-family: var(--font-serif);
-            font-size: 11px;
+            font-size: 14px;
             font-style: italic;
             letter-spacing: 0.5px;
             color: var(--title);
-            margin-bottom: 48px;
             opacity: 0.9;
             cursor: pointer;
+            white-space: nowrap;
         }
 
-        .sidebar-nav { flex: 1; }
+        .sidebar-nav { 
+            flex: 1;
+            display: flex;
+            gap: 30px;
+            margin: 0 40px;
+            align-items: center;
+        }
 
         .sidebar-footer {
-            margin-top: 32px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
             font-family: var(--font-mono);
             font-size: 10px;
             letter-spacing: 1.5px;
             color: var(--text);
             opacity: 0.7;
+            white-space: nowrap;
         }
 
-        .nav-section { margin-bottom: 6px; }
+        .nav-section { 
+            position: relative;
+            margin: 0;
+        }
 
         .nav-title {
             font-family: var(--font-mono);
-            font-size: 8px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: var(--text);
             cursor: pointer;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 9px 0;
+            gap: 6px;
+            padding: 0;
             transition: color 0.25s;
             user-select: none;
+            white-space: nowrap;
         }
 
+        .nav-title:hover { color: var(--title); }
+
         .nav-items {
-            padding: 4px 0 8px 8px;
-            margin-left: 1px;
             display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--sidebar);
+            border: 1px solid var(--border);
+            padding: 10px 15px;
+            margin-top: 10px;
+            z-index: 10000;
+            white-space: nowrap;
         }
 
         .nav-items.show { display: block; }
 
         .nav-items a {
-            display: inline-block;
+            display: block;
             text-decoration: none;
             color: var(--text);
-            font-size: 10px;
+            font-size: 11px;
             font-family: var(--font-mono);
-            padding: 4px 0;
+            padding: 6px 0;
             opacity: 0.65;
             cursor: pointer;
             transition: opacity 0.2s;
@@ -488,70 +506,61 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @media (max-width: 968px) {
-            .container { flex-direction: column; }
-
+        @media (max-width: 768px) {
+            body { padding-top: 100px; }
+            
             .sidebar {
-                position: fixed;
-                bottom: 0;
-                top: auto;
-                left: 0;
-                right: 0;
-                width: 100%;
-                height: auto;
-                padding: 20px;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                border-right: none;
-                border-top: 1px solid var(--border);
+                height: 100px;
+                flex-wrap: wrap;
+                padding: 10px 20px;
+                justify-content: flex-start;
             }
 
-            .main { padding-bottom: 120px; }
-
             .sidebar-brand {
-                margin-bottom: 0;
-                font-size: 10px;
+                width: 100%;
+                margin-bottom: 8px;
+                font-size: 12px;
             }
 
             .sidebar-nav {
-                display: flex;
-                gap: 20px;
+                width: 100%;
+                gap: 15px;
+                margin: 0;
+                flex-wrap: wrap;
             }
-
-            .nav-section { margin-bottom: 0; }
-
-            .nav-items {
-                display: none;
-                padding: 0;
-                position: absolute;
-                top: -200px;
-                background: var(--sidebar);
-                border: 1px solid var(--border);
-                padding: 10px;
-                z-index: 10000;
-            }
-
-            .nav-items.show { display: block; }
 
             .sidebar-footer {
-                margin-top: 0;
-                padding-top: 0;
-                border-top: none;
+                position: fixed;
+                bottom: 10px;
+                right: 20px;
                 font-size: 9px;
             }
-        }
 
-        @media (max-width: 768px) {
             .hero { padding: 60px 20px 40px; }
             .hero-title { font-size: 36px; }
             .content { padding: 30px 20px; }
             .drawer { padding: 20px 0; }
             .footer { padding: 30px 20px; }
-            .sidebar { padding: 15px; }
         }
 
         @media (max-width: 480px) {
+            body { padding-top: 120px; }
+            
+            .sidebar {
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .sidebar-nav {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .nav-title { font-size: 9px; }
+            .nav-items a { font-size: 10px; }
+
             .hero-title { font-size: 28px; }
             .hero { padding: 40px 16px 30px; }
             .content { padding: 20px 16px; }
@@ -576,38 +585,38 @@
     </div>
 </div>
 
-<div class="container">
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-brand" onclick="location.reload()">Rubny Emile</div>
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">Poetry <span class="nav-arrow">▼</span></div>
-                <div class="nav-items"><a onclick="showPage('poetry')">Poems</a></div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">Opinions <span class="nav-arrow">▼</span></div>
-                <div class="nav-items"><a onclick="showPage('opinions')">Opinions</a></div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">Reviews <span class="nav-arrow">▼</span></div>
-                <div class="nav-items"><a onclick="showPage('reviews')">Books &amp; Films</a></div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">Recipes <span class="nav-arrow">▼</span></div>
-                <div class="nav-items"><a onclick="showPage('recipes')">Recipes</a></div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">Letters <span class="nav-arrow">▼</span></div>
-                <div class="nav-items" id="letters-nav"></div>
-            </div>
-            <div class="nav-section">
-                <div class="nav-title" onclick="toggleNav(this)">About <span class="nav-arrow">▼</span></div>
-                <div class="nav-items"><a onclick="showPage('about')">Who I Am</a></div>
-            </div>
-        </nav>
-        <div class="sidebar-footer">© 2026</div>
-    </aside>
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand" onclick="location.reload()">Rubny Emile</div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">Poetry <span class="nav-arrow">▼</span></div>
+            <div class="nav-items"><a onclick="showPage('poetry')">Poems</a></div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">Opinions <span class="nav-arrow">▼</span></div>
+            <div class="nav-items"><a onclick="showPage('opinions')">Opinions</a></div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">Reviews <span class="nav-arrow">▼</span></div>
+            <div class="nav-items"><a onclick="showPage('reviews')">Books &amp; Films</a></div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">Recipes <span class="nav-arrow">▼</span></div>
+            <div class="nav-items"><a onclick="showPage('recipes')">Recipes</a></div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">Letters <span class="nav-arrow">▼</span></div>
+            <div class="nav-items" id="letters-nav"></div>
+        </div>
+        <div class="nav-section">
+            <div class="nav-title" onclick="toggleNav(this)">About <span class="nav-arrow">▼</span></div>
+            <div class="nav-items"><a onclick="showPage('about')">Who I Am</a></div>
+        </div>
+    </nav>
+    <div class="sidebar-footer">© 2026</div>
+</aside>
 
+<div class="container">
     <main class="main">
         <header class="hero" id="hero">
             <div class="hero-eyebrow">a personal space</div>
@@ -632,7 +641,6 @@
         renderPages();
         populateLettersNav();
         showFeaturedPoem();
-        openFirstNav();
     });
 
     async function loadContent() {
@@ -722,14 +730,22 @@
         document.getElementById('hero').style.display = 'none';
         document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.drawer').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-items').forEach(el => el.classList.remove('show'));
+        document.querySelectorAll('.nav-arrow').forEach(el => el.classList.remove('open'));
         const target = document.getElementById(pageId + '-page');
         if (target) target.classList.add('active');
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 
     function toggleNav(el) {
-        el.querySelector('.nav-arrow').classList.toggle('open');
-        el.nextElementSibling.classList.toggle('show');
+        const items = el.nextElementSibling;
+        const isOpen = items.classList.contains('show');
+        document.querySelectorAll('.nav-items').forEach(i => i.classList.remove('show'));
+        document.querySelectorAll('.nav-arrow').forEach(a => a.classList.remove('open'));
+        if (!isOpen) {
+            items.classList.add('show');
+            el.querySelector('.nav-arrow').classList.add('open');
+        }
     }
 
     function toggleDrawer(id) {
@@ -741,17 +757,10 @@
         }
     }
 
-    function openFirstNav() {
-        document.querySelectorAll('.nav-title').forEach(el => {
-            el.querySelector('.nav-arrow').classList.add('open');
-            el.nextElementSibling.classList.add('show');
-        });
-    }
-
     function populateLettersNav() {
         const nav = document.getElementById('letters-nav');
         if (!nav) return;
-        nav.innerHTML = `<a onclick="showPage('letters')">Letters</a>`;
+        nav.innerHTML = `<a onclick="showPage('letters')">All Collections</a>`;
     }
 
     function showFeaturedPoem() {
